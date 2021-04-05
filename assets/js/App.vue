@@ -478,6 +478,12 @@
                             <div class="form-item">
                                 <label><input type="checkbox" v-model="config.rend_buff"> <span>Warchief's Blessing (10 mp5)</span></label>
                             </div>
+                            <div class="form-item">
+                                <label><input type="checkbox" v-model="config.atiesh_mage_buff"> <span>Power of the Guardian - Mage Atiesh (2% crit)</span></label>
+                            </div>
+                            <div class="form-item">
+                                <label><input type="checkbox" v-model="config.atiesh_warlock_buff"> <span>Power of the Guardian - Warlock Atiesh (30 sp)</span></label>
+                            </div>
                         </fieldset>
                         <fieldset>
                             <legend>Consumes</legend>
@@ -751,6 +757,8 @@
                     songflower_buff: true,
                     dmf_buff: true,
                     rend_buff: false,
+                    atiesh_mage_buff: false,
+                    atiesh_warlock_buff: false,
 
                     food: 0,
                     flask: 0,
@@ -1143,6 +1151,8 @@
                     stats.spell_power+= 24;
                 if (this.config.battle_elixir == this.elixirs.ELIXIR_GREATER_ARCANE)
                     stats.spell_power+= 35;
+                if (this.config.atiesh_warlock_buff)
+                    stats.spell_power+= 30;
 
                 // Spell crit
                 var critrating = 0;
@@ -1166,10 +1176,12 @@
                     stats.crit+= x;
                 if (this.config.ony_buff)
                     stats.crit+= 10;
-                if(this.config.songflower_buff)
+                if (this.config.songflower_buff)
                     stats.crit+= 5;
-                if(this.config.dm_buff)
+                if (this.config.dm_buff)
                     stats.crit+= 3;
+                if (this.config.atiesh_mage_buff)
+                    stats.crit += 2;
 
                 // Spell hit
                 if (this.config.totem_of_wrath)

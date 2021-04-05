@@ -144,6 +144,8 @@ public:
             int_multi+= 0.07;
         if (int_multi > 0)
             stats.spell_power+= round(stats.intellect * int_multi);
+        if (config->atiesh_warlock_buff)
+            stats.spell_power+= 30;
 
         if (config->improved_divine_spirit)
             stats.spell_power+= stats.spirit*0.1;
@@ -186,6 +188,8 @@ public:
             critrating+= 14;
         if (config->food == FOOD_SPELL_CRIT)
             critrating+= 20;
+        if (config->atiesh_mage_buff)
+            critrating+= 30;
         if (critrating > 0)
             stats.crit+= critRatingToChance(critrating);
         if (talents.arcane_instability)

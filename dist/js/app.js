@@ -2012,6 +2012,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2092,6 +2098,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         songflower_buff: true,
         dmf_buff: true,
         rend_buff: false,
+        atiesh_mage_buff: false,
+        atiesh_warlock_buff: false,
         food: 0,
         flask: 0,
         battle_elixir: 0,
@@ -2471,7 +2479,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       if (this.config.battle_elixir == this.elixirs.ELIXIR_ADEPTS) stats.spell_power += 24;
-      if (this.config.battle_elixir == this.elixirs.ELIXIR_GREATER_ARCANE) stats.spell_power += 35; // Spell crit
+      if (this.config.battle_elixir == this.elixirs.ELIXIR_GREATER_ARCANE) stats.spell_power += 35;
+      if (this.config.atiesh_warlock_buff) stats.spell_power += 30; // Spell crit
 
       var critrating = 0;
       if (this.config.judgement_of_the_crusader) stats.crit += 3;
@@ -2485,7 +2494,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (x = this.hasTalent("arcane_instability")) stats.crit += x;
       if (this.config.ony_buff) stats.crit += 10;
       if (this.config.songflower_buff) stats.crit += 5;
-      if (this.config.dm_buff) stats.crit += 3; // Spell hit
+      if (this.config.dm_buff) stats.crit += 3;
+      if (this.config.atiesh_mage_buff) stats.crit += 2; // Spell hit
 
       if (this.config.totem_of_wrath) stats.hit += 3;
       if (this.config.race == this.races.RACE_DRAENEI || this.config.inspiring_presence) stats.hit += 1; // Until proven otherwise, we'll assume the double +hit bug does not apply to fire spells
@@ -62404,6 +62414,112 @@ var render = function() {
                       }),
                       _vm._v(" "),
                       _c("span", [_vm._v("Warchief's Blessing (10 mp5)")])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-item" }, [
+                    _c("label", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.config.atiesh_mage_buff,
+                            expression: "config.atiesh_mage_buff"
+                          }
+                        ],
+                        attrs: { type: "checkbox" },
+                        domProps: {
+                          checked: Array.isArray(_vm.config.atiesh_mage_buff)
+                            ? _vm._i(_vm.config.atiesh_mage_buff, null) > -1
+                            : _vm.config.atiesh_mage_buff
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.config.atiesh_mage_buff,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "atiesh_mage_buff",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "atiesh_mage_buff",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.config, "atiesh_mage_buff", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", [
+                        _vm._v("Power of the Guardian - Mage Atiesh (2% crit)")
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-item" }, [
+                    _c("label", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.config.atiesh_warlock_buff,
+                            expression: "config.atiesh_warlock_buff"
+                          }
+                        ],
+                        attrs: { type: "checkbox" },
+                        domProps: {
+                          checked: Array.isArray(_vm.config.atiesh_warlock_buff)
+                            ? _vm._i(_vm.config.atiesh_warlock_buff, null) > -1
+                            : _vm.config.atiesh_warlock_buff
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.config.atiesh_warlock_buff,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "atiesh_warlock_buff",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "atiesh_warlock_buff",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.config, "atiesh_warlock_buff", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", [
+                        _vm._v("Power of the Guardian - Warlock Atiesh (30 sp)")
+                      ])
                     ])
                   ])
                 ]),

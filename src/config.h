@@ -34,6 +34,8 @@ struct Config
     bool rend_buff = false;
     bool dm_buff = true;
     bool dmf_buff = true;
+    bool atiesh_mage_buff = false;
+    bool atiesh_warlock_buff = false;
 
     Food food;
     Flask flask;
