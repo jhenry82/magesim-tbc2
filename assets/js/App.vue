@@ -1076,7 +1076,7 @@
                 if (this.config.food == this.foods.FOOD_SPELL_POWER || this.config.food == this.foods.FOOD_SPELL_CRIT)
                     stats.spirit+= 20;
                 if (this.config.food == this.foods.FOOD_INT)
-                    stats.int += 10;
+                    stats.intellect+= 10;
 
                 // Attribute multipliers
                 if (x = this.hasTalent("arcane_mind"))

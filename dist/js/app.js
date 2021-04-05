@@ -2415,7 +2415,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       if (this.config.flask == this.flasks.FLASK_DISTILLED_WISDOM) stats.intellect += 65;
       if (this.config.food == this.foods.FOOD_SPELL_POWER || this.config.food == this.foods.FOOD_SPELL_CRIT) stats.spirit += 20;
-      if (this.config.food == this.foods.FOOD_INT) stats["int"] += 10; // Attribute multipliers
+      if (this.config.food == this.foods.FOOD_INT) stats.intellect += 10; // Attribute multipliers
 
       if (x = this.hasTalent("arcane_mind")) stats.intellect *= 1.0 + x * 0.03;
       if (this.config.race == this.races.RACE_GNOME) stats.intellect *= 1.05;
