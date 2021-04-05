@@ -8,7 +8,7 @@ class Player
 {
 
 public:
-    const double base_mana = 1961;
+    const double base_mana = 1213;
 
     Stats stats;
     Talents talents;
@@ -30,7 +30,7 @@ public:
         stats.intellect = 149;
         stats.spirit = 150;
         stats.mp5 = 0;
-        stats.crit = 0.91;
+        stats.crit = 2.5;
         stats.hit = 0;
         stats.haste = 0;
         stats.spell_power = 0;
@@ -62,8 +62,8 @@ public:
     // Stats with gear but without talents
     void setDefaultStats()
     {
-        stats.intellect = 465;
-        stats.spirit = 285;
+        stats.intellect = 149;
+        stats.spirit = 150;
         stats.mp5 = 0;
         stats.crit = 20;
         stats.hit = 6;
@@ -109,6 +109,10 @@ public:
             stats.intellect+= 65;
         if (config->food == FOOD_SPELL_POWER || config->food == FOOD_SPELL_CRIT)
             stats.spirit+= 20;
+        if (config->food == FOOD_INT)
+            stats.intellect+= 10;
+        if (config->food == FOOD_MP5)
+            stats.mp5+= 8;
 
         // Attribute multipliers
         if (talents.arcane_mind)
@@ -272,7 +276,7 @@ public:
 
     double spiritManaPerSecond()
     {
-        return 0.001 + stats.spirit*0.009327 * sqrt(stats.intellect);
+        return 0.001 + stats.spirit*0.010999 * sqrt(stats.intellect);
     }
 
     double staticManaPerSecond()

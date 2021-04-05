@@ -71,6 +71,8 @@ enum Food : int
     FOOD_NONE = 0,
     FOOD_SPELL_POWER = 27657,
     FOOD_SPELL_CRIT = 33825,
+    FOOD_INT = 18254,
+    FOOD_MP5 = 13931,
 };
 
 enum Flask : int
@@ -104,6 +106,7 @@ enum WeaponOil : int
     OIL_NONE = 0,
     OIL_BRILLIANT_WIZARD = 20749,
     OIL_SUPERIOR_WIZARD = 22522,
+    OIL_BLESSED_WIZARD = 23123,
     OIL_SUPERIOR_MANA = 22521,
 };
 
@@ -175,17 +178,17 @@ struct SimulationsResult
 
 double critRatingToChance(double rating)
 {
-    return rating / 22.08;
+    return rating / 14.0;
 }
 
 double hitRatingToChance(double rating)
 {
-    return rating / 12.62;
+    return rating / 8.0;
 }
 
 double hasteRatingToHaste(double rating)
 {
-    return rating / 15.77;
+    return rating / 10.0;
 }
 
 // Global rng generator

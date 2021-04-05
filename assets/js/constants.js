@@ -21,6 +21,8 @@ export default {
         FOOD_NONE: 0,
         FOOD_SPELL_POWER: 27657,
         FOOD_SPELL_CRIT: 33825,
+        FOOD_INT: 18254,
+        FOOD_MP5: 13931,
     },
     flasks: {
         FLASK_NONE: 0,
@@ -47,15 +49,16 @@ export default {
         OIL_BRILLIANT_WIZARD: 20749,
         OIL_SUPERIOR_WIZARD: 22522,
         OIL_SUPERIOR_MANA: 22521,
+        OIL_BLESSED_WIZARD: 23123,
     },
     potions: {
         POTION_NONE: 0,
-        POTION_MANA: 22832,
+        POTION_MANA: 13444,
         POTION_DESTRUCTION: 22839,
     },
     conjureds: {
         CONJURED_NONE: 0,
-        CONJURED_MANA_GEM: 22044,
+        CONJURED_MANA_GEM: 8008,
         CONJURED_FLAME_CAP: 22788,
     },
 };

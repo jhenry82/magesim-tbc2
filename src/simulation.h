@@ -674,7 +674,7 @@ public:
 
     void useManaPotion()
     {
-        double mana = round(random<double>(1800, 3000));
+        double mana = round(random<double>(1350, 2250));
 
         if (hasTrinket(TRINKET_SORCERERS_ALCHEMIST_STONE) || hasTrinket(TRINKET_ALCHEMIST_STONE))
             mana*= 1.4;
@@ -687,11 +687,7 @@ public:
     {
         double mana = 0;
 
-        if (state->mana_emerald > 0) {
-            mana = round(random<double>(2340, 2460));
-            state->mana_emerald--;
-        }
-        else if (state->mana_ruby > 0) {
+        if (state->mana_ruby > 0) {
             mana = round(random<double>(1073, 1127));
             state->mana_ruby--;
         }
@@ -1465,9 +1461,7 @@ public:
             return false;
 
         double max = 0;
-        if (state->mana_emerald > 0)
-            max = 2460;
-        else if (state->mana_ruby > 0)
+        if (state->mana_ruby > 0)
             max = 1127;
         else
             return false;
@@ -1486,7 +1480,7 @@ public:
         if (config->potion != POTION_MANA || state->hasCooldown(cooldown::POTION) || !state->hasCooldown(cooldown::CONJURED) || state->hasBuff(buff::INNERVATE))
             return false;
 
-        double max = 3000;
+        double max = 2250;
 
         if (state->hasBuff(buff::MANA_TIDE))
             max+= player->maxMana() * 0.06;

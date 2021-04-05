@@ -85,6 +85,8 @@ EMSCRIPTEN_BINDINGS(my_module) {
     emscripten::enum_<Food>("Food")
         .value("FOOD_NONE", FOOD_NONE)
         .value("FOOD_SPELL_POWER", FOOD_SPELL_POWER)
+        .value("FOOD_INT", FOOD_INT)
+        .value("FOOD_MP5", FOOD_MP5)
         .value("FOOD_SPELL_CRIT", FOOD_SPELL_CRIT);
 
     emscripten::enum_<Flask>("Flask")
@@ -111,6 +113,7 @@ EMSCRIPTEN_BINDINGS(my_module) {
         .value("OIL_NONE", OIL_NONE)
         .value("OIL_BRILLIANT_WIZARD", OIL_BRILLIANT_WIZARD)
         .value("OIL_SUPERIOR_WIZARD", OIL_SUPERIOR_WIZARD)
+        .value("OIL_BLESSED_WIZARD", OIL_BLESSED_WIZARD)
         .value("OIL_SUPERIOR_MANA", OIL_SUPERIOR_MANA);
 
     emscripten::enum_<Potion>("Potion")

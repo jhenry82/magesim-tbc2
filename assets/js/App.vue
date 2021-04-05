@@ -122,16 +122,6 @@
                     <div class="items">
                         <div class="items-wrapper">
                             <div class="top">
-                                <div class="form-item">
-                                    <select v-model="phase_filter">
-                                        <option :value="0">- Filter by content phase -</option>
-                                        <option :value="1">Phase 1 - KZ, Gruul, Mag, Arena S1</option>
-                                        <option :value="2">Phase 2 - SSC, TK, Arena S2</option>
-                                        <option :value="3">Phase 3 - MH, BT, Arena S3</option>
-                                        <option :value="4">Phase 4 - Zul'Aman</option>
-                                        <option :value="5">Phase 5 - SWP, Arena S4</option>
-                                    </select>
-                                </div>
                                 <div class="btn" :class="[!hasComparisons || is_running ? 'disabled' : '']" @click="runComparison">
                                     Run item comparison
                                 </div>
@@ -143,8 +133,6 @@
                                         <th class="min"></th>
                                         <th class="title">Name</th>
                                         <th v-if="hasComparisons">DPS</th>
-                                        <th>Phase</th>
-                                        <th>Sockets</th>
                                         <th>Spell power</th>
                                         <th>Crit rating</th>
                                         <th>Hit rating</th>
@@ -175,15 +163,6 @@
                                         <th v-if="hasComparisons">
                                             {{ comparisonDps(item) }}
                                         </th>
-                                        <th>{{ $get(item, "phase", 1) }}</th>
-                                        <td>
-                                            <template v-if="item.sockets">
-                                                <div class="socket-color" :class="['color-'+socket]" v-for="socket in item.sockets"></div>
-                                            </template>
-                                            <span class="ml-n" v-if="item.bonus" :class="[hasSocketBonus(active_slot) ? 'socket-bonus' : '']">
-                                                +{{ formatStats(item.bonus) }}
-                                            </span>
-                                        </td>
                                         <td>{{ formatSP(item) }}</td>
                                         <td>{{ $get(item, "crit", "") }}</td>
                                         <td>{{ $get(item, "hit", "") }}</td>
@@ -346,7 +325,6 @@
                             <div class="form-item">
                                 <label>Spec</label>
                                 <select v-model="config.spec" @input="onSpecInput">
-                                    <option :value="specs.SPEC_ARCANE">Arcane</option>
                                     <option :value="specs.SPEC_FIRE">Fire</option>
                                 </select>
                             </div>
@@ -450,9 +428,6 @@
                                 <label><input type="checkbox" v-model="config.arcane_intellect"> <span>Arcane Intellect</span></label>
                             </div>
                             <div class="form-item">
-                                <label><input type="checkbox" v-model="config.mage_armor" @input="dontStack($event, 'molten_armor')"> <span>Mage Armor</span></label>
-                            </div>
-                            <div class="form-item">
                                 <label><input type="checkbox" v-model="config.molten_armor" @input="dontStack($event, 'mage_armor')"> <span>Molten Armor</span></label>
                             </div>
                             <div class="form-item">
@@ -493,8 +468,6 @@
                                 <select v-model="config.flask">
                                     <option :value="flasks.FLASK_NONE">None</option>
                                     <option :value="flasks.FLASK_SUPREME_POWER">Supreme Power (70 sp)</option>
-                                    <option :value="flasks.FLASK_BLINDING_LIGHT">Blinding Light (80 arc)</option>
-                                    <option :value="flasks.FLASK_PURE_DEATH">Pure Death (80 fire/frost)</option>
                                     <option :value="flasks.FLASK_DISTILLED_WISDOM">Distilled Wisdom (65 int)</option>
                                 </select>
                             </div>
@@ -502,7 +475,6 @@
                                 <label>Battle Elixir</label>
                                 <select v-model="config.battle_elixir">
                                     <option :value="elixirs.ELIXIR_NONE">None</option>
-                                    <option :value="elixirs.ELIXIR_ADEPTS">Adept's Elixir (24 sp / 24 crit)</option>
                                     <option :value="elixirs.ELIXIR_GREATER_ARCANE">Greater Arcane (35 sp)</option>
                                 </select>
                             </div>
@@ -510,7 +482,6 @@
                                 <label>Guardian Elixir</label>
                                 <select v-model="config.guardian_elixir">
                                     <option :value="elixirs.ELIXIR_NONE">None</option>
-                                    <option :value="elixirs.ELIXIR_DRAENIC_WISDOM">Draenic Wisdom (30 int / 30 spi)</option>
                                     <option :value="elixirs.ELIXIR_MAJOR_MAGEBLOOD">Major Mageblood (16 mp5)</option>
                                 </select>
                             </div>
@@ -519,25 +490,15 @@
                                 <select v-model="config.weapon_oil">
                                     <option :value="weapon_oils.OIL_NONE">None</option>
                                     <option :value="weapon_oils.OIL_BRILLIANT_WIZARD">Brilliant Wizard Oil (36 sp / 14 crit)</option>
-                                    <option :value="weapon_oils.OIL_SUPERIOR_WIZARD">Superior Wizard Oil (42 sp)</option>
-                                    <option :value="weapon_oils.OIL_SUPERIOR_MANA">Superior Mana Oil (14 mp5)</option>
+                                    <option :value="weapon_oils.OIL_BLESSED_WIZARD">Blessed Wizard Oil (60 sp)</option>
                                 </select>
                             </div>
                             <div class="form-item">
                                 <label>Food</label>
                                 <select v-model="config.food">
                                     <option :value="foods.FOOD_NONE">None</option>
-                                    <option :value="foods.FOOD_SPELL_POWER">Blackened Basilisk (23 sp / 20 spi)</option>
-                                    <option :value="foods.FOOD_SPELL_CRIT">Skullfish Soup (20 crit / 20 spi)</option>
-                                </select>
-                            </div>
-                            <div class="form-item">
-                                <label>Drums</label>
-                                <select v-model="config.drums">
-                                    <option :value="drums.DRUMS_NONE">None</option>
-                                    <option :value="drums.DRUMS_OF_BATTLE">Drums of Battle (80 haste)</option>
-                                    <option :value="drums.DRUMS_OF_WAR">Drums of War (30 sp)</option>
-                                    <option :value="drums.DRUMS_OF_RESTORATION">Drums of Restoration (600 mana)</option>
+                                    <option :value="foods.FOOD_INT">Runn Tum Tuber Surprise (10 int)</option>
+                                    <option :value="foods.FOOD_MP5">Nightfin Soup (8 mp5)</option>
                                 </select>
                             </div>
                             <div class="form-item">
@@ -545,15 +506,13 @@
                                 <select v-model="config.potion">
                                     <option :value="potions.POTION_NONE">None</option>
                                     <option :value="potions.POTION_MANA">Mana potion</option>
-                                    <option :value="potions.POTION_DESTRUCTION">Destruction potion</option>
                                 </select>
                             </div>
                             <div class="form-item">
                                 <label>Conjured</label>
                                 <select v-model="config.conjured">
                                     <option :value="conjureds.CONJURED_NONE">None</option>
-                                    <option :value="conjureds.CONJURED_MANA_GEM">Mana Emerald</option>
-                                    <option :value="conjureds.CONJURED_FLAME_CAP">Flame Cap</option>
+                                    <option :value="conjureds.CONJURED_MANA_GEM">Mana Ruby</option>
                                 </select>
                             </div>
                         </fieldset>
@@ -598,14 +557,6 @@
                             <div class="form-item" v-if="hasUseTrinket(2)">
                                 <label>Trinket #2 at</label>
                                 <input type="text" v-model.number="config.trinket2_at">
-                            </div>
-                            <div class="form-item" v-if="config.drums">
-                                <label>First drums at</label>
-                                <input type="text" v-model.number="config.drums_at">
-                            </div>
-                            <div class="form-item">
-                                <label><input type="checkbox" v-model="config.bloodlust"> <span>Bloodlust <template v-if="config.bloodlust">at</template></span></label>
-                                <input type="text" v-model.number="config.bloodlust_at" v-if="config.bloodlust">
                             </div>
                             <div class="form-item">
                                 <label><input type="checkbox" v-model="config.power_infusion"> <span>Power Infusion <template v-if="config.power_infusion">at</template></span></label>
@@ -747,12 +698,12 @@
                 config: {
                     iterations: 30000,
                     race: 5,
-                    spec: 0,
+                    spec: 1,
 
-                    duration: 180,
+                    duration: 90,
                     duration_variance: 0,
                     rng_seed: 0,
-                    vampiric_touch_regen: 40,
+                    vampiric_touch_regen: 20,
 
                     misery: true,
                     curse_of_elements: true,
@@ -782,11 +733,11 @@
                     guardian_elixir: 0,
                     weapon_oil: 0,
                     drums: 0,
-                    potion: 22832,
-                    conjured: 22044,
+                    potion: 13444,
+                    conjured: 8008,
 
-                    tirisfal_2set: true,
-                    tirisfal_4set: true,
+                    tirisfal_2set: false,
+                    tirisfal_4set: false,
                     tempest_2set: false,
                     tempest_4set: false,
                     spellfire_set: false,
@@ -799,7 +750,7 @@
 
                     innervate: 0,
                     mana_tide: true,
-                    bloodlust: true,
+                    bloodlust: false,
                     power_infusion: false,
 
                     regen_mana_at: 20,
@@ -821,7 +772,7 @@
                     potion_at: 1,
                     conjured_at: 1,
 
-                    talents: "https://tbc.wowhead.com/talent-calc/mage/2500250300030150330125--053500031003001",
+                    talents: "https://tbc.wowhead.com/talent-calc/mage/-505200012302331050125-023500001",
 
                     stats: {
                         intellect: 465,
@@ -1083,7 +1034,7 @@
 
                 // Attribute additions
                 if (this.config.arcane_intellect)
-                    stats.intellect+= 40;
+                    stats.intellect+= 31;
                 if (this.config.divine_spirit)
                     stats.spirit+= 40;
                 if (this.config.guardian_elixir == this.elixirs.ELIXIR_DRAENIC_WISDOM) {
@@ -1091,13 +1042,15 @@
                     stats.spirit+= 30;
                 }
                 if (this.config.mark_of_the_wild) {
-                    stats.intellect+= 18;
-                    stats.spirit+= 18;
+                    stats.intellect+= 12;
+                    stats.spirit+= 12;
                 }
                 if (this.config.flask == this.flasks.FLASK_DISTILLED_WISDOM)
                     stats.intellect+= 65;
                 if (this.config.food == this.foods.FOOD_SPELL_POWER || this.config.food == this.foods.FOOD_SPELL_CRIT)
                     stats.spirit+= 20;
+                if (this.config.food == this.foods.FOOD_INT)
+                    stats.int += 10;
 
                 // Attribute multipliers
                 if (x = this.hasTalent("arcane_mind"))
@@ -1120,6 +1073,8 @@
                     stats.mp5+= 16;
                 if (this.config.weapon_oil == this.weapon_oils.OIL_SUPERIOR_MANA)
                     stats.mp5+= 14;
+                if (this.config.food == this.foods.FOOD_MP5)
+                    stats.mp5 += 8;
 
                 // Spell power
                 var int_multi = 0;
@@ -1136,6 +1091,8 @@
                     stats.spell_power+= 102;
                 if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_WIZARD)
                     stats.spell_power+= 36;
+                if (this.config.weapon_oil == this.weapon_oils.OIL_BLESSED_WIZARD)
+                    stats.spell_power+= 60;
                 if (this.config.weapon_oil == this.weapon_oils.OIL_SUPERIOR_WIZARD)
                     stats.spell_power+= 42;
                 if (this.config.food == this.foods.FOOD_SPELL_POWER)
@@ -1186,8 +1143,8 @@
             baseStats() {
                 // Undead default
                 var stats = {
-                    intellect: 149,
-                    spirit: 150,
+                    intellect: 123,
+                    spirit: 125,
                     mp5: 0,
                     crit: 0.91,
                     hit: 0,
@@ -1199,24 +1156,24 @@
                 };
 
                 if (this.config.race == "RACE_TROLL") {
-                    stats.intellect = 147;
-                    stats.spirit = 146;
+                    stats.intellect = 121;
+                    stats.spirit = 121;
                 }
                 if (this.config.race == "RACE_BLOOD_ELF") {
-                    stats.intellect = 155;
-                    stats.spirit = 144;
+                    stats.intellect = 121;
+                    stats.spirit = 121;
                 }
                 if (this.config.race == "RACE_DRAENEI") {
-                    stats.intellect = 152;
-                    stats.spirit = 147;
+                    stats.intellect = 125;
+                    stats.spirit = 125;
                 }
                 if (this.config.race == "RACE_GNOME") {
-                    stats.intellect = 155;
-                    stats.spirit = 145;
+                    stats.intellect = 133;
+                    stats.spirit = 120;
                 }
                 if (this.config.race == "RACE_HUMAN") {
-                    stats.intellect = 151;
-                    stats.spirit = 145;
+                    stats.intellect = 125;
+                    stats.spirit = 126;
                 }
 
                 return stats;
@@ -1304,7 +1261,7 @@
                 stats.crit+= this.critRatingToChance(item_stats.crit);
                 stats.hit+= this.hitRatingToChance(item_stats.hit);
                 stats.haste+= this.hasteRatingToHaste(item_stats.haste);
-                stats.crit+= stats.intellect/80;
+                stats.crit+= stats.intellect/59.5;
 
                 stats.crit = _.round(stats.crit, 2);
                 stats.hit = _.round(stats.hit, 2);
@@ -1360,15 +1317,15 @@
             },
 
             critRatingToChance(rating) {
-                return rating / 22.08;
+                return rating / 14.0;
             },
 
             hitRatingToChance(rating) {
-                return rating / 12.62;
+                return rating / 8.0;
             },
 
             hasteRatingToHaste(rating) {
-                return rating / 15.77;
+                return rating / 10.0;
             },
 
             isSpecialItem(item_id) {
@@ -1660,7 +1617,7 @@
                     spec = "arcane";
                 }
                 else if (e.target.value == this.specs.SPEC_FIRE) {
-                    talents = "https://tbc.wowhead.com/talent-calc/mage/2-505202012303331053125-043500001";
+                    talents = "https://tbc.wowhead.com/talent-calc/mage/-505200012302331050125-023500001";
                     spec = "fire";
                 }
 

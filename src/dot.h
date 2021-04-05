@@ -48,7 +48,7 @@ namespace dot
             name = "Fireball";
             t_interval = 2;
             ticks = 4;
-            dmg = 21;
+            dmg = 19;
         }
 
     };
@@ -62,7 +62,7 @@ namespace dot
             name = "Pyroblast";
             t_interval = 3;
             ticks = 4;
-            dmg = 89;
+            dmg = 67;
         }
 
     };

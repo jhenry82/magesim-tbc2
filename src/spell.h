@@ -6,11 +6,11 @@ namespace spell
     enum ID : int
     {
         ARCANE_BLAST = 30451,
-        ARCANE_MISSILES = 38704,
-        FROSTBOLT = 38697,
-        FIREBALL = 38692,
-        SCORCH = 27074,
-        PYROBLAST = 33938,
+        ARCANE_MISSILES = 25345,
+        FROSTBOLT = 25304,
+        FIREBALL = 25306,
+        SCORCH = 10207,
+        PYROBLAST = 18809,
         LIGHTNING_CAPACITOR = 28785,
     };
 
@@ -71,9 +71,9 @@ namespace spell
         {
             id = ARCANE_MISSILES;
             name = "Arcane Missiles";
-            cost = 785;
-            min_dmg = 280;
-            max_dmg = 280;
+            cost = 655;
+            min_dmg = 234;
+            max_dmg = 234;
             cast_time = 5;
             coeff = 5/3.5;
             school = SCHOOL_ARCANE;
@@ -91,9 +91,9 @@ namespace spell
         {
             id = FROSTBOLT;
             name = "Frostbolt";
-            cost = 345;
-            min_dmg = 630;
-            max_dmg = 681;
+            cost = 290;
+            min_dmg = 527;
+            max_dmg = 568;
             cast_time = 3;
             coeff = 3/3.5 * 0.95;
             school = SCHOOL_FROST;
@@ -109,9 +109,9 @@ namespace spell
         {
             id = FIREBALL;
             name = "Fireball";
-            cost = 465;
-            min_dmg = 717;
-            max_dmg = 913;
+            cost = 410;
+            min_dmg = 611;
+            max_dmg = 776;
             cast_time = 3.5;
             coeff = 1;
             school = SCHOOL_FIRE;
@@ -127,9 +127,9 @@ namespace spell
         {
             id = SCORCH;
             name = "Scorch";
-            cost = 180;
-            min_dmg = 306;
-            max_dmg = 361;
+            cost = 150;
+            min_dmg = 241;
+            max_dmg = 284;
             cast_time = 1.5;
             coeff = 1.5/3.5;
             school = SCHOOL_FIRE;
@@ -145,9 +145,9 @@ namespace spell
         {
             id = PYROBLAST;
             name = "Pyroblast";
-            cost = 500;
-            min_dmg = 939;
-            max_dmg = 1191;
+            cost = 440;
+            min_dmg = 735;
+            max_dmg = 926;
             cast_time = 6;
             coeff = 1.15;
             school = SCHOOL_FIRE;
