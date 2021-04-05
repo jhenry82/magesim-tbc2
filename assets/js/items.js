@@ -53,6 +53,8 @@ var equip = {
         { id: 19311, title: "Tome of Fiery Arcana", sp_fire: 40 },
         { id: 23049, title: "Sapphiron's Left Eye", int: 8, sp: 26, crit: 14, hit: 8 },
         { id: 21597, title: "Royal Scepter of Vek'lor", int: 9, sp: 20, crit: 14, hit: 8 },
+        { id: 22937, title: "Gem of Nerubis", int: 10, sp: 25 },
+        { id: 22994, title: "Digested Hand of Power", int: 14, mp5: 10 },
         { id: 19891, title: "Jin'do's Bag of Whammies", int: 11, sp: 18, hit: 8 },
         { id: 21471, title: "Talon of Furious Concentration", int: 8, sp: 21, crit: 14 },
         { id: 19366, title: "Master Dragonslayer's Orb", int: 14, sp: 28 },
