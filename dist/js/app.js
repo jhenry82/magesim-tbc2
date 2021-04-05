@@ -322,6 +322,16 @@ var equip = {
     crit: 14,
     hit: 8
   }, {
+    id: 22937,
+    title: "Gem of Nerubis",
+    "int": 10,
+    sp: 25
+  }, {
+    id: 22994,
+    title: "Digested Hand of Power",
+    "int": 14,
+    mp5: 10
+  }, {
     id: 19891,
     title: "Jin'do's Bag of Whammies",
     "int": 11,
