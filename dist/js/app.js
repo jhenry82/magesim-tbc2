@@ -214,7 +214,8 @@ var ids = {
   ALCHEMIST_STONE: 13503,
   NAARU_SLIVER: 34429,
   STAT_WEIGHT_BASE: 99990,
-  DARKMOON_CRUSADE: 31856
+  DARKMOON_CRUSADE: 31856,
+  UDC_SET: 536
 };
 var equip = {
   weapon: [{
@@ -288,6 +289,12 @@ var equip = {
     sp: 40,
     crit: 14
   }, {
+    id: 21413,
+    title: "Blade of Vaulted Secrets",
+    "int": 16,
+    sp: 40,
+    hit: 8
+  }, {
     id: 21452,
     title: "Staff of the Ruins",
     "int": 23,
@@ -320,6 +327,17 @@ var equip = {
     "int": 11,
     sp: 18,
     hit: 8
+  }, {
+    id: 21471,
+    title: "Talon of Furious Concentration",
+    "int": 8,
+    sp: 21,
+    crit: 14
+  }, {
+    id: 19366,
+    title: "Master Dragonslayer's Orb",
+    "int": 14,
+    sp: 28
   }],
   ranged: [{
     id: 22821,
@@ -372,6 +390,11 @@ var equip = {
     "int": 24,
     sp: 35,
     crit: 28
+  }, {
+    id: 23035,
+    title: "Preceptor's Hat",
+    "int": 24,
+    sp: 51
   }],
   neck: [{
     id: 21608,
@@ -441,6 +464,13 @@ var equip = {
     sp: 28
   }],
   chest: [{
+    id: 23085,
+    itemset: ids.UDC_SET,
+    title: "Robe of Undead Cleansing",
+    "int": 13,
+    sp: 48,
+    q: "rare"
+  }, {
     id: 22496,
     title: "Frostfire Robe",
     "int": 27,
@@ -453,8 +483,20 @@ var equip = {
     "int": 23,
     sp: 39,
     crit: 14
+  }, {
+    id: 23220,
+    title: "Crystal Webbed Robe",
+    "int": 19,
+    sp: 53
   }],
   wrist: [{
+    id: 23091,
+    itemset: ids.UDC_SET,
+    title: "Bracers of Undead Cleansing",
+    "int": 7,
+    sp: 26,
+    q: "rare"
+  }, {
     id: 22503,
     title: "Frostfire Bindings",
     "int": 15,
@@ -483,6 +525,13 @@ var equip = {
     hit: 8
   }],
   hands: [{
+    id: 23084,
+    itemset: ids.UDC_SET,
+    title: "Gloves of Undead Cleansing",
+    "int": 10,
+    sp: 35,
+    q: "rare"
+  }, {
     id: 22501,
     title: "Frostfire Gloves",
     "int": 19,
@@ -986,7 +1035,7 @@ var enchants = {
   }],
   hands: [{
     id: 25078,
-    title: "Fire power",
+    title: "Fire Power",
     sp: 20
   }],
   legs: [{
@@ -996,10 +1045,7 @@ var enchants = {
     hit: 8,
     q: "rare"
   }],
-  feet: [{
-    id: 13890,
-    title: "Minor Speed"
-  }],
+  feet: [],
   finger: []
 };
 var itemsets = [{
@@ -1010,197 +1056,133 @@ var itemsets = [{
   }
 }];
 var quicksets = {
-  t5bis: {
-    title: "T5 All-round (arcane)",
+  udcbis: {
+    title: "UDC BIS + Atiesh",
     equip: {
-      weapon: 30095,
-      off_hand: 30049,
-      ranged: 29982,
-      head: 30206,
-      neck: 30015,
-      shoulder: 30210,
-      back: 29992,
-      chest: 30196,
-      wrist: 29918,
-      hands: 29987,
-      waist: 30038,
-      legs: 30207,
-      feet: 30067,
-      finger1: 29287,
-      finger2: 28753,
-      trinket1: 27683,
-      trinket2: 30720
+      weapon: 22589,
+      off_hand: null,
+      ranged: 22820,
+      head: 22498,
+      neck: 23057,
+      shoulder: 22983,
+      back: 23050,
+      chest: 23085,
+      wrist: 23091,
+      hands: 23084,
+      waist: 22730,
+      legs: 22497,
+      feet: 21344,
+      finger1: 21709,
+      finger2: 23031,
+      trinket1: 23207,
+      trinket2: 19379
     },
     enchants: {
-      weapon: 46540,
-      head: 35447,
-      shoulder: 35406,
-      chest: 46502,
-      wrist: 46498,
-      hands: 46514,
-      legs: 31372,
-      feet: 46470,
-      finger1: 46518,
-      finger2: 46518
+      weapon: 22749,
+      head: 24164,
+      shoulder: 29467,
+      chest: 20025,
+      wrist: 20008,
+      hands: 25078,
+      legs: 24164
     },
-    gems: {
-      back: [null, null, null],
-      chest: [30551, 30551, 30600],
-      feet: [null, null, null],
-      hands: [null, null, null],
-      head: [25901, 30551, null],
-      legs: [28123, null, null],
-      neck: [null, null, null],
-      shoulder: [30551, 30600, null],
-      waist: [30600, 32638, null],
-      weapon: [null, null, null],
-      wrist: [null, null, null]
-    }
+    gems: {}
   },
-  t4sf: {
-    title: "T4 Spellfire (arcane)",
+  udcbiswb: {
+    title: "UDC BIS + Wraith Blade",
     equip: {
-      back: 30735,
-      chest: 21848,
-      feet: 28517,
-      finger1: 29287,
-      finger2: 28753,
-      hands: 21846,
-      head: 29076,
-      legs: 29078,
-      neck: 28762,
-      off_hand: 28734,
-      ranged: 28673,
-      shoulder: 29079,
-      trinket1: 27683,
-      trinket2: 29370,
-      waist: 21847,
-      weapon: 28770,
-      wrist: 28411
+      weapon: 22807,
+      off_hand: 23049,
+      ranged: 22820,
+      head: 22498,
+      neck: 23057,
+      shoulder: 22983,
+      back: 23050,
+      chest: 23085,
+      wrist: 23091,
+      hands: 23084,
+      waist: 22730,
+      legs: 22497,
+      feet: 21344,
+      finger1: 21709,
+      finger2: 23031,
+      trinket1: 23207,
+      trinket2: 19379
     },
     enchants: {
-      back: null,
-      chest: 46502,
-      feet: 46470,
-      finger1: 46518,
-      finger2: 46518,
-      hands: 46514,
-      head: 35447,
-      legs: 31372,
-      main_hand: 27891,
-      shoulder: 35406,
-      weapon: 46540,
-      wrist: 46498
+      weapon: 22749,
+      head: 24164,
+      shoulder: 29467,
+      chest: 20025,
+      wrist: 20008,
+      hands: 25078,
+      legs: 24164
     },
-    gems: {
-      back: [null, null, null],
-      chest: [30551, 30551, null],
-      feet: [30551, 30551, null],
-      hands: [30551, 30551, null],
-      head: [25901, 30600, null],
-      legs: [null, null, null],
-      neck: [null, null, null],
-      shoulder: [30551, 24030, null],
-      waist: [30551, 30551, null],
-      weapon: [null, null, null],
-      wrist: [30551, null, null]
-    }
+    gems: {}
   },
-  spsf: {
-    title: "Spellstrike + Spellfire (arcane)",
+  t3bis: {
+    title: "T3 BIS + Atiesh",
     equip: {
-      back: 30735,
-      chest: 21848,
-      feet: 28517,
-      finger1: 29287,
-      finger2: 28753,
-      hands: 21846,
-      head: 24266,
-      legs: 24262,
-      neck: 28762,
-      off_hand: 28734,
-      ranged: 28783,
-      shoulder: 29079,
-      trinket1: 27683,
-      trinket2: 29370,
-      waist: 21847,
-      weapon: 28770,
-      wrist: 28411
+      weapon: 22589,
+      off_hand: null,
+      ranged: 22820,
+      head: 22498,
+      neck: 23057,
+      shoulder: 22983,
+      back: 23050,
+      chest: 22496,
+      wrist: 21186,
+      hands: 21585,
+      waist: 22730,
+      legs: 23070,
+      feet: 21344,
+      finger1: 21709,
+      finger2: 23031,
+      trinket1: 23207,
+      trinket2: ids.MQG
     },
     enchants: {
-      back: null,
-      chest: 46502,
-      feet: 46470,
-      finger1: 46518,
-      finger2: 46518,
-      hands: 46514,
-      head: 35447,
-      legs: 31372,
-      shoulder: 35406,
-      weapon: 46540,
-      wrist: 46498
+      weapon: 22749,
+      head: 24164,
+      shoulder: 29467,
+      chest: 20025,
+      wrist: 20008,
+      hands: 25078,
+      legs: 24164
     },
-    gems: {
-      back: [null, null, null],
-      chest: [24030, 24030, null],
-      feet: [30551, 30551, null],
-      hands: [30551, 30551, null],
-      head: [30551, 28118, 33133],
-      legs: [30551, 30551, 30551],
-      neck: [null, null, null],
-      shoulder: [30551, 24030, null],
-      waist: [30551, 30551, null],
-      weapon: [null, null, null],
-      wrist: [24030, null, null]
-    }
+    gems: {}
   },
-  spsf_fire: {
-    title: "Spellstrike + Spellfire (fire)",
+  t3biswb: {
+    title: "T3 BIS + Wraith Blade",
     equip: {
-      back: 28766,
-      chest: 21848,
-      feet: 28517,
-      finger1: 28793,
-      finger2: 28753,
-      hands: 21846,
-      head: 24266,
-      legs: 24262,
-      neck: 28762,
-      off_hand: 29270,
-      ranged: 28673,
-      shoulder: 29079,
-      trinket1: 27683,
-      trinket2: 29370,
-      waist: 21847,
-      weapon: 28770,
-      wrist: 28411
+      weapon: 22807,
+      off_hand: 23049,
+      ranged: 22820,
+      head: 22498,
+      neck: 23057,
+      shoulder: 22983,
+      back: 23050,
+      chest: 22496,
+      wrist: 21186,
+      hands: 21585,
+      waist: 22730,
+      legs: 23070,
+      feet: 21344,
+      finger1: 21709,
+      finger2: 23031,
+      trinket1: 23207,
+      trinket2: ids.MQG
     },
     enchants: {
-      back: null,
-      chest: 46502,
-      feet: 46470,
-      finger1: 46518,
-      finger2: 46518,
-      hands: 46514,
-      head: 35447,
-      legs: 31372,
-      shoulder: 35406,
-      weapon: 46540,
-      wrist: 46498
+      weapon: 22749,
+      head: 24164,
+      shoulder: 29467,
+      chest: 20025,
+      wrist: 20008,
+      hands: 25078,
+      legs: 24164
     },
-    gems: {
-      back: [null, null, null],
-      chest: [32221, 32221, null],
-      feet: [24030, 32221, null],
-      hands: [24030, 24030, null],
-      head: [32221, 28118, 33133],
-      legs: [24030, 24030, 24030],
-      neck: [null, null, null],
-      shoulder: [30564, 24030, null],
-      waist: [24030, 24030, null],
-      weapon: [null, null, null],
-      wrist: [32221, null, null]
-    }
+    gems: {}
   }
 };
 /* harmony default export */ const __WEBPACK_DEFAULT_EXPORT__ = ({
@@ -2002,6 +1984,24 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2075,6 +2075,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         inspiring_presence: false,
         fire_vulnerability: false,
         winters_chill: false,
+        ony_buff: true,
+        zg_buff: true,
+        zanza_buff: true,
+        dm_buff: true,
+        songflower_buff: true,
+        dmf_buff: true,
+        rend_buff: false,
         food: 0,
         flask: 0,
         battle_elixir: 0,
@@ -2089,6 +2096,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         tempest_4set: false,
         spellfire_set: false,
         spellstrike_set: false,
+        udc_set: false,
         eternal_sage: false,
         wrath_of_cenarius: false,
         meta_gem: 0,
@@ -2419,12 +2427,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       if (this.metaGem() && this.metaGem().id == this.items.ids.EMBER_SKYFIRE) stats.intellect *= 1.02;
+      if (this.config.zanza_buff) stats.spirit += 50;
+
+      if (this.config.zg_buff) {
+        stats.intellect *= 1.15;
+        stats.spirit *= 1.15;
+      }
+
       stats.intellect = Math.round(stats.intellect);
       stats.spirit = Math.round(stats.spirit); // Mp5
 
       if (this.config.guardian_elixir == this.elixirs.ELIXIR_MAJOR_MAGEBLOOD) stats.mp5 += 16;
       if (this.config.weapon_oil == this.weapon_oils.OIL_SUPERIOR_MANA) stats.mp5 += 14;
-      if (this.config.food == this.foods.FOOD_MP5) stats.mp5 += 8; // Spell power
+      if (this.config.food == this.foods.FOOD_MP5) stats.mp5 += 8;
+      if (this.config.rend_buff) stats.mp5 += 10; // Spell power
 
       var int_multi = 0;
       if (x = this.hasTalent("mind_mastery")) int_multi += x * 0.05;
@@ -2456,10 +2472,15 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_WIZARD) critrating += 14;
       if (this.config.food == this.foods.FOOD_SPELL_CRIT) critrating += 20;
       if (critrating > 0) stats.crit += this.critRatingToChance(critrating);
-      if (x = this.hasTalent("arcane_instability")) stats.crit += x; // Spell hit
+      if (x = this.hasTalent("arcane_instability")) stats.crit += x;
+      if (this.config.ony_buff) stats.crit += 10;
+      if (this.config.songflower_buff) stats.crit += 5;
+      if (this.config.dm_buff) stats.crit += 3; // Spell hit
 
       if (this.config.totem_of_wrath) stats.hit += 3;
-      if (this.config.race == this.races.RACE_DRAENEI || this.config.inspiring_presence) stats.hit += 1;
+      if (this.config.race == this.races.RACE_DRAENEI || this.config.inspiring_presence) stats.hit += 1; // Until proven otherwise, we'll assume the double +hit bug does not apply to fire spells
+
+      if (x = this.hasTalent("elemental_precision")) stats.hit += x;
       this.final_stats = stats;
     },
     baseStats: function baseStats() {
@@ -2602,6 +2623,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.config.tempest_4set = num > 3;
       this.config.spellstrike_set = this.numEquippedSet(this.items.ids.SPELLSTRIKE_SET) > 1;
       this.config.spellfire_set = this.numEquippedSet(this.items.ids.SPELLFIRE_SET) > 2;
+      this.config.udc_set = this.numEquippedSet(this.items.ids.UDC_SET) > 2;
       this.config.eternal_sage = this.isEquipped("finger", this.items.ids.ETERNAL_SAGE);
       this.config.wrath_of_cenarius = this.isEquipped("finger", this.items.ids.WRATH_OF_CENARIUS);
       this.config.trinket1 = 0;
@@ -2818,7 +2840,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         mind_mastery: [0, 21],
         combustion: [1, 18],
         icy_veins: [2, 8],
-        cold_snap: [2, 14]
+        cold_snap: [2, 14],
+        elemental_precision: [2, 2]
       };
       if (!indexes.hasOwnProperty(talent)) return false;
       var m = this.config.talents.match(/tbc\.wowhead\.com.*mage\/([0-9\-]+)$/);
@@ -3169,7 +3192,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         if (gems) _.merge(this.gems, _.pick(gems, _.keys(this.gems)));
       }
 
-      if (!equipped) this.quickset(this.items.quicksets.t5bis);
+      if (!equipped) this.quickset(this.items.quicksets.t3bis);
     },
     saveConfig: function saveConfig() {
       window.localStorage.setItem("magesim_tbc_config", JSON.stringify(this.config));
@@ -61496,60 +61519,6 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.config.molten_armor,
-                            expression: "config.molten_armor"
-                          }
-                        ],
-                        attrs: { type: "checkbox" },
-                        domProps: {
-                          checked: Array.isArray(_vm.config.molten_armor)
-                            ? _vm._i(_vm.config.molten_armor, null) > -1
-                            : _vm.config.molten_armor
-                        },
-                        on: {
-                          input: function($event) {
-                            return _vm.dontStack($event, "mage_armor")
-                          },
-                          change: function($event) {
-                            var $$a = _vm.config.molten_armor,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.config,
-                                    "molten_armor",
-                                    $$a.concat([$$v])
-                                  )
-                              } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.config,
-                                    "molten_armor",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
-                              }
-                            } else {
-                              _vm.$set(_vm.config, "molten_armor", $$c)
-                            }
-                          }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", [_vm._v("Molten Armor")])
-                    ])
-                  ]),
-                  _vm._v(" "),
-                  _c("div", { staticClass: "form-item" }, [
-                    _c("label", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
                             value: _vm.config.divine_spirit,
                             expression: "config.divine_spirit"
                           }
@@ -62064,6 +62033,367 @@ var render = function() {
                       _c("span", [
                         _vm._v("Inspiring Presence (Draenei hit aura)")
                       ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-item" }, [
+                    _c("label", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.config.ony_buff,
+                            expression: "config.ony_buff"
+                          }
+                        ],
+                        attrs: { type: "checkbox" },
+                        domProps: {
+                          checked: Array.isArray(_vm.config.ony_buff)
+                            ? _vm._i(_vm.config.ony_buff, null) > -1
+                            : _vm.config.ony_buff
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.config.ony_buff,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "ony_buff",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "ony_buff",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.config, "ony_buff", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", [
+                        _vm._v("Rallying Cry of the Dragonslayer (10% crit)")
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-item" }, [
+                    _c("label", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.config.zg_buff,
+                            expression: "config.zg_buff"
+                          }
+                        ],
+                        attrs: { type: "checkbox" },
+                        domProps: {
+                          checked: Array.isArray(_vm.config.zg_buff)
+                            ? _vm._i(_vm.config.zg_buff, null) > -1
+                            : _vm.config.zg_buff
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.config.zg_buff,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "zg_buff",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "zg_buff",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.config, "zg_buff", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", [_vm._v("Spirit of Zandalar (15% all stats)")])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-item" }, [
+                    _c("label", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.config.zanza_buff,
+                            expression: "config.zanza_buff"
+                          }
+                        ],
+                        attrs: { type: "checkbox" },
+                        domProps: {
+                          checked: Array.isArray(_vm.config.zanza_buff)
+                            ? _vm._i(_vm.config.zanza_buff, null) > -1
+                            : _vm.config.zanza_buff
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.config.zanza_buff,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "zanza_buff",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "zanza_buff",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.config, "zanza_buff", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", [_vm._v("Spirit of Zanza (50 spirit)")])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-item" }, [
+                    _c("label", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.config.songflower_buff,
+                            expression: "config.songflower_buff"
+                          }
+                        ],
+                        attrs: { type: "checkbox" },
+                        domProps: {
+                          checked: Array.isArray(_vm.config.songflower_buff)
+                            ? _vm._i(_vm.config.songflower_buff, null) > -1
+                            : _vm.config.songflower_buff
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.config.songflower_buff,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "songflower_buff",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "songflower_buff",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.config, "songflower_buff", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", [_vm._v("Songflower Serenade (5% crit)")])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-item" }, [
+                    _c("label", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.config.dm_buff,
+                            expression: "config.dm_buff"
+                          }
+                        ],
+                        attrs: { type: "checkbox" },
+                        domProps: {
+                          checked: Array.isArray(_vm.config.dm_buff)
+                            ? _vm._i(_vm.config.dm_buff, null) > -1
+                            : _vm.config.dm_buff
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.config.dm_buff,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "dm_buff",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "dm_buff",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.config, "dm_buff", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", [_vm._v("Slip'kik's Savvy (3% crit)")])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-item" }, [
+                    _c("label", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.config.dmf_buff,
+                            expression: "config.dmf_buff"
+                          }
+                        ],
+                        attrs: { type: "checkbox" },
+                        domProps: {
+                          checked: Array.isArray(_vm.config.dmf_buff)
+                            ? _vm._i(_vm.config.dmf_buff, null) > -1
+                            : _vm.config.dmf_buff
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.config.dmf_buff,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "dmf_buff",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "dmf_buff",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.config, "dmf_buff", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", [
+                        _vm._v("Sayge's Dark Fortune of Damage (10% damage)")
+                      ])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-item" }, [
+                    _c("label", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.config.rend_buff,
+                            expression: "config.rend_buff"
+                          }
+                        ],
+                        attrs: { type: "checkbox" },
+                        domProps: {
+                          checked: Array.isArray(_vm.config.rend_buff)
+                            ? _vm._i(_vm.config.rend_buff, null) > -1
+                            : _vm.config.rend_buff
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.config.rend_buff,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "rend_buff",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "rend_buff",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.config, "rend_buff", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", [_vm._v("Warchief's Blessing (10 mp5)")])
                     ])
                   ])
                 ]),

@@ -160,6 +160,13 @@ EMSCRIPTEN_BINDINGS(my_module) {
         .property("inspiring_presence", &Config::inspiring_presence)
         .property("fire_vulnerability", &Config::fire_vulnerability)
         .property("winters_chill", &Config::winters_chill)
+        .property("ony_buff", &Config::ony_buff)
+        .property("zg_buff", &Config::zg_buff)
+        .property("zanza_buff", &Config::zanza_buff)
+        .property("dm_buff", &Config::dm_buff)
+        .property("songflower_buff", &Config::songflower_buff)
+        .property("rend_buff", &Config::rend_buff)
+        .property("dmf_buff", &Config::dmf_buff)
 
         .property("food", &Config::food)
         .property("flask", &Config::flask)
@@ -176,6 +183,7 @@ EMSCRIPTEN_BINDINGS(my_module) {
         .property("tempest_4set", &Config::tempest_4set)
         .property("spellfire_set", &Config::spellfire_set)
         .property("spellstrike_set", &Config::spellstrike_set)
+        .property("udc_set", &Config::udc_set)
         .property("eternal_sage", &Config::eternal_sage)
         .property("wrath_of_cenarius", &Config::wrath_of_cenarius)
 

@@ -27,6 +27,13 @@ struct Config
     bool inspiring_presence = false;
     bool fire_vulnerability = false;
     bool winters_chill = false;
+    bool ony_buff = true;
+    bool zg_buff = true;
+    bool zanza_buff = true;
+    bool songflower_buff = true;
+    bool rend_buff = false;
+    bool dm_buff = true;
+    bool dmf_buff = true;
 
     Food food;
     Flask flask;
@@ -43,6 +50,7 @@ struct Config
     bool tempest_4set = false;
     bool spellfire_set = false;
     bool spellstrike_set = false;
+    bool udc_set = false;
     bool eternal_sage = false;
     bool wrath_of_cenarius = false;
 

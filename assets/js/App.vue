@@ -428,9 +428,6 @@
                                 <label><input type="checkbox" v-model="config.arcane_intellect"> <span>Arcane Intellect</span></label>
                             </div>
                             <div class="form-item">
-                                <label><input type="checkbox" v-model="config.molten_armor" @input="dontStack($event, 'mage_armor')"> <span>Molten Armor</span></label>
-                            </div>
-                            <div class="form-item">
                                 <label><input type="checkbox" v-model="config.divine_spirit"> <span>Divine Spirit</span></label>
                             </div>
                             <div class="form-item" v-if="config.divine_spirit">
@@ -459,6 +456,27 @@
                             </div>
                             <div class="form-item">
                                 <label><input type="checkbox" v-model="config.inspiring_presence"> <span>Inspiring Presence (Draenei hit aura)</span></label>
+                            </div>
+                            <div class="form-item">
+                                <label><input type="checkbox" v-model="config.ony_buff"> <span>Rallying Cry of the Dragonslayer (10% crit)</span></label>
+                            </div>
+                            <div class="form-item">
+                                <label><input type="checkbox" v-model="config.zg_buff"> <span>Spirit of Zandalar (15% all stats)</span></label>
+                            </div>
+                            <div class="form-item">
+                                <label><input type="checkbox" v-model="config.zanza_buff"> <span>Spirit of Zanza (50 spirit)</span></label>
+                            </div>
+                            <div class="form-item">
+                                <label><input type="checkbox" v-model="config.songflower_buff"> <span>Songflower Serenade (5% crit)</span></label>
+                            </div>
+                            <div class="form-item">
+                                <label><input type="checkbox" v-model="config.dm_buff"> <span>Slip'kik's Savvy (3% crit)</span></label>
+                            </div>
+                            <div class="form-item">
+                                <label><input type="checkbox" v-model="config.dmf_buff"> <span>Sayge's Dark Fortune of Damage (10% damage)</span></label>
+                            </div>
+                            <div class="form-item">
+                                <label><input type="checkbox" v-model="config.rend_buff"> <span>Warchief's Blessing (10 mp5)</span></label>
                             </div>
                         </fieldset>
                         <fieldset>
@@ -726,6 +744,13 @@
                     inspiring_presence: false,
                     fire_vulnerability: false,
                     winters_chill: false,
+                    ony_buff: true,
+                    zg_buff: true,
+                    zanza_buff: true,
+                    dm_buff: true,
+                    songflower_buff: true,
+                    dmf_buff: true,
+                    rend_buff: false,
 
                     food: 0,
                     flask: 0,
@@ -742,6 +767,7 @@
                     tempest_4set: false,
                     spellfire_set: false,
                     spellstrike_set: false,
+                    udc_set: false,
                     eternal_sage: false,
                     wrath_of_cenarius: false,
                     meta_gem: 0,
@@ -1065,6 +1091,12 @@
                 }
                 if (this.metaGem() && this.metaGem().id == this.items.ids.EMBER_SKYFIRE)
                     stats.intellect*= 1.02;
+                if (this.config.zanza_buff)
+                    stats.spirit+= 50;
+                if (this.config.zg_buff) {
+                    stats.intellect*= 1.15;
+                    stats.spirit*= 1.15;
+                }
                 stats.intellect = Math.round(stats.intellect);
                 stats.spirit = Math.round(stats.spirit);
 
@@ -1074,7 +1106,9 @@
                 if (this.config.weapon_oil == this.weapon_oils.OIL_SUPERIOR_MANA)
                     stats.mp5+= 14;
                 if (this.config.food == this.foods.FOOD_MP5)
-                    stats.mp5 += 8;
+                    stats.mp5+= 8;
+                if (this.config.rend_buff)
+                    stats.mp5+= 10;
 
                 // Spell power
                 var int_multi = 0;
@@ -1130,12 +1164,23 @@
                     stats.crit+= this.critRatingToChance(critrating);
                 if (x = this.hasTalent("arcane_instability"))
                     stats.crit+= x;
+                if (this.config.ony_buff)
+                    stats.crit+= 10;
+                if(this.config.songflower_buff)
+                    stats.crit+= 5;
+                if(this.config.dm_buff)
+                    stats.crit+= 3;
 
                 // Spell hit
                 if (this.config.totem_of_wrath)
                     stats.hit+= 3;
                 if (this.config.race == this.races.RACE_DRAENEI || this.config.inspiring_presence)
                     stats.hit+= 1;
+                // Until proven otherwise, we'll assume the double +hit bug does not apply to fire spells
+                if (x = this.hasTalent("elemental_precision"))
+                    stats.hit+= x;
+
+
 
                 this.final_stats = stats;
             },
@@ -1281,6 +1326,8 @@
 
                 this.config.spellstrike_set = this.numEquippedSet(this.items.ids.SPELLSTRIKE_SET) > 1;
                 this.config.spellfire_set = this.numEquippedSet(this.items.ids.SPELLFIRE_SET) > 2;
+
+                this.config.udc_set = this.numEquippedSet(this.items.ids.UDC_SET) > 2;
 
                 this.config.eternal_sage = this.isEquipped("finger", this.items.ids.ETERNAL_SAGE);
                 this.config.wrath_of_cenarius = this.isEquipped("finger", this.items.ids.WRATH_OF_CENARIUS);
@@ -1548,6 +1595,7 @@
                     combustion: [1, 18],
                     icy_veins: [2, 8],
                     cold_snap: [2, 14],
+                    elemental_precision: [2, 2],
                 };
 
                 if (!indexes.hasOwnProperty(talent))
@@ -1956,7 +2004,7 @@
                 }
 
                 if (!equipped)
-                    this.quickset(this.items.quicksets.t5bis);
+                    this.quickset(this.items.quicksets.t3bis);
             },
 
             saveConfig() {

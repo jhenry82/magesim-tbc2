@@ -1238,6 +1238,11 @@ public:
         if (config->meta_gem == META_CHAOTIC_SKYFIRE)
             base*= 1.03;
 
+        // UDC on beta supposedly double dips. Handle the crit dip here, base in dmgMultiplier
+        if(config->udc_set) {
+            base*= 1.02;
+        }
+
         if (player->talents.spell_power)
             talents+= player->talents.spell_power*0.25;
 
@@ -1284,6 +1289,14 @@ public:
 
         if ((spell->id == spell::ARCANE_MISSILES || spell->id == spell::FROSTBOLT || spell->id == spell::FIREBALL) && config->tempest_4set)
             multi*= 1.05;
+
+        // UDC in beta supposedly double dips. Handle one here, one in critMultiplier
+        if(config->udc_set) {
+            multi*= 1.02;
+        }
+
+        if(config->dmf_buff)
+            multi*= 1.1;
 
         return multi;
     }
