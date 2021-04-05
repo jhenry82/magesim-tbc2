@@ -37,7 +37,7 @@
                     }],
                 };
 
-                var keys = _.keys(this.data).sort();
+                var keys = _.keys(this.data).sort((a,b) => a-b);
                 var first = parseInt(keys[0]);
                 var last = parseInt(_.last(keys));
                 for (var i=first; i<=last; i+= bin_size) {
@@ -91,7 +91,6 @@
                         }]
                     }
                 };
-
                 this.renderChart(data, options);
             }
         }
