@@ -440,9 +440,6 @@
                                 <label><input type="checkbox" v-model="config.totem_of_wrath"> <span>Totem of Wrath</span></label>
                             </div>
                             <div class="form-item">
-                                <label><input type="checkbox" v-model="config.wrath_of_air"> <span>Wrath of Air Totem</span></label>
-                            </div>
-                            <div class="form-item">
                                 <label><input type="checkbox" v-model="config.mana_spring"> <span>Mana Spring Totem</span></label>
                             </div>
                             <div class="form-item">
@@ -482,7 +479,7 @@
                                 <label><input type="checkbox" v-model="config.atiesh_mage_buff"> <span>Power of the Guardian - Mage Atiesh (2% crit)</span></label>
                             </div>
                             <div class="form-item">
-                                <label><input type="checkbox" v-model="config.atiesh_warlock_buff"> <span>Power of the Guardian - Warlock Atiesh (30 sp)</span></label>
+                                <label><input type="checkbox" v-model="config.atiesh_warlock_buff"> <span>Power of the Guardian - Warlock Atiesh (33 sp)</span></label>
                             </div>
                         </fieldset>
                         <fieldset>
@@ -529,7 +526,7 @@
                                 <label>Potion</label>
                                 <select v-model="config.potion">
                                     <option :value="potions.POTION_NONE">None</option>
-                                    <option :value="potions.POTION_MANA">Mana potion</option>
+                                    <option :value="potions.POTION_MANA">Major Mana Potion</option>
                                 </select>
                             </div>
                             <div class="form-item">
@@ -736,7 +733,7 @@
                     vampiric_touch: true,
 
                     totem_of_wrath: true,
-                    wrath_of_air: true,
+                    wrath_of_air: false,
                     mana_spring: true,
                     arcane_intellect: true,
                     divine_spirit: true,
@@ -1129,8 +1126,6 @@
 
                 if (this.config.improved_divine_spirit)
                     stats.spell_power+= stats.spirit*0.1;
-                if (this.config.wrath_of_air)
-                    stats.spell_power+= 102;
                 if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_WIZARD)
                     stats.spell_power+= 36;
                 if (this.config.weapon_oil == this.weapon_oils.OIL_BLESSED_WIZARD)
@@ -1152,7 +1147,7 @@
                 if (this.config.battle_elixir == this.elixirs.ELIXIR_GREATER_ARCANE)
                     stats.spell_power+= 35;
                 if (this.config.atiesh_warlock_buff)
-                    stats.spell_power+= 30;
+                    stats.spell_power+= 33;
 
                 // Spell crit
                 var critrating = 0;
@@ -1181,7 +1176,7 @@
                 if (this.config.dm_buff)
                     stats.crit+= 3;
                 if (this.config.atiesh_mage_buff)
-                    stats.crit += 2;
+                    stats.crit += this.critRatingToChance(30);
 
                 // Spell hit
                 if (this.config.totem_of_wrath)

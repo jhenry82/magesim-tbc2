@@ -145,12 +145,10 @@ public:
         if (int_multi > 0)
             stats.spell_power+= round(stats.intellect * int_multi);
         if (config->atiesh_warlock_buff)
-            stats.spell_power+= 30;
+            stats.spell_power+= 33;
 
         if (config->improved_divine_spirit)
             stats.spell_power+= stats.spirit*0.1;
-        if (config->wrath_of_air)
-            stats.spell_power+= 102.0;
         if (config->weapon_oil == OIL_BRILLIANT_WIZARD)
             stats.spell_power+= 36.0;
         if (config->weapon_oil == OIL_SUPERIOR_WIZARD)
@@ -292,7 +290,7 @@ public:
         if (stats.mp5)
             mps+= stats.mp5/5.0;
         if (config->blessing_of_wisdom)
-            mps+= 49/5.0;
+            mps+= 39/5.0;
 
         return mps;
     }

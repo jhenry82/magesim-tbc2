@@ -498,7 +498,7 @@ public:
             }
             // 50% proc rate
             if (config->judgement_of_wisdom && random<int>(0, 1) == 1)
-                onManaGain(74, "Judgement of Wisdom");
+                onManaGain(59, "Judgement of Wisdom");
 
             if (hasTrinket(TRINKET_DARKMOON_CRUSADE))
                 onBuffGain(make_shared<buff::DarkmoonCrusade>());
@@ -713,7 +713,7 @@ public:
         double spi = player->spiritManaPerSecond();
 
         if (config->mana_spring && !state->hasBuff(buff::MANA_TIDE))
-            mps+= 50/5.0;
+            mps+= 42.5/5.0;
         if (state->hasBuff(buff::ENLIGHTENMENT))
             mps+= 21/5.0 * state->buffStacks(buff::ENLIGHTENMENT);
 
