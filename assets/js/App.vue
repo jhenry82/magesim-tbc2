@@ -1,6 +1,6 @@
 <template>
     <div id="app">
-        <a class="github" href="https://github.com/Cheesehyvel/magesim-tbc2" target="_blank"></a>
+        <a class="github" href="https://github.com/jhenry82/magesim-tbc2" target="_blank"></a>
 
         <div class="fools" v-if="fools_open == 1">
             <div class="inner">

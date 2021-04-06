@@ -59661,7 +59661,7 @@ var render = function() {
     _c("a", {
       staticClass: "github",
       attrs: {
-        href: "https://github.com/Cheesehyvel/magesim-tbc2",
+        href: "https://github.com/jhenry82/magesim-tbc2",
         target: "_blank"
       }
     }),
