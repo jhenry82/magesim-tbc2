@@ -15,6 +15,7 @@ Frontend written in Vue.js and SCSS and compiled with Laravel mix.
 * Added back Classic world buffs, foods, oils, potions
 * Tweaked default Fire talent build to be a valid level 60 spec
 * The Undead Cleansing (UDC) set has been simulated as double dipping (applying to base damage plus crit damage), based on reports from the beta. UDC and Mark of the Champion assume you are facing an Undead target
+* Option to configure mana thresholds when fire rotation switches to pure scorch spam. This avoids long periods of idle waiting, and sims as a DPS increase.
 
 ## Limitations
 This sim is just a minor tweak of the level 70 TBC sim. It has the same basic features and limitations as the original version

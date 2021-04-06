@@ -70,19 +70,21 @@ struct Config
     double regen_mana_at = 20;
     double regen_stop_at = 30;
     int regen_ab_count = 3;
+    double scorch_spam_at = 10;
+    double scorch_r1_spam_at = 2;
     RegenRotation regen_rotation = ROTATION_FB;
 
     double mana_tide_at = 10;
     double bloodlust_at = 20;
     double power_infusion_at = 20;
-    double icy_veins_at = 1;
-    double cold_snap_at = 20;
-    double trinket1_at = 1;
-    double trinket2_at = 20;
+    double icy_veins_at = 10;
+    double cold_snap_at = 30;
+    double trinket1_at = 10;
+    double trinket2_at = 30;
     double berserking_at = 1;
     double arcane_power_at = 1;
     double presence_of_mind_at = 0;
-    double combustion_at = 0;
+    double combustion_at = 10;
     double drums_at = 1;
     double potion_at = 21;
     double conjured_at = 21;

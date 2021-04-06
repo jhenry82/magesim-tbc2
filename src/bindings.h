@@ -205,6 +205,8 @@ EMSCRIPTEN_BINDINGS(my_module) {
         .property("regen_stop_at", &Config::regen_stop_at)
         .property("regen_ab_count", &Config::regen_ab_count)
         .property("regen_rotation", &Config::regen_rotation)
+        .property("scorch_spam_at", &Config::scorch_spam_at)
+        .property("scorch_r1_spam_at", &Config::scorch_r1_spam_at)
         .property("mana_tide_at", &Config::mana_tide_at)
         .property("bloodlust_at", &Config::bloodlust_at)
         .property("power_infusion_at", &Config::power_infusion_at)

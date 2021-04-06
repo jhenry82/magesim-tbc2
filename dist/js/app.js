@@ -2026,6 +2026,20 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2137,14 +2151,16 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         regen_stop_at: 30,
         regen_ab_count: 3,
         regen_rotation: 0,
+        scorch_spam_at: 5,
+        scorch_r1_spam_at: 2,
         mana_tide_at: 20,
         bloodlust_at: 1,
         power_infusion_at: 1,
-        icy_veins_at: 1,
-        cold_snap_at: 41,
-        combustion_at: 1,
-        trinket1_at: 1,
-        trinket2_at: 21,
+        icy_veins_at: 10,
+        cold_snap_at: 30,
+        combustion_at: 10,
+        trinket1_at: 10,
+        trinket2_at: 30,
         berserking_at: 41,
         arcane_power_at: 1,
         presence_of_mind_at: 0,
@@ -60635,6 +60651,104 @@ var render = function() {
                       on: { input: _vm.onTalentsInput }
                     })
                   ]),
+                  _vm._v(" "),
+                  _vm.config.spec == _vm.specs.SPEC_FIRE
+                    ? _c("div", { staticClass: "form-item" }, [
+                        _c(
+                          "label",
+                          [
+                            _c("span", [
+                              _vm._v("Scorch spam rotation at mana %")
+                            ]),
+                            _vm._v(" "),
+                            _c("help", [
+                              _vm._v(
+                                "At low mana, swap to scorch to avoid idling. If a cooldown restores enough mana, you will automatically resume fireballs."
+                              )
+                            ])
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model.number",
+                              value: _vm.config.scorch_spam_at,
+                              expression: "config.scorch_spam_at",
+                              modifiers: { number: true }
+                            }
+                          ],
+                          attrs: { type: "text" },
+                          domProps: { value: _vm.config.scorch_spam_at },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.config,
+                                "scorch_spam_at",
+                                _vm._n($event.target.value)
+                              )
+                            },
+                            blur: function($event) {
+                              return _vm.$forceUpdate()
+                            }
+                          }
+                        })
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.config.spec == _vm.specs.SPEC_FIRE
+                    ? _c("div", { staticClass: "form-item" }, [
+                        _c(
+                          "label",
+                          [
+                            _c("span", [
+                              _vm._v("Scorch (rank 1) spam rotation at mana %")
+                            ]),
+                            _vm._v(" "),
+                            _c("help", [
+                              _vm._v(
+                                "At extremely low mana, swap to a lower rank of scorch (downranking penalty applies to this damage)"
+                              )
+                            ])
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model.number",
+                              value: _vm.config.scorch_r1_spam_at,
+                              expression: "config.scorch_r1_spam_at",
+                              modifiers: { number: true }
+                            }
+                          ],
+                          attrs: { type: "text" },
+                          domProps: { value: _vm.config.scorch_r1_spam_at },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.config,
+                                "scorch_r1_spam_at",
+                                _vm._n($event.target.value)
+                              )
+                            },
+                            blur: function($event) {
+                              return _vm.$forceUpdate()
+                            }
+                          }
+                        })
+                      ])
+                    : _vm._e(),
                   _vm._v(" "),
                   _vm.config.spec == _vm.specs.SPEC_ARCANE
                     ? _c("div", { staticClass: "form-item" }, [

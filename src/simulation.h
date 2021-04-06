@@ -453,7 +453,7 @@ public:
                 }
             }
 
-            if (spell->id == spell::SCORCH && player->talents.imp_scorch) {
+            if ((spell->id == spell::SCORCH || spell->id == spell::SCORCH_R1) && player->talents.imp_scorch) {
                 if (player->talents.imp_scorch == 3 || random<int>(0, 2) < player->talents.imp_scorch) {
                     onDebuffGain(make_shared<debuff::FireVulnerability>());
 
@@ -586,7 +586,7 @@ public:
 
     void onWait()
     {
-        shared_ptr<spell::Spell> spell = defaultSpell();
+        shared_ptr<spell::Spell> spell = nextSpell();
 
         if (spell->id == spell::ARCANE_BLAST && state->hasBuff(buff::ARCANE_BLAST)) {
             double t = buffDuration(buff::ARCANE_BLAST) - castTime(spell);
@@ -901,8 +901,22 @@ public:
         }
 
         else if (player->spec == SPEC_FIRE) {
-            if (shouldScorch())
+            if (shouldScorch()) {
                 next = make_shared<spell::Scorch>();
+                return next;
+            }
+
+            // If low on mana, swap to a scorch rotation, and in extreme cases, rank 1 scorch. To at least be doing *some* DPS
+            // If clearcast procs, always cast Fireball
+            if (state->hasBuff(buff::CLEARCAST)) {
+                next = defaultSpell();
+            }
+            else if (manaPercent() < config->scorch_r1_spam_at) {
+                next = make_shared<spell::ScorchR1>();
+            }
+            else if (manaPercent() < config->scorch_spam_at) {
+                next = make_shared<spell::Scorch>();
+            }
         }
 
         if (next == NULL)
@@ -1213,7 +1227,7 @@ public:
 
         if (spell->id == spell::ARCANE_BLAST && player->talents.arcane_impact)
             crit+= player->talents.arcane_impact*2.0;
-        if (spell->id == spell::SCORCH && player->talents.incinerate)
+        if ((spell->id == spell::SCORCH || spell->id == spell::SCORCH_R1) && player->talents.incinerate)
             crit+= player->talents.incinerate*2.0;
         if (spell->id == spell::FROSTBOLT && player->talents.empowered_frostbolt)
             crit+= player->talents.empowered_frostbolt*1.0;

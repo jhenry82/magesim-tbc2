@@ -10,6 +10,7 @@ namespace spell
         FROSTBOLT = 25304,
         FIREBALL = 25306,
         SCORCH = 10207,
+        SCORCH_R1 = 2948,
         PYROBLAST = 18809,
         LIGHTNING_CAPACITOR = 28785,
     };
@@ -132,6 +133,24 @@ namespace spell
             max_dmg = 284;
             cast_time = 1.5;
             coeff = 1.5/3.5;
+            school = SCHOOL_FIRE;
+        }
+
+    };
+
+    class ScorchR1 : public Spell
+    {
+
+    public:
+        ScorchR1()
+        {
+            id = SCORCH_R1;
+            name = "Scorch (Rank 1)";
+            cost = 50;
+            min_dmg = 56;
+            max_dmg = 69;
+            cast_time = 1.5;
+            coeff = 1.5/3.5 * 0.55; // Significant downranking penalty applies
             school = SCHOOL_FIRE;
         }
 

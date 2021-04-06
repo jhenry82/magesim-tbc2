@@ -332,6 +332,20 @@
                                 <label>Talents (<a :href="config.talents" target="_blank">link</a>)</label>
                                 <input type="text" :value="config.talents" @input="onTalentsInput">
                             </div>
+                            <div class="form-item" v-if="config.spec == specs.SPEC_FIRE">
+                                <label>
+                                    <span>Scorch spam rotation at mana %</span>
+                                    <help>At low mana, swap to scorch to avoid idling. If a cooldown restores enough mana, you will automatically resume fireballs.</help>
+                                </label>
+                                <input type="text" v-model.number="config.scorch_spam_at">
+                            </div>
+                            <div class="form-item" v-if="config.spec == specs.SPEC_FIRE">
+                                <label>
+                                    <span>Scorch (rank 1) spam rotation at mana %</span>
+                                    <help>At extremely low mana, swap to a lower rank of scorch (downranking penalty applies to this damage)</help>
+                                </label>
+                                <input type="text" v-model.number="config.scorch_r1_spam_at">
+                            </div>
                             <div class="form-item" v-if="config.spec == specs.SPEC_ARCANE">
                                 <label>Filler spells</label>
                                 <select v-model="config.regen_rotation">
@@ -793,14 +807,16 @@
                     regen_stop_at: 30,
                     regen_ab_count: 3,
                     regen_rotation: 0,
+                    scorch_spam_at: 5,
+                    scorch_r1_spam_at: 2,
                     mana_tide_at: 20,
                     bloodlust_at: 1,
                     power_infusion_at: 1,
-                    icy_veins_at: 1,
-                    cold_snap_at: 41,
-                    combustion_at: 1,
-                    trinket1_at: 1,
-                    trinket2_at: 21,
+                    icy_veins_at: 10,
+                    cold_snap_at: 30,
+                    combustion_at: 10,
+                    trinket1_at: 10,
+                    trinket2_at: 30,
                     berserking_at: 41,
                     arcane_power_at: 1,
                     presence_of_mind_at: 0,
