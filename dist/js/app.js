@@ -443,8 +443,8 @@ var equip = {
     mp5: 4,
     sp: 30
   }, {
-    id: 21345,
-    21686: "Mantle of Phrenic Power",
+    id: 21686,
+    title: "Mantle of Phrenic Power",
     "int": 20,
     sp_fire: 33
   }, {

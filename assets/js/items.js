@@ -83,7 +83,7 @@ var equip = {
         { id: 22983, title: "Rime Covered Mantle", int: 12, sp: 39, crit: 14 },
         { id: 22499, title: "Frostfire Shoulderpads", int: 18, spi: 9, sp: 36 },
         { id: 21345, title: "Enigma Shoulderpads", int: 12, mp5: 4, sp: 30 },
-        { id: 21345, 21686: "Mantle of Phrenic Power", int: 20, sp_fire: 33 },
+        { id: 21686, title: "Mantle of Phrenic Power", int: 20, sp_fire: 33 },
         { id: 19370, title: "Mantle of the Blackwing Cabal", int: 16, sp: 34 },
     ],
     back: [
