@@ -59,6 +59,8 @@ export default {
     conjureds: {
         CONJURED_NONE: 0,
         CONJURED_MANA_GEM: 8008,
+        CONJURED_MANA_GEM_ALL: 10053,
+        CONJURED_DEMONIC_RUNE: 12662,
         CONJURED_FLAME_CAP: 22788,
     },
 };

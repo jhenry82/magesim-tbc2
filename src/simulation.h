@@ -686,20 +686,28 @@ public:
     void useManaGem()
     {
         double mana = 0;
+        string used;
 
         if (state->mana_ruby > 0) {
             mana = round(random<double>(1073, 1127));
             state->mana_ruby--;
+            used = "Mana Ruby";
+        }
+        else if (state->mana_citrine > 0) {
+            mana = round(random<double>(829, 871));
+            state->mana_citrine--;
+            used = "Mana Citrine";
+        }
+        else if (config->demonic_rune) {
+            mana = round(random<double>(900, 1500));
+            used = "Demonic Rune";
         }
 
-        if (hasTrinket(TRINKET_SERPENT_COIL))
-            mana*= 1.25;
+        if (mana > 0) {
+            onManaGain(mana, used);
+            onCooldownGain(make_shared<cooldown::Conjured>());
+        }
 
-        onManaGain(mana, "Mana Gem");
-        onCooldownGain(make_shared<cooldown::Conjured>());
-
-        if (hasTrinket(TRINKET_SERPENT_COIL))
-            onBuffGain(make_shared<buff::SerpentCoil>());
     }
 
     double manaPercent()
@@ -935,7 +943,7 @@ public:
             useDrums();
         if (state->t >= config->potion_at && !state->hasCooldown(cooldown::POTION) && config->potion != POTION_NONE && config->potion != POTION_MANA)
             usePotion();
-        if (state->t >= config->conjured_at && !state->hasCooldown(cooldown::CONJURED) && config->conjured != CONJURED_NONE && config->conjured != CONJURED_MANA_GEM)
+        if (state->t >= config->conjured_at && !state->hasCooldown(cooldown::CONJURED) && config->conjured != CONJURED_NONE && config->conjured != CONJURED_MANA_GEM && config->conjured != CONJURED_MANA_GEM_ALL)
             useConjured();
     }
 
@@ -1470,12 +1478,16 @@ public:
 
     bool shouldUseManaGem()
     {
-        if (config->conjured != CONJURED_MANA_GEM || state->hasCooldown(cooldown::CONJURED) || state->hasBuff(buff::INNERVATE))
+        if ((config->conjured != CONJURED_MANA_GEM && config->conjured != CONJURED_MANA_GEM_ALL && config->demonic_rune == false) || state->hasCooldown(cooldown::CONJURED) || state->hasBuff(buff::INNERVATE))
             return false;
 
         double max = 0;
         if (state->mana_ruby > 0)
             max = 1127;
+        else if (state->mana_citrine > 0)
+            max = 871;
+        else if (config->demonic_rune)
+            max = 1500;
         else
             return false;
 

@@ -46,6 +46,8 @@ struct Config
     Potion potion;
     Conjured conjured;
 
+    bool demonic_rune = false;
+
     bool tirisfal_2set = true;
     bool tirisfal_4set = true;
     bool tempest_2set = false;

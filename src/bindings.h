@@ -124,6 +124,8 @@ EMSCRIPTEN_BINDINGS(my_module) {
     emscripten::enum_<Conjured>("Conjured")
         .value("CONJURED_NONE", CONJURED_NONE)
         .value("CONJURED_MANA_GEM", CONJURED_MANA_GEM)
+        .value("CONJURED_MANA_GEM_ALL", CONJURED_MANA_GEM_ALL)
+        .value("CONJURED_DEMONIC_RUNE", CONJURED_DEMONIC_RUNE)
         .value("CONJURED_FLAME_CAP", CONJURED_FLAME_CAP);
 
     emscripten::enum_<LogType>("LogType")
@@ -178,6 +180,7 @@ EMSCRIPTEN_BINDINGS(my_module) {
         .property("drums", &Config::drums)
         .property("potion", &Config::potion)
         .property("conjured", &Config::conjured)
+        .property("demonic_rune", &Config::demonic_rune)
 
         .property("tirisfal_2set", &Config::tirisfal_2set)
         .property("tirisfal_4set", &Config::tirisfal_4set)

@@ -534,7 +534,11 @@
                                 <select v-model="config.conjured">
                                     <option :value="conjureds.CONJURED_NONE">None</option>
                                     <option :value="conjureds.CONJURED_MANA_GEM">Mana Ruby</option>
+                                    <option :value="conjureds.CONJURED_MANA_GEM_ALL">Mana Ruby, Mana Citrine</option>
                                 </select>
+                            </div>
+                            <div class="form-item">
+                                <label><input type="checkbox" v-model="config.demonic_rune"> <span>Use Demonic Runes After Last Gem</span></label>
                             </div>
                         </fieldset>
                         <fieldset>
@@ -563,7 +567,7 @@
                                 <label>Potion at</label>
                                 <input type="text" v-model.number="config.potion_at">
                             </div>
-                            <div class="form-item" v-if="config.conjured && config.conjured != conjureds.CONJURED_MANA_GEM">
+                            <div class="form-item" v-if="config.conjured && config.conjured != conjureds.CONJURED_MANA_GEM && config.conjured != conjureds.CONJURED_MANA_GEM_ALL">
                                 <label>Conjured at</label>
                                 <input type="text" v-model.number="config.conjured_at">
                             </div>
@@ -765,6 +769,7 @@
                     drums: 0,
                     potion: 13444,
                     conjured: 8008,
+                    demonic_rune: false,
 
                     tirisfal_2set: false,
                     tirisfal_4set: false,

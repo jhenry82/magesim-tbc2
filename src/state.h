@@ -18,6 +18,7 @@ public:
     int innervates;
     int mana_emerald;
     int mana_ruby;
+    int mana_citrine;
     int combustion;
     double duration;
 
@@ -44,7 +45,8 @@ public:
         regen_active = false;
         innervates = config->innervate;
         mana_emerald = 3;
-        mana_ruby = 1;
+        mana_ruby = ((config->conjured == CONJURED_MANA_GEM_ALL || config->conjured == CONJURED_MANA_GEM) ? 1 : 0);
+        mana_citrine = (config->conjured == CONJURED_MANA_GEM_ALL ? 1 : 0);
         combustion = 0;
         duration = config->duration;
         duration+= -config->duration_variance + random<double>(0, config->duration_variance*2);
