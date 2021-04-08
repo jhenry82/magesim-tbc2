@@ -326,6 +326,7 @@
                                 <label>Spec</label>
                                 <select v-model="config.spec" @input="onSpecInput">
                                     <option :value="specs.SPEC_FIRE">Fire</option>
+                                    <option :value="specs.SPEC_FROST">Frost</option>
                                 </select>
                             </div>
                             <div class="form-item">
@@ -726,7 +727,7 @@
                 config_open: false,
                 log_open: false,
                 histogram_open: false,
-                item_source: "tbcdb",
+                item_source: "wowhead",
                 phase_filter: 0,
                 log_filter: {
                     "0": true,
@@ -1697,6 +1698,10 @@
                 if (e.target.value == this.specs.SPEC_ARCANE) {
                     talents = "https://tbc.wowhead.com/talent-calc/mage/2500250300030150330125--053500031003001";
                     spec = "arcane";
+                }
+                else if (e.target.value == this.specs.SPEC_FROST) {
+                    talents = "https://tbc.wowhead.com/talent-calc/mage/2500250300030150330125--053500031003001";
+                    spec = "frost";
                 }
                 else if (e.target.value == this.specs.SPEC_FIRE) {
                     talents = "https://tbc.wowhead.com/talent-calc/mage/-505200012302331050125-023500001";

@@ -99,7 +99,8 @@ __webpack_require__.r(__webpack_exports__);
   },
   specs: {
     SPEC_ARCANE: 0,
-    SPEC_FIRE: 1
+    SPEC_FIRE: 1,
+    SPEC_FROST: 2
   },
   regen_rotations: {
     ROTATION_FB: 0,
@@ -2043,6 +2044,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
 
 
 
@@ -2077,7 +2079,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       config_open: false,
       log_open: false,
       histogram_open: false,
-      item_source: "tbcdb",
+      item_source: "wowhead",
       phase_filter: 0,
       log_filter: {
         "0": true,
@@ -2963,6 +2965,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (e.target.value == this.specs.SPEC_ARCANE) {
         talents = "https://tbc.wowhead.com/talent-calc/mage/2500250300030150330125--053500031003001";
         spec = "arcane";
+      } else if (e.target.value == this.specs.SPEC_FROST) {
+        talents = "https://tbc.wowhead.com/talent-calc/mage/2500250300030150330125--053500031003001";
+        spec = "frost";
       } else if (e.target.value == this.specs.SPEC_FIRE) {
         talents = "https://tbc.wowhead.com/talent-calc/mage/-505200012302331050125-023500001";
         spec = "fire";
@@ -60632,6 +60637,12 @@ var render = function() {
                           "option",
                           { domProps: { value: _vm.specs.SPEC_FIRE } },
                           [_vm._v("Fire")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "option",
+                          { domProps: { value: _vm.specs.SPEC_FROST } },
+                          [_vm._v("Frost")]
                         )
                       ]
                     )
