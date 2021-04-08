@@ -171,6 +171,7 @@ EMSCRIPTEN_BINDINGS(my_module) {
         .property("dmf_buff", &Config::dmf_buff)
         .property("atiesh_mage_buff", &Config::atiesh_mage_buff)
         .property("atiesh_warlock_buff", &Config::atiesh_warlock_buff)
+        .property("very_berry", &Config::very_berry)
 
         .property("food", &Config::food)
         .property("flask", &Config::flask)

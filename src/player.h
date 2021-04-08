@@ -146,6 +146,8 @@ public:
             stats.spell_power+= round(stats.intellect * int_multi);
         if (config->atiesh_warlock_buff)
             stats.spell_power+= 33;
+        if (config->very_berry)
+            stats.spell_power+= 23;
 
         if (config->improved_divine_spirit)
             stats.spell_power+= stats.spirit*0.1;

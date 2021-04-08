@@ -554,6 +554,9 @@
                             <div class="form-item">
                                 <label><input type="checkbox" v-model="config.demonic_rune"> <span>Use Demonic Runes After Last Gem</span></label>
                             </div>
+                            <div class="form-item">
+                                <label><input type="checkbox" v-model="config.very_berry"> <span>Very Berry Cream (23 sp)</span></label>
+                            </div>
                         </fieldset>
                         <fieldset>
                             <legend>Cooldowns</legend>
@@ -784,6 +787,7 @@
                     potion: 13444,
                     conjured: 8008,
                     demonic_rune: false,
+                    very_berry: false,
 
                     tirisfal_2set: false,
                     tirisfal_4set: false,
@@ -1169,6 +1173,8 @@
                     stats.spell_power+= 35;
                 if (this.config.atiesh_warlock_buff)
                     stats.spell_power+= 33;
+                if (this.config.very_berry)
+                    stats.spell_power+= 23;
 
                 // Spell crit
                 var critrating = 0;

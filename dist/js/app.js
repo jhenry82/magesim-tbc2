@@ -2040,6 +2040,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2131,6 +2134,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         potion: 13444,
         conjured: 8008,
         demonic_rune: false,
+        very_berry: false,
         tirisfal_2set: false,
         tirisfal_4set: false,
         tempest_2set: false,
@@ -2504,7 +2508,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       if (this.config.battle_elixir == this.elixirs.ELIXIR_ADEPTS) stats.spell_power += 24;
       if (this.config.battle_elixir == this.elixirs.ELIXIR_GREATER_ARCANE) stats.spell_power += 35;
-      if (this.config.atiesh_warlock_buff) stats.spell_power += 33; // Spell crit
+      if (this.config.atiesh_warlock_buff) stats.spell_power += 33;
+      if (this.config.very_berry) stats.spell_power += 23; // Spell crit
 
       var critrating = 0;
       if (this.config.judgement_of_the_crusader) stats.crit += 3;
@@ -63058,6 +63063,57 @@ var render = function() {
                       }),
                       _vm._v(" "),
                       _c("span", [_vm._v("Use Demonic Runes After Last Gem")])
+                    ])
+                  ]),
+                  _vm._v(" "),
+                  _c("div", { staticClass: "form-item" }, [
+                    _c("label", [
+                      _c("input", {
+                        directives: [
+                          {
+                            name: "model",
+                            rawName: "v-model",
+                            value: _vm.config.very_berry,
+                            expression: "config.very_berry"
+                          }
+                        ],
+                        attrs: { type: "checkbox" },
+                        domProps: {
+                          checked: Array.isArray(_vm.config.very_berry)
+                            ? _vm._i(_vm.config.very_berry, null) > -1
+                            : _vm.config.very_berry
+                        },
+                        on: {
+                          change: function($event) {
+                            var $$a = _vm.config.very_berry,
+                              $$el = $event.target,
+                              $$c = $$el.checked ? true : false
+                            if (Array.isArray($$a)) {
+                              var $$v = null,
+                                $$i = _vm._i($$a, $$v)
+                              if ($$el.checked) {
+                                $$i < 0 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "very_berry",
+                                    $$a.concat([$$v])
+                                  )
+                              } else {
+                                $$i > -1 &&
+                                  _vm.$set(
+                                    _vm.config,
+                                    "very_berry",
+                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
+                                  )
+                              }
+                            } else {
+                              _vm.$set(_vm.config, "very_berry", $$c)
+                            }
+                          }
+                        }
+                      }),
+                      _vm._v(" "),
+                      _c("span", [_vm._v("Very Berry Cream (23 sp)")])
                     ])
                   ])
                 ]),
