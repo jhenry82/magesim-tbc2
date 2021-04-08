@@ -13,13 +13,13 @@ Frontend written in Vue.js and SCSS and compiled with Laravel mix.
 * Modified spells and formulas to use their level 60 values
 * Added an assortment of level 60 endgame gear and enchants
 * Added back Classic world buffs, foods, oils, potions
-* Tweaked default Fire talent build to be a valid level 60 spec
+* Tweaked default Fire and Frost talent builds to be valid level 60 specs
 * The Undead Cleansing (UDC) set has been simulated as double dipping (applying to base damage plus crit damage), based on reports from the beta. UDC and Mark of the Champion assume you are facing an Undead target
-* Option to configure mana thresholds when fire rotation switches to pure scorch spam. This avoids long periods of idle waiting, and sims as a DPS increase.
+* Option to configure mana thresholds when fire rotation switches to pure scorch spam. This avoids long periods of idle waiting, and sims as a DPS increase
 
 ## Limitations
 This sim is just a minor tweak of the level 70 TBC sim. It has the same basic features and limitations as the original version
-* Frost specs (ie, casting Frostbolt and Water Elemental) are not supported. Frost talents that might be used in a fire build such as Icy Veins and Cold Snap ARE supported
+* Water Elemental is not currently supported. Other frost talents such as Icy Veins and Cold Snap ARE supported
 * Arcane Blast is not available at level 60, therefore there is no support for Arcane rotations. Sorry, Arcane Missiles aficionados. The Arcane Power talent is supported
 * No attempt has been made to include every single Classic item, enchant, or buff. It's meant to be a representative sample of late phase 6 raiding
 
