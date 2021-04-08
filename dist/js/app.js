@@ -311,6 +311,11 @@ var equip = {
     title: "Tome of Fiery Arcana",
     sp_fire: 40
   }, {
+    id: 19310,
+    title: "Tome of the Ice Lord",
+    "int": 9,
+    sp_frost: 34
+  }, {
     id: 23049,
     title: "Sapphiron's Left Eye",
     "int": 8,
@@ -372,15 +377,25 @@ var equip = {
     title: "Touch of Chaos",
     sp: 18
   }, {
+    id: 13938,
+    title: "Bonecreeper Stylus",
+    sp: 11,
+    "int": 4,
+    q: "rare"
+  }, {
     id: 11748,
     title: "Pyric Caduceus",
     sp_fire: 13,
     q: "rare"
   }, {
-    id: 13938,
-    title: "Bonecreeper Stylus",
-    sp: 11,
-    "int": 4,
+    id: 19130,
+    title: "Cold Snap",
+    sp_frost: 20,
+    "int": 7
+  }, {
+    id: 19108,
+    title: "Wand of Biting Cold",
+    sp_frost: 16,
     q: "rare"
   }],
   head: [{
@@ -652,6 +667,12 @@ var equip = {
     sp: 28,
     hit: 8,
     mp5: 4
+  }, {
+    id: 19438,
+    title: "Ringo's Blizzard Boots",
+    "int": 12,
+    sp_frost: 40,
+    hit: 8
   }],
   finger: [{
     id: 23031,
@@ -1054,7 +1075,11 @@ var enchants = {
   hands: [{
     id: 25078,
     title: "Fire Power",
-    sp: 20
+    sp_fire: 20
+  }, {
+    id: 25074,
+    title: "Frost Power",
+    sp_frost: 20
   }],
   legs: [{
     id: 24164,
@@ -2529,9 +2554,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (this.config.atiesh_mage_buff) stats.crit += this.critRatingToChance(30); // Spell hit
 
       if (this.config.totem_of_wrath) stats.hit += 3;
-      if (this.config.race == this.races.RACE_DRAENEI || this.config.inspiring_presence) stats.hit += 1; // Until proven otherwise, we'll assume the double +hit bug does not apply to fire spells
+      if (this.config.race == this.races.RACE_DRAENEI || this.config.inspiring_presence) stats.hit += 1; // This is supposedly bugged for frost spells to give 2% hit each point
+      // They say it was actually that way in TBC so we'll keep it like this for now
 
-      if (x = this.hasTalent("elemental_precision")) stats.hit += x;
+      if (x = this.hasTalent("elemental_precision")) {
+        if (this.config.spec == this.specs.SPEC_FROST) x *= 2;
+        stats.hit += x;
+      }
+
       this.final_stats = stats;
     },
     baseStats: function baseStats() {
@@ -2966,7 +2996,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         talents = "https://tbc.wowhead.com/talent-calc/mage/2500250300030150330125--053500031003001";
         spec = "arcane";
       } else if (e.target.value == this.specs.SPEC_FROST) {
-        talents = "https://tbc.wowhead.com/talent-calc/mage/2500250300030150330125--053500031003001";
+        talents = "https://tbc.wowhead.com/talent-calc/mage/23001523100301403201--053500031003";
         spec = "frost";
       } else if (e.target.value == this.specs.SPEC_FIRE) {
         talents = "https://tbc.wowhead.com/talent-calc/mage/-505200012302331050125-023500001";
@@ -59891,7 +59921,20 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("tr", [
-                    _c("td", [_vm._v("Hit")]),
+                    _c(
+                      "td",
+                      [
+                        _vm._v("Hit "),
+                        _vm.config.spec == _vm.specs.SPEC_FROST
+                          ? _c("help", [
+                              _vm._v(
+                                "Elemental Precision is bugged, providing double hit to Frost spells in beta"
+                              )
+                            ])
+                          : _vm._e()
+                      ],
+                      1
+                    ),
                     _vm._v(" "),
                     _c("td", [
                       _vm._v(_vm._s(_vm.$round(_vm.final_stats.hit, 2)) + "%")

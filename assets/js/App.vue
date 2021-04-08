@@ -84,7 +84,7 @@
                                 <td>{{ $round(final_stats.crit, 2) }}%</td>
                             </tr>
                             <tr>
-                                <td>Hit</td>
+                                <td>Hit <help v-if="config.spec == specs.SPEC_FROST">Elemental Precision is bugged, providing double hit to Frost spells in beta</help></td>
                                 <td>{{ $round(final_stats.hit, 2) }}%</td>
                             </tr>
                             <tr>
@@ -1211,9 +1211,13 @@
                     stats.hit+= 3;
                 if (this.config.race == this.races.RACE_DRAENEI || this.config.inspiring_presence)
                     stats.hit+= 1;
-                // Until proven otherwise, we'll assume the double +hit bug does not apply to fire spells
-                if (x = this.hasTalent("elemental_precision"))
+                // This is supposedly bugged for frost spells to give 2% hit each point
+                // They say it was actually that way in TBC so we'll keep it like this for now
+                if (x = this.hasTalent("elemental_precision")) {
+                    if (this.config.spec == this.specs.SPEC_FROST)
+                        x*= 2;
                     stats.hit+= x;
+                }
 
 
 
@@ -1700,7 +1704,7 @@
                     spec = "arcane";
                 }
                 else if (e.target.value == this.specs.SPEC_FROST) {
-                    talents = "https://tbc.wowhead.com/talent-calc/mage/2500250300030150330125--053500031003001";
+                    talents = "https://tbc.wowhead.com/talent-calc/mage/23001523100301403201--053500031003";
                     spec = "frost";
                 }
                 else if (e.target.value == this.specs.SPEC_FIRE) {

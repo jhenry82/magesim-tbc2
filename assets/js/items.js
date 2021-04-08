@@ -51,6 +51,7 @@ var equip = {
     ],
     off_hand: [
         { id: 19311, title: "Tome of Fiery Arcana", sp_fire: 40 },
+        { id: 19310, title: "Tome of the Ice Lord", int: 9, sp_frost: 34 },
         { id: 23049, title: "Sapphiron's Left Eye", int: 8, sp: 26, crit: 14, hit: 8 },
         { id: 21597, title: "Royal Scepter of Vek'lor", int: 9, sp: 20, crit: 14, hit: 8 },
         { id: 22937, title: "Gem of Nerubis", int: 10, sp: 25 },
@@ -64,8 +65,10 @@ var equip = {
         { id: 22820, title: "Wand of Fates", int: 7, sp: 12, hit: 8 },
         { id: 21603, title: "Wand of Qiraji Nobility", sp: 19 },
         { id: 19861, title: "Touch of Chaos", sp: 18 },
-        { id: 11748, title: "Pyric Caduceus", sp_fire: 13, q: "rare" },
         { id: 13938, title: "Bonecreeper Stylus", sp: 11, int: 4, q: "rare" },
+        { id: 11748, title: "Pyric Caduceus", sp_fire: 13, q: "rare" },
+        { id: 19130, title: "Cold Snap", sp_frost: 20, int: 7 },
+        { id: 19108, title: "Wand of Biting Cold", sp_frost: 16, q: "rare" },
         
     ],
     head: [
@@ -129,6 +132,7 @@ var equip = {
     feet: [
         { id: 22500, title: "Frostfire Sandals", int: 18, spi: 10, sp: 28, crit: 14 },
         { id: 21344, title: "Enigma Boots", int: 15, spi: 6, sp: 28, hit: 8, mp5: 4 },
+        { id: 19438, title: "Ringo's Blizzard Boots", int: 12, sp_frost: 40, hit: 8 },
     ],
     finger: [
         { id: 23031, title: "Band of the Inevitable", sp: 36, hit: 8 },
@@ -225,7 +229,8 @@ var enchants = {
         { id: 20008, title: "Greater Intellect", int: 7 },
     ],
     hands: [
-        { id: 25078, title: "Fire Power", sp: 20 },
+        { id: 25078, title: "Fire Power", sp_fire: 20 },
+        { id: 25074, title: "Frost Power", sp_frost: 20 },
     ],
     legs: [
         { id: 24164, title: "Presence of Sight", sp: 18, hit: 8, q: "rare" },
