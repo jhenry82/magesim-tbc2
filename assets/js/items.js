@@ -235,12 +235,6 @@ var enchants = {
     legs: [
         { id: 24164, title: "Presence of Sight", sp: 18, hit: 8, q: "rare" },
     ],
-    feet: [
-
-    ],
-    finger: [
-        
-    ],
 };
 
 var itemsets = [

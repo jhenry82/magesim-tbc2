@@ -172,6 +172,18 @@ vue__WEBPACK_IMPORTED_MODULE_0__.default.prototype.$get = _.get;
 vue__WEBPACK_IMPORTED_MODULE_0__.default.prototype.$set = _.set;
 vue__WEBPACK_IMPORTED_MODULE_0__.default.prototype.$round = _.round;
 
+vue__WEBPACK_IMPORTED_MODULE_0__.default.prototype.$copyToClipboard = function (str) {
+  var el = document.createElement("textarea");
+  el.value = str;
+  el.style.opacity = 0;
+  el.style.position = "absolute";
+  el.style.top = 0;
+  document.body.appendChild(el);
+  el.select();
+  document.execCommand('copy');
+  document.body.removeChild(el);
+};
+
 /***/ }),
 
 /***/ "./assets/js/items.js":
@@ -1087,9 +1099,7 @@ var enchants = {
     sp: 18,
     hit: 8,
     q: "rare"
-  }],
-  feet: [],
-  finger: []
+  }]
 };
 var itemsets = [{
   id: 667,
@@ -1367,6 +1377,8 @@ __webpack_require__.r(__webpack_exports__);
 /* harmony import */ var _simulation__WEBPACK_IMPORTED_MODULE_1__ = __webpack_require__(/*! ./simulation */ "./assets/js/simulation.js");
 /* harmony import */ var _items__WEBPACK_IMPORTED_MODULE_2__ = __webpack_require__(/*! ./items */ "./assets/js/items.js");
 /* harmony import */ var _constants__WEBPACK_IMPORTED_MODULE_3__ = __webpack_require__(/*! ./constants */ "./assets/js/constants.js");
+function _typeof(obj) { "@babel/helpers - typeof"; if (typeof Symbol === "function" && typeof Symbol.iterator === "symbol") { _typeof = function _typeof(obj) { return typeof obj; }; } else { _typeof = function _typeof(obj) { return obj && typeof Symbol === "function" && obj.constructor === Symbol && obj !== Symbol.prototype ? "symbol" : typeof obj; }; } return _typeof(obj); }
+
 
 
 function asyncGeneratorStep(gen, resolve, reject, _next, _throw, key, arg) { try { var info = gen[key](arg); var value = info.value; } catch (error) { reject(error); return; } if (info.done) { resolve(value); } else { Promise.resolve(value).then(_next, _throw); } }
@@ -1379,6 +1391,92 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2098,6 +2196,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       import_string: null,
       export_open: false,
       export_string: null,
+      equiplist_open: false,
+      equiplist_string: null,
       final_stats: null,
       result: null,
       is_running: false,
@@ -2162,6 +2262,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         conjured: 8008,
         demonic_rune: false,
         very_berry: false,
+        drums_perma: false,
         tirisfal_2set: false,
         tirisfal_4set: false,
         tempest_2set: false,
@@ -2191,11 +2292,14 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         cold_snap_at: 30,
         combustion_at: 10,
         trinket1_at: 10,
+        trinket1_reuse_at: 0,
         trinket2_at: 30,
+        trinket2_reuse_at: 0,
         berserking_at: 41,
         arcane_power_at: 1,
         presence_of_mind_at: 0,
         drums_at: 1,
+        evocation_at: 0,
         potion_at: 1,
         conjured_at: 1,
         talents: "https://tbc.wowhead.com/talent-calc/mage/-505200012302331050125-023500001",
@@ -2444,6 +2548,17 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     getItem: function getItem(slot, id) {
       var eslot = this.equipSlotToItemSlot(slot);
       return _.find(this.items.equip[eslot], {
+        id: id
+      }, null);
+    },
+    getGem: function getGem(id) {
+      return _.find(this.items.gems, {
+        id: id
+      }, null);
+    },
+    getEnchant: function getEnchant(slot, id) {
+      var eslot = this.equipSlotToItemSlot(slot);
+      return _.find(this.items.enchants[eslot], {
         id: id
       }, null);
     },
@@ -2714,17 +2829,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (this.isSpecialItem(this.equipped.trinket2)) this.config.trinket2 = this.equipped.trinket2;
       if (this.metaGem() && this.isSpecialItem(this.metaGem().id)) this.config.meta_gem = this.metaGem().id;
     },
-    itemUrl: function itemUrl(item) {
-      if (this.item_source == "tbcdb") return "https://tbcdb.com/?item=" + item.id;
-      if (this.item_source == "endless") return "https://db.endless.gg/?item=" + item.id;
-      if (this.item_source == "twinstar") return "https://tbc-twinhead.twinstar.cz/?item=" + item.id;
-      return "https://tbc.wowhead.com/?item=" + item.id;
+    itemUrl: function itemUrl(id) {
+      if (_typeof(id) == "object") id = id.id;
+      if (this.item_source == "tbcdb") return "https://tbcdb.com/?item=" + id;
+      if (this.item_source == "endless") return "https://db.endless.gg/?item=" + id;
+      if (this.item_source == "twinstar") return "https://tbc-twinhead.twinstar.cz/?item=" + id;
+      return "https://tbc.wowhead.com/?item=" + id;
     },
-    spellUrl: function spellUrl(spell) {
-      if (this.item_source == "tbcdb") return "https://tbcdb.com/?spell=" + spell.id;
-      if (this.item_source == "endless") return "https://db.endless.gg/?spell=" + spell.id;
-      if (this.item_source == "twinstar") return "https://tbc-twinhead.twinstar.cz/?spell=" + spell.id;
-      return "https://tbc.wowhead.com/?spell=" + spell.id;
+    spellUrl: function spellUrl(id) {
+      if (_typeof(id) == "object") id = id.id;
+      if (this.item_source == "tbcdb") return "https://tbcdb.com/?spell=" + id;
+      if (this.item_source == "endless") return "https://db.endless.gg/?spell=" + id;
+      if (this.item_source == "twinstar") return "https://tbc-twinhead.twinstar.cz/?spell=" + id;
+      return "https://tbc.wowhead.com/?spell=" + id;
     },
     critRatingToChance: function critRatingToChance(rating) {
       return rating / 14.0;
@@ -3125,6 +3242,41 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     closeImport: function closeImport() {
       this.import_open = false;
       this.import_string = null;
+    },
+    copyEquiplist: function copyEquiplist() {
+      var arr = [];
+      var str, item, enchant, gem;
+
+      for (var slot in this.equipped) {
+        if (!this.equipped[slot]) continue;
+        item = this.getItem(slot, this.equipped[slot]);
+        str = this.formatKey(slot) + ": " + item.title;
+
+        if (_.get(this.enchants, slot)) {
+          enchant = this.getEnchant(slot, this.enchants[slot]);
+          str += " (" + enchant.title + ")";
+        }
+
+        if (_.get(this.gems, slot)) {
+          for (var i in this.gems[slot]) {
+            if (this.gems[slot][i]) {
+              gem = this.getGem(this.gems[slot][i]);
+              str += " [" + gem.title + "]";
+            }
+          }
+        }
+
+        arr.push(str);
+      }
+
+      str = arr.join("\r\n");
+      this.$copyToClipboard(str);
+    },
+    openEquiplist: function openEquiplist() {
+      this.equiplist_open = true;
+    },
+    closeEquiplist: function closeEquiplist() {
+      this.equiplist_open = false;
     },
     saveProfile: function saveProfile(profile) {
       profile.equipped = _.cloneDeep(this.equipped);
@@ -60051,6 +60203,16 @@ var render = function() {
                       "\n                                Run item comparison\n                            "
                     )
                   ]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "btn", on: { click: _vm.openEquiplist } },
+                  [
+                    _vm._v(
+                      "\n                                Equipped items overview\n                            "
+                    )
+                  ]
                 )
               ]),
               _vm._v(" "),
@@ -62957,6 +63119,71 @@ var render = function() {
                     )
                   ]),
                   _vm._v(" "),
+                  _vm.config.drums
+                    ? _c("div", { staticClass: "form-item" }, [
+                        _c(
+                          "label",
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.config.drums_perma,
+                                  expression: "config.drums_perma"
+                                }
+                              ],
+                              attrs: { type: "checkbox" },
+                              domProps: {
+                                checked: Array.isArray(_vm.config.drums_perma)
+                                  ? _vm._i(_vm.config.drums_perma, null) > -1
+                                  : _vm.config.drums_perma
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$a = _vm.config.drums_perma,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = null,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        _vm.$set(
+                                          _vm.config,
+                                          "drums_perma",
+                                          $$a.concat([$$v])
+                                        )
+                                    } else {
+                                      $$i > -1 &&
+                                        _vm.$set(
+                                          _vm.config,
+                                          "drums_perma",
+                                          $$a
+                                            .slice(0, $$i)
+                                            .concat($$a.slice($$i + 1))
+                                        )
+                                    }
+                                  } else {
+                                    _vm.$set(_vm.config, "drums_perma", $$c)
+                                  }
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("span", [_vm._v("Permanent drums")]),
+                            _vm._v(" "),
+                            _c("help", [
+                              _vm._v(
+                                "This simulates having 4+ players in your party using drums"
+                              )
+                            ])
+                          ],
+                          1
+                        )
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
                   _c("div", { staticClass: "form-item" }, [
                     _c("label", [_vm._v("Potion")]),
                     _vm._v(" "),
@@ -63423,6 +63650,51 @@ var render = function() {
                       ])
                     : _vm._e(),
                   _vm._v(" "),
+                  _c("div", { staticClass: "form-item" }, [
+                    _c(
+                      "label",
+                      [
+                        _c("span", [_vm._v("Evocation at")]),
+                        _vm._v(" "),
+                        _c("help", [
+                          _vm._v(
+                            "Setting this to 0 will evocate when mana is low"
+                          )
+                        ])
+                      ],
+                      1
+                    ),
+                    _vm._v(" "),
+                    _c("input", {
+                      directives: [
+                        {
+                          name: "model",
+                          rawName: "v-model.number",
+                          value: _vm.config.evocation_at,
+                          expression: "config.evocation_at",
+                          modifiers: { number: true }
+                        }
+                      ],
+                      attrs: { type: "text" },
+                      domProps: { value: _vm.config.evocation_at },
+                      on: {
+                        input: function($event) {
+                          if ($event.target.composing) {
+                            return
+                          }
+                          _vm.$set(
+                            _vm.config,
+                            "evocation_at",
+                            _vm._n($event.target.value)
+                          )
+                        },
+                        blur: function($event) {
+                          return _vm.$forceUpdate()
+                        }
+                      }
+                    })
+                  ]),
+                  _vm._v(" "),
                   _vm.config.race == _vm.races.RACE_TROLL
                     ? _c("div", { staticClass: "form-item" }, [
                         _c("label", [_vm._v("Berserking at")]),
@@ -63493,6 +63765,53 @@ var render = function() {
                       ])
                     : _vm._e(),
                   _vm._v(" "),
+                  _vm.hasUseTrinket(1)
+                    ? _c("div", { staticClass: "form-item" }, [
+                        _c(
+                          "label",
+                          [
+                            _c("span", [_vm._v("Trinket #1 reuse at")]),
+                            _vm._v(" "),
+                            _c("help", [
+                              _vm._v(
+                                "Settings this to 0 will reuse trinket on CD"
+                              )
+                            ])
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model.number",
+                              value: _vm.config.trinket1_reuse_at,
+                              expression: "config.trinket1_reuse_at",
+                              modifiers: { number: true }
+                            }
+                          ],
+                          attrs: { type: "text" },
+                          domProps: { value: _vm.config.trinket1_reuse_at },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.config,
+                                "trinket1_reuse_at",
+                                _vm._n($event.target.value)
+                              )
+                            },
+                            blur: function($event) {
+                              return _vm.$forceUpdate()
+                            }
+                          }
+                        })
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
                   _vm.hasUseTrinket(2)
                     ? _c("div", { staticClass: "form-item" }, [
                         _c("label", [_vm._v("Trinket #2 at")]),
@@ -63517,6 +63836,53 @@ var render = function() {
                               _vm.$set(
                                 _vm.config,
                                 "trinket2_at",
+                                _vm._n($event.target.value)
+                              )
+                            },
+                            blur: function($event) {
+                              return _vm.$forceUpdate()
+                            }
+                          }
+                        })
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.hasUseTrinket(2)
+                    ? _c("div", { staticClass: "form-item" }, [
+                        _c(
+                          "label",
+                          [
+                            _c("span", [_vm._v("Trinket #2 reuse at")]),
+                            _vm._v(" "),
+                            _c("help", [
+                              _vm._v(
+                                "Settings this to 0 will reuse trinket on CD"
+                              )
+                            ])
+                          ],
+                          1
+                        ),
+                        _vm._v(" "),
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model.number",
+                              value: _vm.config.trinket2_reuse_at,
+                              expression: "config.trinket2_reuse_at",
+                              modifiers: { number: true }
+                            }
+                          ],
+                          attrs: { type: "text" },
+                          domProps: { value: _vm.config.trinket2_reuse_at },
+                          on: {
+                            input: function($event) {
+                              if ($event.target.composing) {
+                                return
+                              }
+                              _vm.$set(
+                                _vm.config,
+                                "trinket2_reuse_at",
                                 _vm._n($event.target.value)
                               )
                             },
@@ -64028,6 +64394,173 @@ var render = function() {
               )
             ])
           ])
+        : _vm._e(),
+      _vm._v(" "),
+      _vm.equiplist_open
+        ? _c("div", { staticClass: "lightbox" }, [
+            _c("div", { staticClass: "inner" }, [
+              _c("div", { staticClass: "title" }, [_vm._v("Equipped items")]),
+              _vm._v(" "),
+              _c("table", [
+                _vm._m(4),
+                _vm._v(" "),
+                _c(
+                  "tbody",
+                  _vm._l(_vm.equipped, function(item_id, slot) {
+                    return item_id
+                      ? _c("tr", { staticClass: "equipped-item" }, [
+                          _c("td", [_vm._v(_vm._s(_vm.formatKey(slot)))]),
+                          _vm._v(" "),
+                          _c("td", [
+                            _c(
+                              "a",
+                              {
+                                class: [
+                                  "quality-" +
+                                    _vm.$get(
+                                      _vm.getItem(slot, item_id),
+                                      "q",
+                                      "epic"
+                                    )
+                                ],
+                                attrs: {
+                                  href: _vm.itemUrl(item_id),
+                                  target: "_blank"
+                                }
+                              },
+                              [
+                                _vm._v(
+                                  "\n                                    " +
+                                    _vm._s(_vm.getItem(slot, item_id).title) +
+                                    "\n                                "
+                                )
+                              ]
+                            )
+                          ]),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            [
+                              _vm.$get(_vm.enchants, slot)
+                                ? [
+                                    _c(
+                                      "a",
+                                      {
+                                        class: [
+                                          "quality-" +
+                                            _vm.$get(
+                                              _vm.getEnchant(
+                                                slot,
+                                                _vm.enchants[slot]
+                                              ),
+                                              "q",
+                                              "uncommon"
+                                            )
+                                        ],
+                                        attrs: {
+                                          href: _vm.spellUrl(
+                                            _vm.enchants[slot]
+                                          ),
+                                          target: "_blank"
+                                        }
+                                      },
+                                      [
+                                        _vm._v(
+                                          "\n                                        " +
+                                            _vm._s(
+                                              _vm.getEnchant(
+                                                slot,
+                                                _vm.enchants[slot]
+                                              ).title
+                                            ) +
+                                            "\n                                    "
+                                        )
+                                      ]
+                                    )
+                                  ]
+                                : _vm._e()
+                            ],
+                            2
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "td",
+                            [
+                              _vm.gems.hasOwnProperty(slot)
+                                ? [
+                                    _vm._l(_vm.gems[slot], function(
+                                      gem_id,
+                                      index
+                                    ) {
+                                      return gem_id
+                                        ? [
+                                            index > 0
+                                              ? _c("span", [_vm._v(",")])
+                                              : _vm._e(),
+                                            _vm._v(" "),
+                                            _c(
+                                              "a",
+                                              {
+                                                class: [
+                                                  "gem-color",
+                                                  "color-" +
+                                                    _vm.getGem(gem_id).color
+                                                ],
+                                                attrs: {
+                                                  href: _vm.itemUrl(gem_id),
+                                                  target: "_blank"
+                                                }
+                                              },
+                                              [
+                                                _vm._v(
+                                                  "\n                                            " +
+                                                    _vm._s(
+                                                      _vm.getGem(gem_id).title
+                                                    ) +
+                                                    "\n                                        "
+                                                )
+                                              ]
+                                            )
+                                          ]
+                                        : _vm._e()
+                                    })
+                                  ]
+                                : _vm._e()
+                            ],
+                            2
+                          )
+                        ])
+                      : _vm._e()
+                  }),
+                  0
+                )
+              ]),
+              _vm._v(" "),
+              _c("div", { staticClass: "mt-2" }, [
+                _c(
+                  "div",
+                  { staticClass: "btn", on: { click: _vm.copyEquiplist } },
+                  [_vm._v("Copy")]
+                ),
+                _vm._v(" "),
+                _c(
+                  "div",
+                  { staticClass: "btn", on: { click: _vm.closeEquiplist } },
+                  [_vm._v("Close")]
+                )
+              ]),
+              _vm._v(" "),
+              _c(
+                "div",
+                { staticClass: "close", on: { click: _vm.closeEquiplist } },
+                [
+                  _c("span", { staticClass: "material-icons" }, [
+                    _vm._v("\n                        \n                    ")
+                  ])
+                ]
+              )
+            ])
+          ])
         : _vm._e()
     ])
   ])
@@ -64104,6 +64637,22 @@ var staticRenderFns = [
       _c("th", [_vm._v("DPS")]),
       _vm._v(" "),
       _c("th", [_vm._v("Event")])
+    ])
+  },
+  function() {
+    var _vm = this
+    var _h = _vm.$createElement
+    var _c = _vm._self._c || _h
+    return _c("thead", [
+      _c("tr", [
+        _c("th", [_vm._v("Slot")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Item")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Enchant")]),
+        _vm._v(" "),
+        _c("th", [_vm._v("Gems")])
+      ])
     ])
   }
 ]
@@ -76328,8 +76877,9 @@ Vue.compile = compileToFunctions;
 /******/ 	// The require function
 /******/ 	function __webpack_require__(moduleId) {
 /******/ 		// Check if module is in cache
-/******/ 		if(__webpack_module_cache__[moduleId]) {
-/******/ 			return __webpack_module_cache__[moduleId].exports;
+/******/ 		var cachedModule = __webpack_module_cache__[moduleId];
+/******/ 		if (cachedModule !== undefined) {
+/******/ 			return cachedModule.exports;
 /******/ 		}
 /******/ 		// Create a new module (and put it into the cache)
 /******/ 		var module = __webpack_module_cache__[moduleId] = {
@@ -76351,10 +76901,38 @@ Vue.compile = compileToFunctions;
 /******/ 	// expose the modules object (__webpack_modules__)
 /******/ 	__webpack_require__.m = __webpack_modules__;
 /******/ 	
-/******/ 	// the startup function
-/******/ 	// It's empty as some runtime module handles the default behavior
-/******/ 	__webpack_require__.x = x => {};
 /************************************************************************/
+/******/ 	/* webpack/runtime/chunk loaded */
+/******/ 	(() => {
+/******/ 		var deferred = [];
+/******/ 		__webpack_require__.O = (result, chunkIds, fn, priority) => {
+/******/ 			if(chunkIds) {
+/******/ 				priority = priority || 0;
+/******/ 				for(var i = deferred.length; i > 0 && deferred[i - 1][2] > priority; i--) deferred[i] = deferred[i - 1];
+/******/ 				deferred[i] = [chunkIds, fn, priority];
+/******/ 				return;
+/******/ 			}
+/******/ 			var notFulfilled = Infinity;
+/******/ 			for (var i = 0; i < deferred.length; i++) {
+/******/ 				var [chunkIds, fn, priority] = deferred[i];
+/******/ 				var fulfilled = true;
+/******/ 				for (var j = 0; j < chunkIds.length; j++) {
+/******/ 					if ((priority & 1 === 0 || notFulfilled >= priority) && Object.keys(__webpack_require__.O).every((key) => (__webpack_require__.O[key](chunkIds[j])))) {
+/******/ 						chunkIds.splice(j--, 1);
+/******/ 					} else {
+/******/ 						fulfilled = false;
+/******/ 						if(priority < notFulfilled) notFulfilled = priority;
+/******/ 					}
+/******/ 				}
+/******/ 				if(fulfilled) {
+/******/ 					deferred.splice(i--, 1)
+/******/ 					result = fn();
+/******/ 				}
+/******/ 			}
+/******/ 			return result;
+/******/ 		};
+/******/ 	})();
+/******/ 	
 /******/ 	/* webpack/runtime/compat get default export */
 /******/ 	(() => {
 /******/ 		// getDefaultExport function for compatibility with non-harmony modules
@@ -76422,15 +77000,12 @@ Vue.compile = compileToFunctions;
 /******/ 		
 /******/ 		// object to store loaded and loading chunks
 /******/ 		// undefined = chunk not loaded, null = chunk preloaded/prefetched
-/******/ 		// Promise = chunk loading, 0 = chunk loaded
+/******/ 		// [resolve, reject, Promise] = chunk loading, 0 = chunk loaded
 /******/ 		var installedChunks = {
-/******/ 			"/js/app": 0
+/******/ 			"/js/app": 0,
+/******/ 			"css/app": 0
 /******/ 		};
 /******/ 		
-/******/ 		var deferredModules = [
-/******/ 			["./assets/js/app.js"],
-/******/ 			["./assets/sass/app.scss"]
-/******/ 		];
 /******/ 		// no chunk on demand loading
 /******/ 		
 /******/ 		// no prefetching
@@ -76441,21 +77016,14 @@ Vue.compile = compileToFunctions;
 /******/ 		
 /******/ 		// no HMR manifest
 /******/ 		
-/******/ 		var checkDeferredModules = x => {};
+/******/ 		__webpack_require__.O.j = (chunkId) => (installedChunks[chunkId] === 0);
 /******/ 		
 /******/ 		// install a JSONP callback for chunk loading
 /******/ 		var webpackJsonpCallback = (parentChunkLoadingFunction, data) => {
-/******/ 			var [chunkIds, moreModules, runtime, executeModules] = data;
+/******/ 			var [chunkIds, moreModules, runtime] = data;
 /******/ 			// add "moreModules" to the modules object,
 /******/ 			// then flag all "chunkIds" as loaded and fire callback
-/******/ 			var moduleId, chunkId, i = 0, resolves = [];
-/******/ 			for(;i < chunkIds.length; i++) {
-/******/ 				chunkId = chunkIds[i];
-/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
-/******/ 					resolves.push(installedChunks[chunkId][0]);
-/******/ 				}
-/******/ 				installedChunks[chunkId] = 0;
-/******/ 			}
+/******/ 			var moduleId, chunkId, i = 0;
 /******/ 			for(moduleId in moreModules) {
 /******/ 				if(__webpack_require__.o(moreModules, moduleId)) {
 /******/ 					__webpack_require__.m[moduleId] = moreModules[moduleId];
@@ -76463,53 +77031,29 @@ Vue.compile = compileToFunctions;
 /******/ 			}
 /******/ 			if(runtime) runtime(__webpack_require__);
 /******/ 			if(parentChunkLoadingFunction) parentChunkLoadingFunction(data);
-/******/ 			while(resolves.length) {
-/******/ 				resolves.shift()();
+/******/ 			for(;i < chunkIds.length; i++) {
+/******/ 				chunkId = chunkIds[i];
+/******/ 				if(__webpack_require__.o(installedChunks, chunkId) && installedChunks[chunkId]) {
+/******/ 					installedChunks[chunkId][0]();
+/******/ 				}
+/******/ 				installedChunks[chunkIds[i]] = 0;
 /******/ 			}
-/******/ 		
-/******/ 			// add entry modules from loaded chunk to deferred list
-/******/ 			if(executeModules) deferredModules.push.apply(deferredModules, executeModules);
-/******/ 		
-/******/ 			// run deferred modules when all chunks ready
-/******/ 			return checkDeferredModules();
+/******/ 			__webpack_require__.O();
 /******/ 		}
 /******/ 		
 /******/ 		var chunkLoadingGlobal = self["webpackChunk"] = self["webpackChunk"] || [];
 /******/ 		chunkLoadingGlobal.forEach(webpackJsonpCallback.bind(null, 0));
 /******/ 		chunkLoadingGlobal.push = webpackJsonpCallback.bind(null, chunkLoadingGlobal.push.bind(chunkLoadingGlobal));
-/******/ 		
-/******/ 		function checkDeferredModulesImpl() {
-/******/ 			var result;
-/******/ 			for(var i = 0; i < deferredModules.length; i++) {
-/******/ 				var deferredModule = deferredModules[i];
-/******/ 				var fulfilled = true;
-/******/ 				for(var j = 1; j < deferredModule.length; j++) {
-/******/ 					var depId = deferredModule[j];
-/******/ 					if(installedChunks[depId] !== 0) fulfilled = false;
-/******/ 				}
-/******/ 				if(fulfilled) {
-/******/ 					deferredModules.splice(i--, 1);
-/******/ 					result = __webpack_require__(__webpack_require__.s = deferredModule[0]);
-/******/ 				}
-/******/ 			}
-/******/ 			if(deferredModules.length === 0) {
-/******/ 				__webpack_require__.x();
-/******/ 				__webpack_require__.x = x => {};
-/******/ 			}
-/******/ 			return result;
-/******/ 		}
-/******/ 		var startup = __webpack_require__.x;
-/******/ 		__webpack_require__.x = () => {
-/******/ 			// reset startup function so it can be called again when more startup code is added
-/******/ 			__webpack_require__.x = startup || (x => {});
-/******/ 			return (checkDeferredModules = checkDeferredModulesImpl)();
-/******/ 		};
 /******/ 	})();
 /******/ 	
 /************************************************************************/
 /******/ 	
-/******/ 	// run startup
-/******/ 	var __webpack_exports__ = __webpack_require__.x();
+/******/ 	// startup
+/******/ 	// Load entry module and return exports
+/******/ 	// This entry module depends on other loaded chunks and execution need to be delayed
+/******/ 	__webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./assets/js/app.js")))
+/******/ 	var __webpack_exports__ = __webpack_require__.O(undefined, ["css/app"], () => (__webpack_require__("./assets/sass/app.scss")))
+/******/ 	__webpack_exports__ = __webpack_require__.O(__webpack_exports__);
 /******/ 	
 /******/ })()
 ;

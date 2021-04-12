@@ -37,6 +37,7 @@ struct Config
     bool atiesh_mage_buff = false;
     bool atiesh_warlock_buff = false;
     bool very_berry = false;
+    bool drums_perma = false;
 
     Food food;
     Flask flask;
@@ -81,7 +82,10 @@ struct Config
     double icy_veins_at = 10;
     double cold_snap_at = 30;
     double trinket1_at = 10;
+    double trinket1_reuse_at = 0;
     double trinket2_at = 30;
+    double trinket2_reuse_at = 0;
+    double evocation_at = 0;
     double berserking_at = 1;
     double arcane_power_at = 1;
     double presence_of_mind_at = 0;

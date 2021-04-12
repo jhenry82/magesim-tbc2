@@ -125,6 +125,9 @@
                                 <div class="btn" :class="[!hasComparisons || is_running ? 'disabled' : '']" @click="runComparison">
                                     Run item comparison
                                 </div>
+                                <div class="btn" @click="openEquiplist">
+                                    Equipped items overview
+                                </div>
                             </div>
 
                             <table class="mt-2">
@@ -537,6 +540,12 @@
                                     <option :value="foods.FOOD_MP5">Nightfin Soup (8 mp5)</option>
                                 </select>
                             </div>
+                            <div class="form-item" v-if="config.drums">
+                                <label><input type="checkbox" v-model="config.drums_perma">
+                                    <span>Permanent drums</span>
+                                    <help>This simulates having 4+ players in your party using drums</help>
+                                </label>
+                            </div>
                             <div class="form-item">
                                 <label>Potion</label>
                                 <select v-model="config.potion">
@@ -589,6 +598,13 @@
                                 <label>Conjured at</label>
                                 <input type="text" v-model.number="config.conjured_at">
                             </div>
+                            <div class="form-item">
+                                <label>
+                                    <span>Evocation at</span>
+                                    <help>Setting this to 0 will evocate when mana is low</help>
+                                </label>
+                                <input type="text" v-model.number="config.evocation_at">
+                            </div>
                             <div class="form-item" v-if="config.race == races.RACE_TROLL">
                                 <label>Berserking at</label>
                                 <input type="text" v-model.number="config.berserking_at">
@@ -597,9 +613,23 @@
                                 <label>Trinket #1 at</label>
                                 <input type="text" v-model.number="config.trinket1_at">
                             </div>
+                            <div class="form-item" v-if="hasUseTrinket(1)">
+                                <label>
+                                    <span>Trinket #1 reuse at</span>
+                                    <help>Settings this to 0 will reuse trinket on CD</help>
+                                </label>
+                                <input type="text" v-model.number="config.trinket1_reuse_at">
+                            </div>
                             <div class="form-item" v-if="hasUseTrinket(2)">
                                 <label>Trinket #2 at</label>
                                 <input type="text" v-model.number="config.trinket2_at">
+                            </div>
+                            <div class="form-item" v-if="hasUseTrinket(2)">
+                                <label>
+                                    <span>Trinket #2 reuse at</span>
+                                    <help>Settings this to 0 will reuse trinket on CD</help>
+                                </label>
+                                <input type="text" v-model.number="config.trinket2_reuse_at">
                             </div>
                             <div class="form-item">
                                 <label><input type="checkbox" v-model="config.power_infusion"> <span>Power Infusion <template v-if="config.power_infusion">at</template></span></label>
@@ -685,6 +715,62 @@
                     </div>
                 </div>
             </div>
+
+            <div class="lightbox" v-if="equiplist_open">
+                <div class="inner">
+                    <div class="title">Equipped items</div>
+                    <table>
+                        <thead>
+                            <tr>
+                                <th>Slot</th>
+                                <th>Item</th>
+                                <th>Enchant</th>
+                                <th>Gems</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr
+                                class="equipped-item"
+                                v-for="(item_id, slot) in equipped"
+                                v-if="item_id"
+                            >
+                                <td>{{ formatKey(slot) }}</td>
+                                <td>
+                                    <a :href="itemUrl(item_id)" target="_blank" :class="['quality-'+$get(getItem(slot, item_id), 'q', 'epic')]">
+                                        {{ getItem(slot, item_id).title }}
+                                    </a>
+                                </td>
+                                <td>
+                                    <template v-if="$get(enchants, slot)">
+                                        <a :href="spellUrl(enchants[slot])" target="_blank" :class="['quality-'+$get(getEnchant(slot, enchants[slot]), 'q', 'uncommon')]">
+                                            {{ getEnchant(slot, enchants[slot]).title }}
+                                        </a>
+                                    </template>
+                                </td>
+                                <td>
+                                    <template v-if="gems.hasOwnProperty(slot)">
+                                        <template v-for="(gem_id, index) in gems[slot]" v-if="gem_id">
+                                            <span v-if="index > 0">,</span>
+                                            <a :href="itemUrl(gem_id)" target="_blank" :class="['gem-color', 'color-'+getGem(gem_id).color]">
+                                                {{ getGem(gem_id).title }}
+                                            </a>
+                                        </template>
+                                    </template>
+                                </td>
+                            </tr>
+                        </tbody>
+                    </table>
+                    <div class="mt-2">
+                        <div class="btn" @click="copyEquiplist">Copy</div>
+                        <div class="btn" @click="closeEquiplist">Close</div>
+                    </div>
+                    <div class="close" @click="closeEquiplist">
+                        <span class="material-icons">
+                            &#xe5cd;
+                        </span>
+                    </div>
+                </div>
+            </div>
         </div>
     </div>
 </template>
@@ -721,6 +807,8 @@
                 import_string: null,
                 export_open: false,
                 export_string: null,
+                equiplist_open: false,
+                equiplist_string: null,
                 final_stats: null,
                 result: null,
                 is_running: false,
@@ -789,6 +877,7 @@
                     conjured: 8008,
                     demonic_rune: false,
                     very_berry: false,
+                    drums_perma: false,
 
                     tirisfal_2set: false,
                     tirisfal_4set: false,
@@ -821,11 +910,14 @@
                     cold_snap_at: 30,
                     combustion_at: 10,
                     trinket1_at: 10,
+                    trinket1_reuse_at: 0,
                     trinket2_at: 30,
+                    trinket2_reuse_at: 0,
                     berserking_at: 41,
                     arcane_power_at: 1,
                     presence_of_mind_at: 0,
                     drums_at: 1,
+                    evocation_at: 0,
                     potion_at: 1,
                     conjured_at: 1,
 
@@ -1058,6 +1150,15 @@
             getItem(slot, id) {
                 var eslot = this.equipSlotToItemSlot(slot);
                 return _.find(this.items.equip[eslot], {id: id}, null);
+            },
+
+            getGem(id) {
+                return _.find(this.items.gems, {id: id}, null);
+            },
+
+            getEnchant(slot, id) {
+                var eslot = this.equipSlotToItemSlot(slot);
+                return _.find(this.items.enchants[eslot], {id: id}, null);
             },
 
             equippedItem(slot) {
@@ -1382,24 +1483,28 @@
                     this.config.meta_gem = this.metaGem().id;
             },
 
-            itemUrl(item) {
+            itemUrl(id) {
+                if (typeof(id) == "object")
+                    id = id.id;
                 if (this.item_source == "tbcdb")
-                    return "https://tbcdb.com/?item="+item.id;
+                    return "https://tbcdb.com/?item="+id;
                 if (this.item_source == "endless")
-                    return "https://db.endless.gg/?item="+item.id;
+                    return "https://db.endless.gg/?item="+id;
                 if (this.item_source == "twinstar")
-                    return "https://tbc-twinhead.twinstar.cz/?item="+item.id;
-                return "https://tbc.wowhead.com/?item="+item.id;
+                    return "https://tbc-twinhead.twinstar.cz/?item="+id;
+                return "https://tbc.wowhead.com/?item="+id;
             },
 
-            spellUrl(spell) {
+            spellUrl(id) {
+                if (typeof(id) == "object")
+                    id = id.id;
                 if (this.item_source == "tbcdb")
-                    return "https://tbcdb.com/?spell="+spell.id;
+                    return "https://tbcdb.com/?spell="+id;
                 if (this.item_source == "endless")
-                    return "https://db.endless.gg/?spell="+spell.id;
+                    return "https://db.endless.gg/?spell="+id;
                 if (this.item_source == "twinstar")
-                    return "https://tbc-twinhead.twinstar.cz/?spell="+spell.id;
-                return "https://tbc.wowhead.com/?spell="+spell.id;
+                    return "https://tbc-twinhead.twinstar.cz/?spell="+id;
+                return "https://tbc.wowhead.com/?spell="+id;
             },
 
             critRatingToChance(rating) {
@@ -1882,6 +1987,45 @@
             closeImport() {
                 this.import_open = false;
                 this.import_string = null;
+            },
+
+            copyEquiplist() {
+                var arr = [];
+
+                var str, item, enchant, gem;
+                for (var slot in this.equipped) {
+                    if (!this.equipped[slot])
+                        continue;
+                    item = this.getItem(slot, this.equipped[slot]);
+                    str = this.formatKey(slot)+": "+item.title;
+
+                    if (_.get(this.enchants, slot)) {
+                        enchant = this.getEnchant(slot, this.enchants[slot]);
+                        str+= " ("+enchant.title+")";
+                    }
+
+                    if (_.get(this.gems, slot)) {
+                        for (var i in this.gems[slot]) {
+                            if (this.gems[slot][i]) {
+                                gem = this.getGem(this.gems[slot][i]);
+                                str+= " ["+gem.title+"]";
+                            }
+                        }
+                    }
+
+                    arr.push(str);
+                }
+
+                str = arr.join("\r\n");
+                this.$copyToClipboard(str);
+            },
+
+            openEquiplist() {
+                this.equiplist_open = true;
+            },
+
+            closeEquiplist() {
+                this.equiplist_open = false;
             },
 
             saveProfile(profile) {
