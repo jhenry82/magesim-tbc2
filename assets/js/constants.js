@@ -36,8 +36,9 @@ export default {
         ELIXIR_NONE: 0,
         ELIXIR_GREATER_ARCANE: 13454,
         ELIXIR_ADEPTS: 28103,
-        ELIXIR_MAJOR_MAGEBLOOD: 22840,
+        ELIXIR_MAGEBLOOD: 20007,
         ELIXIR_DRAENIC_WISDOM: 32067,
+        ELIXIR_GREATER_FIREPOWER: 21546,
     },
     drums: {
         DRUMS_NONE: 0,
@@ -48,6 +49,7 @@ export default {
     weapon_oils: {
         OIL_NONE: 0,
         OIL_BRILLIANT_WIZARD: 20749,
+        OIL_BRILLIANT_MANA: 20748,
         OIL_SUPERIOR_WIZARD: 22522,
         OIL_SUPERIOR_MANA: 22521,
         OIL_BLESSED_WIZARD: 23123,

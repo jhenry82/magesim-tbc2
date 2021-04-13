@@ -180,6 +180,7 @@
                                         v-for="(set, key) in items.quicksets"
                                         v-if="active_slot == 'quicksets'"
                                     >
+                                        <td></td>
                                         <td>{{ set.title }}</td>
                                         <td></td>
                                         <td></td>
@@ -515,13 +516,14 @@
                                 <select v-model="config.battle_elixir">
                                     <option :value="elixirs.ELIXIR_NONE">None</option>
                                     <option :value="elixirs.ELIXIR_GREATER_ARCANE">Greater Arcane (35 sp)</option>
+                                    <option :value="elixirs.ELIXIR_GREATER_FIREPOWER">Greater Firepower (40 fire)</option>
                                 </select>
                             </div>
                             <div class="form-item" v-if="!config.flask">
                                 <label>Guardian Elixir</label>
                                 <select v-model="config.guardian_elixir">
                                     <option :value="elixirs.ELIXIR_NONE">None</option>
-                                    <option :value="elixirs.ELIXIR_MAJOR_MAGEBLOOD">Major Mageblood (16 mp5)</option>
+                                    <option :value="elixirs.ELIXIR_MAGEBLOOD">Mageblood (12 mp5)</option>
                                 </select>
                             </div>
                             <div class="form-item">
@@ -530,6 +532,7 @@
                                     <option :value="weapon_oils.OIL_NONE">None</option>
                                     <option :value="weapon_oils.OIL_BRILLIANT_WIZARD">Brilliant Wizard Oil (36 sp / 14 crit)</option>
                                     <option :value="weapon_oils.OIL_BLESSED_WIZARD">Blessed Wizard Oil (60 sp)</option>
+                                    <option :value="weapon_oils.OIL_BRILLIANT_MANA">Brilliant Mana Oil (12 mp5)</option>
                                 </select>
                             </div>
                             <div class="form-item">
@@ -590,14 +593,6 @@
                                 <label>Combustion at</label>
                                 <input type="text" v-model.number="config.combustion_at">
                             </div>
-                            <div class="form-item" v-if="config.potion && config.potion != potions.POTION_MANA">
-                                <label>Potion at</label>
-                                <input type="text" v-model.number="config.potion_at">
-                            </div>
-                            <div class="form-item" v-if="config.conjured && config.conjured != conjureds.CONJURED_MANA_GEM && config.conjured != conjureds.CONJURED_MANA_GEM_ALL">
-                                <label>Conjured at</label>
-                                <input type="text" v-model.number="config.conjured_at">
-                            </div>
                             <div class="form-item">
                                 <label>
                                     <span>Evocation at</span>
@@ -609,27 +604,57 @@
                                 <label>Berserking at</label>
                                 <input type="text" v-model.number="config.berserking_at">
                             </div>
-                            <div class="form-item" v-if="hasUseTrinket(1)">
-                                <label>Trinket #1 at</label>
-                                <input type="text" v-model.number="config.trinket1_at">
+                            <div class="form-row" v-if="config.potion && config.potion != potions.POTION_MANA">
+                                <div class="form-item">
+                                    <label>Potion at</label>
+                                    <input type="text" v-model.number="config.potion_at">
+                                </div>
+                                <div class="form-item">
+                                    <label>
+                                        <span>Reuse at</span>
+                                        <help>Settings this to 0 will reuse potion on CD</help>
+                                    </label>
+                                    <input type="text" v-model.number="config.potion_reuse_at">
+                                </div>
                             </div>
-                            <div class="form-item" v-if="hasUseTrinket(1)">
-                                <label>
-                                    <span>Trinket #1 reuse at</span>
-                                    <help>Settings this to 0 will reuse trinket on CD</help>
-                                </label>
-                                <input type="text" v-model.number="config.trinket1_reuse_at">
+                            <div class="form-row" v-if="config.conjured && config.conjured != conjureds.CONJURED_MANA_GEM">
+                                <div class="form-item">
+                                    <label>Conjured at</label>
+                                    <input type="text" v-model.number="config.conjured_at">
+                                </div>
+                                <div class="form-item">
+                                    <label>
+                                        <span>Reuse at</span>
+                                        <help>Settings this to 0 will reuse conjured on CD</help>
+                                    </label>
+                                    <input type="text" v-model.number="config.conjured_reuse_at">
+                                </div>
                             </div>
-                            <div class="form-item" v-if="hasUseTrinket(2)">
-                                <label>Trinket #2 at</label>
-                                <input type="text" v-model.number="config.trinket2_at">
+                            <div class="form-row" v-if="hasUseTrinket(1)">
+                                <div class="form-item"">
+                                    <label>Trinket #1 at</label>
+                                    <input type="text" v-model.number="config.trinket1_at">
+                                </div>
+                                <div class="form-item">
+                                    <label>
+                                        <span>Reuse at</span>
+                                        <help>Settings this to 0 will reuse trinket on CD</help>
+                                    </label>
+                                    <input type="text" v-model.number="config.trinket1_reuse_at">
+                                </div>
                             </div>
-                            <div class="form-item" v-if="hasUseTrinket(2)">
-                                <label>
-                                    <span>Trinket #2 reuse at</span>
-                                    <help>Settings this to 0 will reuse trinket on CD</help>
-                                </label>
-                                <input type="text" v-model.number="config.trinket2_reuse_at">
+                            <div class="form-row" v-if="hasUseTrinket(2)">
+                                <div class="form-item">
+                                    <label>Trinket #2 at</label>
+                                    <input type="text" v-model.number="config.trinket2_at">
+                                </div>
+                                <div class="form-item">
+                                    <label>
+                                        <span>Reuse at</span>
+                                        <help>Settings this to 0 will reuse trinket on CD</help>
+                                    </label>
+                                    <input type="text" v-model.number="config.trinket2_reuse_at">
+                                </div>
                             </div>
                             <div class="form-item">
                                 <label><input type="checkbox" v-model="config.power_infusion"> <span>Power Infusion <template v-if="config.power_infusion">at</template></span></label>
@@ -919,7 +944,9 @@
                     drums_at: 1,
                     evocation_at: 0,
                     potion_at: 1,
+                    potion_reuse_at: 0,
                     conjured_at: 1,
+                    conjured_reuse_at: 0,
 
                     talents: "https://tbc.wowhead.com/talent-calc/mage/-505200012302331050125-023500001",
 
@@ -1233,14 +1260,16 @@
                 stats.spirit = Math.round(stats.spirit);
 
                 // Mp5
-                if (this.config.guardian_elixir == this.elixirs.ELIXIR_MAJOR_MAGEBLOOD)
-                    stats.mp5+= 16;
+                if (this.config.guardian_elixir == this.elixirs.ELIXIR_MAGEBLOOD)
+                    stats.mp5+= 12;
                 if (this.config.weapon_oil == this.weapon_oils.OIL_SUPERIOR_MANA)
                     stats.mp5+= 14;
                 if (this.config.food == this.foods.FOOD_MP5)
                     stats.mp5+= 8;
                 if (this.config.rend_buff)
                     stats.mp5+= 10;
+                if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_MANA)
+                    stats.mp5+= 12;
 
                 // Spell power
                 var int_multi = 0;
@@ -1277,6 +1306,8 @@
                     stats.spell_power+= 33;
                 if (this.config.very_berry)
                     stats.spell_power+= 23;
+                if (this.config.battle_elixir == this.elixirs.ELIXIR_GREATER_FIREPOWER)
+                    stats.spell_power_fire+= 40;
 
                 // Spell crit
                 var critrating = 0;
@@ -1486,6 +1517,8 @@
             itemUrl(id) {
                 if (typeof(id) == "object")
                     id = id.id;
+                if (id > 99900)
+                    return null;
                 if (this.item_source == "tbcdb")
                     return "https://tbcdb.com/?item="+id;
                 if (this.item_source == "endless")
@@ -1576,6 +1609,8 @@
                 this.finalStats();
                 if (typeof(save) == "undefined" || save)
                     this.saveGear();
+
+                this.refreshTooltips();
             },
 
             isEquipped(slot, id) {

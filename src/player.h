@@ -131,10 +131,12 @@ public:
         stats.spirit = round(stats.spirit);
 
         // Mp5
-        if (config->guardian_elixir == ELIXIR_MAJOR_MAGEBLOOD)
-            stats.mp5+= 16;
+        if (config->guardian_elixir == ELIXIR_MAGEBLOOD)
+            stats.mp5+= 12;
         if (config->weapon_oil == OIL_SUPERIOR_MANA)
             stats.mp5+= 14;
+        if (config->weapon_oil == OIL_BRILLIANT_MANA)
+            stats.mp5+= 12;
 
         // Spell power
         double int_multi = 0;
@@ -171,6 +173,8 @@ public:
             stats.spell_power+= 24.0;
         if (config->battle_elixir == ELIXIR_GREATER_ARCANE)
             stats.spell_power+= 35.0;
+        if (config->battle_elixir == ELIXIR_GREATER_FIREPOWER)
+            stats.spell_power_fire+= 40.0;
 
         // Spell crit
         double critrating = 0;

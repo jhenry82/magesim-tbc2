@@ -101,10 +101,12 @@ EMSCRIPTEN_BINDINGS(my_module) {
 
     emscripten::enum_<Elixir>("Elixir")
         .value("ELIXIR_NONE", ELIXIR_NONE)
-        .value("ELIXIR_MAJOR_MAGEBLOOD", ELIXIR_MAJOR_MAGEBLOOD)
+        .value("ELIXIR_MAGEBLOOD", ELIXIR_MAGEBLOOD)
         .value("ELIXIR_DRAENIC_WISDOM", ELIXIR_DRAENIC_WISDOM)
         .value("ELIXIR_GREATER_ARCANE", ELIXIR_GREATER_ARCANE)
-        .value("ELIXIR_ADEPTS", ELIXIR_ADEPTS);
+        .value("ELIXIR_ADEPTS", ELIXIR_ADEPTS)
+        .value("ELIXIR_GREATER_FIREPOWER", ELIXIR_GREATER_FIREPOWER)
+        ;
 
     emscripten::enum_<Drums>("Drums")
         .value("DRUMS_NONE", DRUMS_NONE)
@@ -115,6 +117,7 @@ EMSCRIPTEN_BINDINGS(my_module) {
     emscripten::enum_<WeaponOil>("WeaponOil")
         .value("OIL_NONE", OIL_NONE)
         .value("OIL_BRILLIANT_WIZARD", OIL_BRILLIANT_WIZARD)
+        .value("OIL_BRILLIANT_MANA", OIL_BRILLIANT_MANA)
         .value("OIL_SUPERIOR_WIZARD", OIL_SUPERIOR_WIZARD)
         .value("OIL_BLESSED_WIZARD", OIL_BLESSED_WIZARD)
         .value("OIL_SUPERIOR_MANA", OIL_SUPERIOR_MANA);
@@ -228,7 +231,9 @@ EMSCRIPTEN_BINDINGS(my_module) {
         .property("combustion_at", &Config::combustion_at)
         .property("drums_at", &Config::drums_at)
         .property("potion_at", &Config::potion_at)
+        .property("potion_reuse_at", &Config::potion_reuse_at)
         .property("conjured_at", &Config::conjured_at)
+        .property("conjured_reuse_at", &Config::conjured_reuse_at)
         ;
 
     emscripten::function("allocConfig", &allocConfig);

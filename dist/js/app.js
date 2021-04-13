@@ -126,8 +126,9 @@ __webpack_require__.r(__webpack_exports__);
     ELIXIR_NONE: 0,
     ELIXIR_GREATER_ARCANE: 13454,
     ELIXIR_ADEPTS: 28103,
-    ELIXIR_MAJOR_MAGEBLOOD: 22840,
-    ELIXIR_DRAENIC_WISDOM: 32067
+    ELIXIR_MAGEBLOOD: 20007,
+    ELIXIR_DRAENIC_WISDOM: 32067,
+    ELIXIR_GREATER_FIREPOWER: 21546
   },
   drums: {
     DRUMS_NONE: 0,
@@ -138,6 +139,7 @@ __webpack_require__.r(__webpack_exports__);
   weapon_oils: {
     OIL_NONE: 0,
     OIL_BRILLIANT_WIZARD: 20749,
+    OIL_BRILLIANT_MANA: 20748,
     OIL_SUPERIOR_WIZARD: 22522,
     OIL_SUPERIOR_MANA: 22521,
     OIL_BLESSED_WIZARD: 23123
@@ -819,8 +821,7 @@ var gems = [{
   title: "Chaotic Skyfire Diamond",
   color: "m",
   crit: 12,
-  desc: "+3% crit dmg",
-  phase: 4
+  desc: "+3% crit dmg"
 }, {
   id: ids.EMBER_SKYFIRE,
   title: "Ember Skyfire Diamond",
@@ -1106,6 +1107,12 @@ var itemsets = [{
   title: "The Twin Stars",
   set2: {
     sp: 15
+  }
+}, {
+  id: 658,
+  title: "Mana-Etched Regalia",
+  set2: {
+    hit: 35
   }
 }];
 var quicksets = {
@@ -2168,6 +2175,31 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2301,7 +2333,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         drums_at: 1,
         evocation_at: 0,
         potion_at: 1,
+        potion_reuse_at: 0,
         conjured_at: 1,
+        conjured_reuse_at: 0,
         talents: "https://tbc.wowhead.com/talent-calc/mage/-505200012302331050125-023500001",
         stats: {
           intellect: 465,
@@ -2626,10 +2660,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       stats.intellect = Math.round(stats.intellect);
       stats.spirit = Math.round(stats.spirit); // Mp5
 
-      if (this.config.guardian_elixir == this.elixirs.ELIXIR_MAJOR_MAGEBLOOD) stats.mp5 += 16;
+      if (this.config.guardian_elixir == this.elixirs.ELIXIR_MAGEBLOOD) stats.mp5 += 12;
       if (this.config.weapon_oil == this.weapon_oils.OIL_SUPERIOR_MANA) stats.mp5 += 14;
       if (this.config.food == this.foods.FOOD_MP5) stats.mp5 += 8;
-      if (this.config.rend_buff) stats.mp5 += 10; // Spell power
+      if (this.config.rend_buff) stats.mp5 += 10;
+      if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_MANA) stats.mp5 += 12; // Spell power
 
       var int_multi = 0;
       if (x = this.hasTalent("mind_mastery")) int_multi += x * 0.05;
@@ -2651,7 +2686,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (this.config.battle_elixir == this.elixirs.ELIXIR_ADEPTS) stats.spell_power += 24;
       if (this.config.battle_elixir == this.elixirs.ELIXIR_GREATER_ARCANE) stats.spell_power += 35;
       if (this.config.atiesh_warlock_buff) stats.spell_power += 33;
-      if (this.config.very_berry) stats.spell_power += 23; // Spell crit
+      if (this.config.very_berry) stats.spell_power += 23;
+      if (this.config.battle_elixir == this.elixirs.ELIXIR_GREATER_FIREPOWER) stats.spell_power_fire += 40; // Spell crit
 
       var critrating = 0;
       if (this.config.judgement_of_the_crusader) stats.crit += 3;
@@ -2831,6 +2867,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
     },
     itemUrl: function itemUrl(id) {
       if (_typeof(id) == "object") id = id.id;
+      if (id > 99900) return null;
       if (this.item_source == "tbcdb") return "https://tbcdb.com/?item=" + id;
       if (this.item_source == "endless") return "https://db.endless.gg/?item=" + id;
       if (this.item_source == "twinstar") return "https://tbc-twinhead.twinstar.cz/?item=" + id;
@@ -2896,6 +2933,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       this.finalStats();
       if (typeof save == "undefined" || save) this.saveGear();
+      this.refreshTooltips();
     },
     isEquipped: function isEquipped(slot, id) {
       if (slot == "trinket" || slot == "finger") return this.isEquipped(slot + "1", id) || this.isEquipped(slot + "2", id);
@@ -60355,6 +60393,8 @@ var render = function() {
                               }
                             },
                             [
+                              _c("td"),
+                              _vm._v(" "),
                               _c("td", [_vm._v(_vm._s(set.title))]),
                               _vm._v(" "),
                               _c("td"),
@@ -62937,6 +62977,16 @@ var render = function() {
                                 }
                               },
                               [_vm._v("Greater Arcane (35 sp)")]
+                            ),
+                            _vm._v(" "),
+                            _c(
+                              "option",
+                              {
+                                domProps: {
+                                  value: _vm.elixirs.ELIXIR_GREATER_FIREPOWER
+                                }
+                              },
+                              [_vm._v("Greater Firepower (40 fire)")]
                             )
                           ]
                         )
@@ -62989,10 +63039,10 @@ var render = function() {
                               "option",
                               {
                                 domProps: {
-                                  value: _vm.elixirs.ELIXIR_MAJOR_MAGEBLOOD
+                                  value: _vm.elixirs.ELIXIR_MAGEBLOOD
                                 }
                               },
-                              [_vm._v("Major Mageblood (16 mp5)")]
+                              [_vm._v("Mageblood (12 mp5)")]
                             )
                           ]
                         )
@@ -63058,6 +63108,16 @@ var render = function() {
                             }
                           },
                           [_vm._v("Blessed Wizard Oil (60 sp)")]
+                        ),
+                        _vm._v(" "),
+                        _c(
+                          "option",
+                          {
+                            domProps: {
+                              value: _vm.weapon_oils.OIL_BRILLIANT_MANA
+                            }
+                          },
+                          [_vm._v("Brilliant Mana Oil (12 mp5)")]
                         )
                       ]
                     )
@@ -63577,79 +63637,6 @@ var render = function() {
                       ])
                     : _vm._e(),
                   _vm._v(" "),
-                  _vm.config.potion &&
-                  _vm.config.potion != _vm.potions.POTION_MANA
-                    ? _c("div", { staticClass: "form-item" }, [
-                        _c("label", [_vm._v("Potion at")]),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model.number",
-                              value: _vm.config.potion_at,
-                              expression: "config.potion_at",
-                              modifiers: { number: true }
-                            }
-                          ],
-                          attrs: { type: "text" },
-                          domProps: { value: _vm.config.potion_at },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.config,
-                                "potion_at",
-                                _vm._n($event.target.value)
-                              )
-                            },
-                            blur: function($event) {
-                              return _vm.$forceUpdate()
-                            }
-                          }
-                        })
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.config.conjured &&
-                  _vm.config.conjured != _vm.conjureds.CONJURED_MANA_GEM &&
-                  _vm.config.conjured != _vm.conjureds.CONJURED_MANA_GEM_ALL
-                    ? _c("div", { staticClass: "form-item" }, [
-                        _c("label", [_vm._v("Conjured at")]),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model.number",
-                              value: _vm.config.conjured_at,
-                              expression: "config.conjured_at",
-                              modifiers: { number: true }
-                            }
-                          ],
-                          attrs: { type: "text" },
-                          domProps: { value: _vm.config.conjured_at },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
-                              }
-                              _vm.$set(
-                                _vm.config,
-                                "conjured_at",
-                                _vm._n($event.target.value)
-                              )
-                            },
-                            blur: function($event) {
-                              return _vm.$forceUpdate()
-                            }
-                          }
-                        })
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
                   _c("div", { staticClass: "form-item" }, [
                     _c(
                       "label",
@@ -63730,167 +63717,333 @@ var render = function() {
                       ])
                     : _vm._e(),
                   _vm._v(" "),
-                  _vm.hasUseTrinket(1)
-                    ? _c("div", { staticClass: "form-item" }, [
-                        _c("label", [_vm._v("Trinket #1 at")]),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model.number",
-                              value: _vm.config.trinket1_at,
-                              expression: "config.trinket1_at",
-                              modifiers: { number: true }
-                            }
-                          ],
-                          attrs: { type: "text" },
-                          domProps: { value: _vm.config.trinket1_at },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
+                  _vm.config.potion &&
+                  _vm.config.potion != _vm.potions.POTION_MANA
+                    ? _c("div", { staticClass: "form-row" }, [
+                        _c("div", { staticClass: "form-item" }, [
+                          _c("label", [_vm._v("Potion at")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model.number",
+                                value: _vm.config.potion_at,
+                                expression: "config.potion_at",
+                                modifiers: { number: true }
                               }
-                              _vm.$set(
-                                _vm.config,
-                                "trinket1_at",
-                                _vm._n($event.target.value)
-                              )
-                            },
-                            blur: function($event) {
-                              return _vm.$forceUpdate()
+                            ],
+                            attrs: { type: "text" },
+                            domProps: { value: _vm.config.potion_at },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.config,
+                                  "potion_at",
+                                  _vm._n($event.target.value)
+                                )
+                              },
+                              blur: function($event) {
+                                return _vm.$forceUpdate()
+                              }
                             }
-                          }
-                        })
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-item" }, [
+                          _c(
+                            "label",
+                            [
+                              _c("span", [_vm._v("Reuse at")]),
+                              _vm._v(" "),
+                              _c("help", [
+                                _vm._v(
+                                  "Settings this to 0 will reuse potion on CD"
+                                )
+                              ])
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model.number",
+                                value: _vm.config.potion_reuse_at,
+                                expression: "config.potion_reuse_at",
+                                modifiers: { number: true }
+                              }
+                            ],
+                            attrs: { type: "text" },
+                            domProps: { value: _vm.config.potion_reuse_at },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.config,
+                                  "potion_reuse_at",
+                                  _vm._n($event.target.value)
+                                )
+                              },
+                              blur: function($event) {
+                                return _vm.$forceUpdate()
+                              }
+                            }
+                          })
+                        ])
+                      ])
+                    : _vm._e(),
+                  _vm._v(" "),
+                  _vm.config.conjured &&
+                  _vm.config.conjured != _vm.conjureds.CONJURED_MANA_GEM
+                    ? _c("div", { staticClass: "form-row" }, [
+                        _c("div", { staticClass: "form-item" }, [
+                          _c("label", [_vm._v("Conjured at")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model.number",
+                                value: _vm.config.conjured_at,
+                                expression: "config.conjured_at",
+                                modifiers: { number: true }
+                              }
+                            ],
+                            attrs: { type: "text" },
+                            domProps: { value: _vm.config.conjured_at },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.config,
+                                  "conjured_at",
+                                  _vm._n($event.target.value)
+                                )
+                              },
+                              blur: function($event) {
+                                return _vm.$forceUpdate()
+                              }
+                            }
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-item" }, [
+                          _c(
+                            "label",
+                            [
+                              _c("span", [_vm._v("Reuse at")]),
+                              _vm._v(" "),
+                              _c("help", [
+                                _vm._v(
+                                  "Settings this to 0 will reuse conjured on CD"
+                                )
+                              ])
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model.number",
+                                value: _vm.config.conjured_reuse_at,
+                                expression: "config.conjured_reuse_at",
+                                modifiers: { number: true }
+                              }
+                            ],
+                            attrs: { type: "text" },
+                            domProps: { value: _vm.config.conjured_reuse_at },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.config,
+                                  "conjured_reuse_at",
+                                  _vm._n($event.target.value)
+                                )
+                              },
+                              blur: function($event) {
+                                return _vm.$forceUpdate()
+                              }
+                            }
+                          })
+                        ])
                       ])
                     : _vm._e(),
                   _vm._v(" "),
                   _vm.hasUseTrinket(1)
-                    ? _c("div", { staticClass: "form-item" }, [
-                        _c(
-                          "label",
-                          [
-                            _c("span", [_vm._v("Trinket #1 reuse at")]),
-                            _vm._v(" "),
-                            _c("help", [
-                              _vm._v(
-                                "Settings this to 0 will reuse trinket on CD"
-                              )
-                            ])
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model.number",
-                              value: _vm.config.trinket1_reuse_at,
-                              expression: "config.trinket1_reuse_at",
-                              modifiers: { number: true }
-                            }
-                          ],
-                          attrs: { type: "text" },
-                          domProps: { value: _vm.config.trinket1_reuse_at },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
+                    ? _c("div", { staticClass: "form-row" }, [
+                        _c("div", { staticClass: "form-item" }, [
+                          _c("label", [_vm._v("Trinket #1 at")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model.number",
+                                value: _vm.config.trinket1_at,
+                                expression: "config.trinket1_at",
+                                modifiers: { number: true }
                               }
-                              _vm.$set(
-                                _vm.config,
-                                "trinket1_reuse_at",
-                                _vm._n($event.target.value)
-                              )
-                            },
-                            blur: function($event) {
-                              return _vm.$forceUpdate()
+                            ],
+                            attrs: { type: "text" },
+                            domProps: { value: _vm.config.trinket1_at },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.config,
+                                  "trinket1_at",
+                                  _vm._n($event.target.value)
+                                )
+                              },
+                              blur: function($event) {
+                                return _vm.$forceUpdate()
+                              }
                             }
-                          }
-                        })
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-item" }, [
+                          _c(
+                            "label",
+                            [
+                              _c("span", [_vm._v("Reuse at")]),
+                              _vm._v(" "),
+                              _c("help", [
+                                _vm._v(
+                                  "Settings this to 0 will reuse trinket on CD"
+                                )
+                              ])
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model.number",
+                                value: _vm.config.trinket1_reuse_at,
+                                expression: "config.trinket1_reuse_at",
+                                modifiers: { number: true }
+                              }
+                            ],
+                            attrs: { type: "text" },
+                            domProps: { value: _vm.config.trinket1_reuse_at },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.config,
+                                  "trinket1_reuse_at",
+                                  _vm._n($event.target.value)
+                                )
+                              },
+                              blur: function($event) {
+                                return _vm.$forceUpdate()
+                              }
+                            }
+                          })
+                        ])
                       ])
                     : _vm._e(),
                   _vm._v(" "),
                   _vm.hasUseTrinket(2)
-                    ? _c("div", { staticClass: "form-item" }, [
-                        _c("label", [_vm._v("Trinket #2 at")]),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model.number",
-                              value: _vm.config.trinket2_at,
-                              expression: "config.trinket2_at",
-                              modifiers: { number: true }
-                            }
-                          ],
-                          attrs: { type: "text" },
-                          domProps: { value: _vm.config.trinket2_at },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
+                    ? _c("div", { staticClass: "form-row" }, [
+                        _c("div", { staticClass: "form-item" }, [
+                          _c("label", [_vm._v("Trinket #2 at")]),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model.number",
+                                value: _vm.config.trinket2_at,
+                                expression: "config.trinket2_at",
+                                modifiers: { number: true }
                               }
-                              _vm.$set(
-                                _vm.config,
-                                "trinket2_at",
-                                _vm._n($event.target.value)
-                              )
-                            },
-                            blur: function($event) {
-                              return _vm.$forceUpdate()
-                            }
-                          }
-                        })
-                      ])
-                    : _vm._e(),
-                  _vm._v(" "),
-                  _vm.hasUseTrinket(2)
-                    ? _c("div", { staticClass: "form-item" }, [
-                        _c(
-                          "label",
-                          [
-                            _c("span", [_vm._v("Trinket #2 reuse at")]),
-                            _vm._v(" "),
-                            _c("help", [
-                              _vm._v(
-                                "Settings this to 0 will reuse trinket on CD"
-                              )
-                            ])
-                          ],
-                          1
-                        ),
-                        _vm._v(" "),
-                        _c("input", {
-                          directives: [
-                            {
-                              name: "model",
-                              rawName: "v-model.number",
-                              value: _vm.config.trinket2_reuse_at,
-                              expression: "config.trinket2_reuse_at",
-                              modifiers: { number: true }
-                            }
-                          ],
-                          attrs: { type: "text" },
-                          domProps: { value: _vm.config.trinket2_reuse_at },
-                          on: {
-                            input: function($event) {
-                              if ($event.target.composing) {
-                                return
+                            ],
+                            attrs: { type: "text" },
+                            domProps: { value: _vm.config.trinket2_at },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.config,
+                                  "trinket2_at",
+                                  _vm._n($event.target.value)
+                                )
+                              },
+                              blur: function($event) {
+                                return _vm.$forceUpdate()
                               }
-                              _vm.$set(
-                                _vm.config,
-                                "trinket2_reuse_at",
-                                _vm._n($event.target.value)
-                              )
-                            },
-                            blur: function($event) {
-                              return _vm.$forceUpdate()
                             }
-                          }
-                        })
+                          })
+                        ]),
+                        _vm._v(" "),
+                        _c("div", { staticClass: "form-item" }, [
+                          _c(
+                            "label",
+                            [
+                              _c("span", [_vm._v("Reuse at")]),
+                              _vm._v(" "),
+                              _c("help", [
+                                _vm._v(
+                                  "Settings this to 0 will reuse trinket on CD"
+                                )
+                              ])
+                            ],
+                            1
+                          ),
+                          _vm._v(" "),
+                          _c("input", {
+                            directives: [
+                              {
+                                name: "model",
+                                rawName: "v-model.number",
+                                value: _vm.config.trinket2_reuse_at,
+                                expression: "config.trinket2_reuse_at",
+                                modifiers: { number: true }
+                              }
+                            ],
+                            attrs: { type: "text" },
+                            domProps: { value: _vm.config.trinket2_reuse_at },
+                            on: {
+                              input: function($event) {
+                                if ($event.target.composing) {
+                                  return
+                                }
+                                _vm.$set(
+                                  _vm.config,
+                                  "trinket2_reuse_at",
+                                  _vm._n($event.target.value)
+                                )
+                              },
+                              blur: function($event) {
+                                return _vm.$forceUpdate()
+                              }
+                            }
+                          })
+                        ])
                       ])
                     : _vm._e(),
                   _vm._v(" "),
