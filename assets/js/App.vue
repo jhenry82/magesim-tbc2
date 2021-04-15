@@ -617,7 +617,7 @@
                                     <input type="text" v-model.number="config.potion_reuse_at">
                                 </div>
                             </div>
-                            <div class="form-row" v-if="config.conjured && config.conjured != conjureds.CONJURED_MANA_GEM">
+                            <div class="form-row" v-if="config.conjured && (config.conjured != conjureds.CONJURED_MANA_GEM && config.conjured != conjureds.CONJURED_MANA_GEM_ALL)">
                                 <div class="form-item">
                                     <label>Conjured at</label>
                                     <input type="text" v-model.number="config.conjured_at">
