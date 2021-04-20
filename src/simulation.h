@@ -903,6 +903,15 @@ public:
         }
 
         else if (player->spec == SPEC_FIRE) {
+
+            if (state->t >= config->presence_of_mind_at &&
+                !state->hasCooldown(cooldown::PRESENCE_OF_MIND) &&
+                player->talents.presence_of_mind &&
+                player->talents.pyroblast)
+            {
+                return make_shared<spell::Pyroblast>();
+            }
+
             if (shouldScorch()) {
                 next = make_shared<spell::Scorch>();
                 return next;
@@ -1184,6 +1193,9 @@ public:
         if (state->hasBuff(buff::POWER_INFUSION))
             multi-= 0.2;
 
+        if (state->hasBuff(buff::ARCANE_POWER))
+            multi+= 0.3;
+
         return round(spell->cost * multi);
     }
 
@@ -1193,7 +1205,7 @@ public:
 
         t*= castHaste();
 
-        if (t < 1.0)
+        if (t < 1.0 && !config->gcd_unlocked)
             t = 1.0;
 
         return t;
