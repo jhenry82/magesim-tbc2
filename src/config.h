@@ -27,6 +27,7 @@ struct Config
     bool molten_armor = false;
     bool inspiring_presence = false;
     bool fire_vulnerability = false;
+    bool maintain_fire_vulnerability = false;
     bool winters_chill = false;
     bool ony_buff = true;
     bool zg_buff = true;

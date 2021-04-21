@@ -2229,6 +2229,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
+//
+//
+//
 
 
 
@@ -2308,6 +2314,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         molten_armor: false,
         inspiring_presence: false,
         fire_vulnerability: false,
+        maintain_fire_vulnerability: false,
         winters_chill: false,
         ony_buff: true,
         zg_buff: true,
@@ -3177,6 +3184,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         arcane_instability: [0, 16],
         arcane_power: [0, 19],
         mind_mastery: [0, 21],
+        imp_scorch: [1, 9],
         combustion: [1, 18],
         icy_veins: [2, 8],
         cold_snap: [2, 14],
@@ -62100,6 +62108,79 @@ var render = function() {
                       _c("span", [_vm._v("Judgement of Wisdom")])
                     ])
                   ]),
+                  _vm._v(" "),
+                  _vm.config.spec == _vm.specs.SPEC_ARCANE &&
+                  _vm.hasTalent("imp_scorch")
+                    ? _c("div", { staticClass: "form-item" }, [
+                        _c(
+                          "label",
+                          [
+                            _c("input", {
+                              directives: [
+                                {
+                                  name: "model",
+                                  rawName: "v-model",
+                                  value: _vm.config.maintain_fire_vulnerability,
+                                  expression:
+                                    "config.maintain_fire_vulnerability"
+                                }
+                              ],
+                              attrs: { type: "checkbox" },
+                              domProps: {
+                                checked: Array.isArray(
+                                  _vm.config.maintain_fire_vulnerability
+                                )
+                                  ? _vm._i(
+                                      _vm.config.maintain_fire_vulnerability,
+                                      null
+                                    ) > -1
+                                  : _vm.config.maintain_fire_vulnerability
+                              },
+                              on: {
+                                change: function($event) {
+                                  var $$a =
+                                      _vm.config.maintain_fire_vulnerability,
+                                    $$el = $event.target,
+                                    $$c = $$el.checked ? true : false
+                                  if (Array.isArray($$a)) {
+                                    var $$v = null,
+                                      $$i = _vm._i($$a, $$v)
+                                    if ($$el.checked) {
+                                      $$i < 0 &&
+                                        _vm.$set(
+                                          _vm.config,
+                                          "maintain_fire_vulnerability",
+                                          $$a.concat([$$v])
+                                        )
+                                    } else {
+                                      $$i > -1 &&
+                                        _vm.$set(
+                                          _vm.config,
+                                          "maintain_fire_vulnerability",
+                                          $$a
+                                            .slice(0, $$i)
+                                            .concat($$a.slice($$i + 1))
+                                        )
+                                    }
+                                  } else {
+                                    _vm.$set(
+                                      _vm.config,
+                                      "maintain_fire_vulnerability",
+                                      $$c
+                                    )
+                                  }
+                                }
+                              }
+                            }),
+                            _vm._v(" "),
+                            _c("span", [_vm._v("Keep up Fire Vulnerability")]),
+                            _vm._v(" "),
+                            _c("help", [_vm._v("Imp. Scorch from you")])
+                          ],
+                          1
+                        )
+                      ])
+                    : _vm._e(),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-item" }, [
                     _c(
