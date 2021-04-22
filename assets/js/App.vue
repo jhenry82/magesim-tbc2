@@ -1941,7 +1941,7 @@
                     spec = "arcane";
                 }
                 else if (e.target.value == this.specs.SPEC_FROST) {
-                    talents = "https://tbc.wowhead.com/talent-calc/mage/23001523100301403201--053500031003";
+                    talents = "https://tbc.wowhead.com/talent-calc/mage/230015231003014032012--053500031001";
                     spec = "frost";
                 }
                 else if (e.target.value == this.specs.SPEC_FIRE) {
