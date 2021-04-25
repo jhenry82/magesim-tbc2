@@ -55,8 +55,8 @@ namespace spell
             id = ARCANE_BLAST;
             name = "Arcane Blast";
             cost = 195;
-            min_dmg = 648;
-            max_dmg = 752;
+            min_dmg = 668;
+            max_dmg = 772;
             cast_time = 2.5;
             coeff = 2.5/3.5;
             school = SCHOOL_ARCANE;

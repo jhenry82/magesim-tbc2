@@ -785,7 +785,7 @@
                             <tr
                                 class="equipped-item"
                                 v-for="(item_id, slot) in equipped"
-                                v-if="item_id"
+                                v-if="item_id && slot != 'stat_weight'"
                             >
                                 <td>{{ formatKey(slot) }}</td>
                                 <td>
@@ -1005,7 +1005,7 @@
                 "weapon", "off_hand", "ranged",
                 "head", "neck", "shoulder", "back", "chest", "wrist",
                 "hands", "waist", "legs", "feet",
-                "finger1", "finger2", "trinket1", "trinket2","stat_weight",
+                "finger1", "finger2", "trinket1", "trinket2", "stat_weight",
             ];
 
             for (var slot of slots) {
@@ -1467,23 +1467,23 @@
                     spell_power_fire: 0,
                 };
 
-                if (this.config.race == "RACE_TROLL") {
+                if (this.config.race == this.races.RACE_TROLL) {
                     stats.intellect = 121;
                     stats.spirit = 121;
                 }
-                if (this.config.race == "RACE_BLOOD_ELF") {
+                if (this.config.race == this.races.RACE_BLOOD_ELF) {
                     stats.intellect = 121;
                     stats.spirit = 121;
                 }
-                if (this.config.race == "RACE_DRAENEI") {
+                if (this.config.race == this.races.RACE_DRAENEI) {
                     stats.intellect = 125;
                     stats.spirit = 125;
                 }
-                if (this.config.race == "RACE_GNOME") {
+                if (this.config.race == this.races.RACE_GNOME) {
                     stats.intellect = 133;
                     stats.spirit = 120;
                 }
-                if (this.config.race == "RACE_HUMAN") {
+                if (this.config.race == this.races.RACE_HUMAN) {
                     stats.intellect = 125;
                     stats.spirit = 126;
                 }

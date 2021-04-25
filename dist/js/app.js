@@ -2840,27 +2840,27 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         spell_power_fire: 0
       };
 
-      if (this.config.race == "RACE_TROLL") {
+      if (this.config.race == this.races.RACE_TROLL) {
         stats.intellect = 121;
         stats.spirit = 121;
       }
 
-      if (this.config.race == "RACE_BLOOD_ELF") {
+      if (this.config.race == this.races.RACE_BLOOD_ELF) {
         stats.intellect = 121;
         stats.spirit = 121;
       }
 
-      if (this.config.race == "RACE_DRAENEI") {
+      if (this.config.race == this.races.RACE_DRAENEI) {
         stats.intellect = 125;
         stats.spirit = 125;
       }
 
-      if (this.config.race == "RACE_GNOME") {
+      if (this.config.race == this.races.RACE_GNOME) {
         stats.intellect = 133;
         stats.spirit = 120;
       }
 
-      if (this.config.race == "RACE_HUMAN") {
+      if (this.config.race == this.races.RACE_HUMAN) {
         stats.intellect = 125;
         stats.spirit = 126;
       }
@@ -3262,7 +3262,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         talents = "https://tbc.wowhead.com/talent-calc/mage/2500250300030150330125--053500031003001";
         spec = "arcane";
       } else if (e.target.value == this.specs.SPEC_FROST) {
-        talents = "https://tbc.wowhead.com/talent-calc/mage/23001523100301403201--053500031003";
+        talents = "https://tbc.wowhead.com/talent-calc/mage/230015231003014032012--053500031001";
         spec = "frost";
       } else if (e.target.value == this.specs.SPEC_FIRE) {
         talents = "https://tbc.wowhead.com/talent-calc/mage/-505200012302331050125-023500001";
@@ -65088,7 +65088,7 @@ var render = function() {
                 _c(
                   "tbody",
                   _vm._l(_vm.equipped, function(item_id, slot) {
-                    return item_id
+                    return item_id && slot != "stat_weight"
                       ? _c("tr", { staticClass: "equipped-item" }, [
                           _c("td", [_vm._v(_vm._s(_vm.formatKey(slot)))]),
                           _vm._v(" "),
