@@ -529,10 +529,13 @@
                                 <label><input type="checkbox" v-model="config.rend_buff"> <span>Warchief's Blessing (10 mp5)</span></label>
                             </div>
                             <div class="form-item">
-                                <label><input type="checkbox" v-model="config.atiesh_mage_buff"> <span>Power of the Guardian - Mage Atiesh (2% crit)</span></label>
+                                <label><input type="checkbox" v-model="config.atiesh_mage">
+                                    <span>Mage Atiesh Aura</span>
+                                    <help>Another mage in your group has Atiesh</help>
+                                </label>
                             </div>
                             <div class="form-item">
-                                <label><input type="checkbox" v-model="config.atiesh_warlock_buff"> <span>Power of the Guardian - Warlock Atiesh (33 sp)</span></label>
+                                <label><input type="checkbox" v-model="config.atiesh_warlock"> <span>Warlock Atiesh Aura</span></label>
                             </div>
                         </fieldset>
                         <fieldset>
@@ -578,9 +581,9 @@
                                 </select>
                             </div>
                             <div class="form-item" v-if="config.drums">
-                                <label><input type="checkbox" v-model="config.drums_perma">
-                                    <span>Permanent drums</span>
-                                    <help>This simulates having 4+ players in your party using drums</help>
+                                <label><input type="checkbox" v-model="config.drums_friend">
+                                    <span>Drumming friend</span>
+                                    <help>Someone else in your party uses drums</help>
                                 </label>
                             </div>
                             <div class="form-item">
@@ -929,8 +932,6 @@
                     songflower_buff: true,
                     dmf_buff: true,
                     rend_buff: false,
-                    atiesh_mage_buff: false,
-                    atiesh_warlock_buff: false,
 
                     food: 0,
                     flask: 0,
@@ -943,6 +944,12 @@
                     demonic_rune: false,
                     very_berry: false,
                     drums_perma: false,
+                    drums_friend: false,
+                    atiesh_mage: false,
+                    atiesh_warlock: false,
+                    eye_of_the_night: false,
+                    chain_of_the_twilight_owl: false,
+                    jade_pendant_of_blasting: false,
 
                     tirisfal_2set: false,
                     tirisfal_4set: false,
@@ -953,6 +960,7 @@
                     udc_set: false,
                     eternal_sage: false,
                     wrath_of_cenarius: false,
+                    mana_etched_4set: false,
                     meta_gem: 0,
                     trinket1: 0,
                     trinket2: 0,
@@ -1352,6 +1360,10 @@
                     stats.spirit+= 20;
                 if (this.config.food == this.foods.FOOD_INT)
                     stats.intellect+= 10;
+                if (this.config.songflower_buff) {
+                    stats.intellect+= 15;
+                    stats.spirit+= 15;
+                }
 
                 // Attribute multipliers
                 if (x = this.hasTalent("arcane_mind"))
@@ -1418,12 +1430,18 @@
                     stats.spell_power+= 24;
                 if (this.config.battle_elixir == this.elixirs.ELIXIR_GREATER_ARCANE)
                     stats.spell_power+= 35;
-                if (this.config.atiesh_warlock_buff)
+                if (this.config.atiesh_warlock)
                     stats.spell_power+= 33;
                 if (this.config.very_berry)
                     stats.spell_power+= 23;
                 if (this.config.battle_elixir == this.elixirs.ELIXIR_GREATER_FIREPOWER)
                     stats.spell_power_fire+= 40;
+                if (this.config.battle_elixir == this.elixirs.ELIXIR_MAJOR_FIREPOWER)
+                    stats.spell_power_fire+= 55;
+                if (this.config.eye_of_the_night)
+                    stats.spell_power+= 34;
+                if (this.config.jade_pendant_of_blasting)
+                    stats.spell_power+= 15;
 
                 // Spell crit
                 var critrating = 0;
@@ -1435,12 +1453,16 @@
                     stats.crit+= 3;
                 if (this.config.molten_armor)
                     stats.crit+= 3;
+                if (this.config.chain_of_the_twilight_owl)
+                    stats.crit+= 2;
                 if (this.config.battle_elixir == this.elixirs.ELIXIR_ADEPTS)
                     critrating+= 24;
                 if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_WIZARD)
                     critrating+= 14;
                 if (this.config.food == this.foods.FOOD_SPELL_CRIT)
                     critrating+= 20;
+                if (this.config.atiesh_mage)
+                    critrating+= 28;
                 if (critrating > 0)
                     stats.crit+= this.critRatingToChance(critrating);
                 if (x = this.hasTalent("arcane_instability"))
@@ -1451,8 +1473,6 @@
                     stats.crit+= 5;
                 if (this.config.dm_buff)
                     stats.crit+= 3;
-                if (this.config.atiesh_mage_buff)
-                    stats.crit += this.critRatingToChance(30);
 
                 // Spell hit
                 if (this.config.totem_of_wrath)
@@ -1615,9 +1635,17 @@
                 this.config.spellfire_set = this.numEquippedSet(this.items.ids.SPELLFIRE_SET) > 2;
 
                 this.config.udc_set = this.numEquippedSet(this.items.ids.UDC_SET) > 2;
+                this.config.mana_etched_4set = this.numEquippedSet(this.items.ids.MANA_ETCHED_SET) > 3;
 
                 this.config.eternal_sage = this.isEquipped("finger", this.items.ids.ETERNAL_SAGE);
                 this.config.wrath_of_cenarius = this.isEquipped("finger", this.items.ids.WRATH_OF_CENARIUS);
+
+                if (this.isEquipped("neck", this.items.ids.EYE_OF_THE_NIGHT))
+                    this.config.eye_of_the_night = true;
+                if (this.isEquipped("neck", this.items.ids.CHAIN_OF_THE_TWILIGHT_OWL))
+                    this.config.chain_of_the_twilight_owl = true;
+                if (this.isEquipped("neck", this.items.ids.JADE_PENDANT_OF_BLASTING))
+                    this.config.jade_pendant_of_blasting = true;
 
                 this.config.trinket1 = 0;
                 this.config.trinket2 = 0;
@@ -1676,6 +1704,18 @@
                 return false;
             },
 
+            onUnequip(slot) {
+                if (slot == "neck") {
+                    if (this.equipped[slot] == this.items.ids.EYE_OF_THE_NIGHT)
+                        this.config.eye_of_the_night = false;
+                    if (this.equipped[slot] == this.items.ids.CHAIN_OF_THE_TWILIGHT_OWL)
+                        this.config.chain_of_the_twilight_owl = false;
+                    if (this.equipped[slot] == this.items.ids.JADE_PENDANT_OF_BLASTING)
+                        this.config.jade_pendant_of_blasting = false;
+                    this.saveConfig();
+                }
+            },
+
             equipToggle(slot, item) {
                 if (this.equipped[slot] == item.id)
                     this.unequip(slot);
@@ -1684,6 +1724,7 @@
             },
 
             unequip(slot, save) {
+                this.onUnequip(slot);
                 this.equipped[slot] = null;
                 this.gems[slot] = [null, null, null];
 
@@ -1709,6 +1750,7 @@
                         return;
                 }
 
+                this.onUnequip(slot);
                 this.equipped[slot] = item.id;
 
                 if (this.item_gems.hasOwnProperty(item.id)) {

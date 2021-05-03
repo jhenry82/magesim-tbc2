@@ -107,8 +107,10 @@ public:
             pushBuffGain(make_shared<buff::PowerInfusion>(), config->power_infusion_at);
         if (config->mana_tide)
             pushBuffGain(make_shared<buff::ManaTide>(), config->mana_tide_at);
-        if (config->drums && config->drums_perma)
-            useDrums(true);
+        if (config->drums && config->drums_friend) {
+            for (double t = config->drums_at; t<state->duration; t+= 120)
+                pushDrums(t);
+        }
 
         if (config->fire_vulnerability) {
             for (double t=1.5; t<state->duration;) {
@@ -192,6 +194,8 @@ public:
             onCooldownExpire(event->cooldown);
         else if (event->type == EVENT_VAMPIRIC_TOUCH)
             onVampiricTouch(event->mana);
+        else if (event->type == EVENT_DRUMS)
+            useDrums();
         else if (event->type == EVENT_WAIT)
             onWait();
     }
@@ -332,6 +336,15 @@ public:
         push(event);
     }
 
+    void pushDrums(double t)
+    {
+        shared_ptr<Event> event(new Event());
+        event->type = EVENT_DRUMS;
+        event->t = t;
+
+        push(event);
+    }
+
     void pushWait(double t)
     {
         shared_ptr<Event> event(new Event());
@@ -397,7 +410,7 @@ public:
 
         if (next != NULL) {
             // Drums 1 sec cast
-            if (config->drums && state->t >= config->drums_at && !state->hasCooldown(cooldown::DRUMS) && !config->drums_perma) {
+            if (config->drums && state->t >= config->drums_at && !state->hasCooldown(cooldown::DRUMS) && !config->drums_friend) {
                 useDrums();
                 pushCast(next, 1.0);
             }
@@ -520,6 +533,10 @@ public:
             if (config->wrath_of_cenarius && !state->hasCooldown(cooldown::SPELL_BLASTING) && random<int>(0, 19) == 0) {
                 onCooldownGain(make_shared<cooldown::SpellBlasting>());
                 onBuffGain(make_shared<buff::SpellBlasting>());
+            }
+            // 2% proc rate, mana-etched 4-set bonus
+            if (config->mana_etched_4set && random<int>(0, 49) == 0) {
+                onBuffGain(make_shared<buff::SpellPowerBonus>());
             }
             // 50% proc rate
             if (config->judgement_of_wisdom && random<int>(0, 1) == 1)
@@ -1074,7 +1091,7 @@ public:
         onCooldownGain(make_shared<cooldown::Cooldown>(cd, duration));
     }
 
-    void useDrums(bool perma = false)
+    void useDrums()
     {
         shared_ptr<buff::Buff> buff = NULL;
 
@@ -1087,9 +1104,9 @@ public:
         else
             return;
 
-        if (perma) {
-            state->addBuff(buff);
-            logBuffGain(buff);
+        if (config->drums_friend) {
+            onCooldownGain(make_shared<cooldown::Drums>());
+            onBuffGain(buff);
         }
         else {
             pushCooldownGain(make_shared<cooldown::Drums>(), 1.0);
@@ -1484,6 +1501,8 @@ public:
                 sp+= 95.0;
             if (state->hasBuff(buff::SPELL_BLASTING))
                 sp+= 132.0;
+            if (state->hasBuff(buff::SPELL_POWER_BONUS))
+                sp+= 110.0;
             if (state->hasBuff(buff::SHRUNKEN_HEAD))
                 sp+= 211.0;
             if (state->hasBuff(buff::NAARU_SLIVER))

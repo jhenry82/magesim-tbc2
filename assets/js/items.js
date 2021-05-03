@@ -3,6 +3,7 @@ var ids = {
     TEMPEST_SET: 671,
     SPELLFIRE_SET: 552,
     SPELLSTRIKE_SET: 559,
+    MANA_ETCHED_SET: 658,
     SERPENT_COIL: 30720,
     SILVER_CRESCENT: 29370,
     EYE_OF_MAGTHERIDON: 28789,
@@ -240,7 +241,7 @@ var enchants = {
 
 var itemsets = [
     { id: 667, title: "The Twin Stars", set2: { sp: 15 } },
-    { id: 658, title: "Mana-Etched Regalia", set2: { hit: 35 } },
+    { id: ids.MANA_ETCHED_SET, title: "Mana-Etched Regalia", set2: { hit: 35 } },
 ];
 
 var quicksets = {

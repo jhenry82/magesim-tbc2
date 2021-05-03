@@ -205,6 +205,7 @@ var ids = {
   TEMPEST_SET: 671,
   SPELLFIRE_SET: 552,
   SPELLSTRIKE_SET: 559,
+  MANA_ETCHED_SET: 658,
   SERPENT_COIL: 30720,
   SILVER_CRESCENT: 29370,
   EYE_OF_MAGTHERIDON: 28789,
@@ -1116,7 +1117,7 @@ var itemsets = [{
     sp: 15
   }
 }, {
-  id: 658,
+  id: ids.MANA_ETCHED_SET,
   title: "Mana-Etched Regalia",
   set2: {
     hit: 35
@@ -2241,6 +2242,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
+//
+//
+//
 
 
 
@@ -2329,8 +2333,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         songflower_buff: true,
         dmf_buff: true,
         rend_buff: false,
-        atiesh_mage_buff: false,
-        atiesh_warlock_buff: false,
         food: 0,
         flask: 0,
         battle_elixir: 0,
@@ -2342,6 +2344,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         demonic_rune: false,
         very_berry: false,
         drums_perma: false,
+        drums_friend: false,
+        atiesh_mage: false,
+        atiesh_warlock: false,
+        eye_of_the_night: false,
+        chain_of_the_twilight_owl: false,
+        jade_pendant_of_blasting: false,
         tirisfal_2set: false,
         tirisfal_4set: false,
         tempest_2set: false,
@@ -2351,6 +2359,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         udc_set: false,
         eternal_sage: false,
         wrath_of_cenarius: false,
+        mana_etched_4set: false,
         meta_gem: 0,
         trinket1: 0,
         trinket2: 0,
@@ -2766,7 +2775,13 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       if (this.config.flask == this.flasks.FLASK_DISTILLED_WISDOM) stats.intellect += 65;
       if (this.config.food == this.foods.FOOD_SPELL_POWER || this.config.food == this.foods.FOOD_SPELL_CRIT) stats.spirit += 20;
-      if (this.config.food == this.foods.FOOD_INT) stats.intellect += 10; // Attribute multipliers
+      if (this.config.food == this.foods.FOOD_INT) stats.intellect += 10;
+
+      if (this.config.songflower_buff) {
+        stats.intellect += 15;
+        stats.spirit += 15;
+      } // Attribute multipliers
+
 
       if (x = this.hasTalent("arcane_mind")) stats.intellect *= 1.0 + x * 0.03;
       if (this.config.race == this.races.RACE_GNOME) stats.intellect *= 1.05;
@@ -2813,24 +2828,28 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       if (this.config.battle_elixir == this.elixirs.ELIXIR_ADEPTS) stats.spell_power += 24;
       if (this.config.battle_elixir == this.elixirs.ELIXIR_GREATER_ARCANE) stats.spell_power += 35;
-      if (this.config.atiesh_warlock_buff) stats.spell_power += 33;
+      if (this.config.atiesh_warlock) stats.spell_power += 33;
       if (this.config.very_berry) stats.spell_power += 23;
-      if (this.config.battle_elixir == this.elixirs.ELIXIR_GREATER_FIREPOWER) stats.spell_power_fire += 40; // Spell crit
+      if (this.config.battle_elixir == this.elixirs.ELIXIR_GREATER_FIREPOWER) stats.spell_power_fire += 40;
+      if (this.config.battle_elixir == this.elixirs.ELIXIR_MAJOR_FIREPOWER) stats.spell_power_fire += 55;
+      if (this.config.eye_of_the_night) stats.spell_power += 34;
+      if (this.config.jade_pendant_of_blasting) stats.spell_power += 15; // Spell crit
 
       var critrating = 0;
       if (this.config.judgement_of_the_crusader) stats.crit += 3;
       if (this.config.moonkin_aura) stats.crit += 5;
       if (this.config.totem_of_wrath) stats.crit += 3;
       if (this.config.molten_armor) stats.crit += 3;
+      if (this.config.chain_of_the_twilight_owl) stats.crit += 2;
       if (this.config.battle_elixir == this.elixirs.ELIXIR_ADEPTS) critrating += 24;
       if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_WIZARD) critrating += 14;
       if (this.config.food == this.foods.FOOD_SPELL_CRIT) critrating += 20;
+      if (this.config.atiesh_mage) critrating += 28;
       if (critrating > 0) stats.crit += this.critRatingToChance(critrating);
       if (x = this.hasTalent("arcane_instability")) stats.crit += x;
       if (this.config.ony_buff) stats.crit += 10;
       if (this.config.songflower_buff) stats.crit += 5;
-      if (this.config.dm_buff) stats.crit += 3;
-      if (this.config.atiesh_mage_buff) stats.crit += this.critRatingToChance(30); // Spell hit
+      if (this.config.dm_buff) stats.crit += 3; // Spell hit
 
       if (this.config.totem_of_wrath) stats.hit += 3;
       if (this.config.race == this.races.RACE_DRAENEI || this.config.inspiring_presence) stats.hit += 1; // This is supposedly bugged for frost spells to give 2% hit each point
@@ -2984,8 +3003,12 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.config.spellstrike_set = this.numEquippedSet(this.items.ids.SPELLSTRIKE_SET) > 1;
       this.config.spellfire_set = this.numEquippedSet(this.items.ids.SPELLFIRE_SET) > 2;
       this.config.udc_set = this.numEquippedSet(this.items.ids.UDC_SET) > 2;
+      this.config.mana_etched_4set = this.numEquippedSet(this.items.ids.MANA_ETCHED_SET) > 3;
       this.config.eternal_sage = this.isEquipped("finger", this.items.ids.ETERNAL_SAGE);
       this.config.wrath_of_cenarius = this.isEquipped("finger", this.items.ids.WRATH_OF_CENARIUS);
+      if (this.isEquipped("neck", this.items.ids.EYE_OF_THE_NIGHT)) this.config.eye_of_the_night = true;
+      if (this.isEquipped("neck", this.items.ids.CHAIN_OF_THE_TWILIGHT_OWL)) this.config.chain_of_the_twilight_owl = true;
+      if (this.isEquipped("neck", this.items.ids.JADE_PENDANT_OF_BLASTING)) this.config.jade_pendant_of_blasting = true;
       this.config.trinket1 = 0;
       this.config.trinket2 = 0;
       this.config.meta_gem = 0;
@@ -3024,10 +3047,19 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 
       return false;
     },
+    onUnequip: function onUnequip(slot) {
+      if (slot == "neck") {
+        if (this.equipped[slot] == this.items.ids.EYE_OF_THE_NIGHT) this.config.eye_of_the_night = false;
+        if (this.equipped[slot] == this.items.ids.CHAIN_OF_THE_TWILIGHT_OWL) this.config.chain_of_the_twilight_owl = false;
+        if (this.equipped[slot] == this.items.ids.JADE_PENDANT_OF_BLASTING) this.config.jade_pendant_of_blasting = false;
+        this.saveConfig();
+      }
+    },
     equipToggle: function equipToggle(slot, item) {
       if (this.equipped[slot] == item.id) this.unequip(slot);else this.equip(slot, item);
     },
     unequip: function unequip(slot, save) {
+      this.onUnequip(slot);
       this.equipped[slot] = null;
       this.gems[slot] = [null, null, null];
       this.finalStats();
@@ -3046,6 +3078,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         if (this.isEquipped(other, item.id)) return;
       }
 
+      this.onUnequip(slot);
       this.equipped[slot] = item.id;
 
       if (this.item_gems.hasOwnProperty(item.id)) {
@@ -63355,56 +63388,64 @@ var render = function() {
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-item" }, [
-                    _c("label", [
-                      _c("input", {
-                        directives: [
-                          {
-                            name: "model",
-                            rawName: "v-model",
-                            value: _vm.config.atiesh_mage_buff,
-                            expression: "config.atiesh_mage_buff"
-                          }
-                        ],
-                        attrs: { type: "checkbox" },
-                        domProps: {
-                          checked: Array.isArray(_vm.config.atiesh_mage_buff)
-                            ? _vm._i(_vm.config.atiesh_mage_buff, null) > -1
-                            : _vm.config.atiesh_mage_buff
-                        },
-                        on: {
-                          change: function($event) {
-                            var $$a = _vm.config.atiesh_mage_buff,
-                              $$el = $event.target,
-                              $$c = $$el.checked ? true : false
-                            if (Array.isArray($$a)) {
-                              var $$v = null,
-                                $$i = _vm._i($$a, $$v)
-                              if ($$el.checked) {
-                                $$i < 0 &&
-                                  _vm.$set(
-                                    _vm.config,
-                                    "atiesh_mage_buff",
-                                    $$a.concat([$$v])
-                                  )
+                    _c(
+                      "label",
+                      [
+                        _c("input", {
+                          directives: [
+                            {
+                              name: "model",
+                              rawName: "v-model",
+                              value: _vm.config.atiesh_mage,
+                              expression: "config.atiesh_mage"
+                            }
+                          ],
+                          attrs: { type: "checkbox" },
+                          domProps: {
+                            checked: Array.isArray(_vm.config.atiesh_mage)
+                              ? _vm._i(_vm.config.atiesh_mage, null) > -1
+                              : _vm.config.atiesh_mage
+                          },
+                          on: {
+                            change: function($event) {
+                              var $$a = _vm.config.atiesh_mage,
+                                $$el = $event.target,
+                                $$c = $$el.checked ? true : false
+                              if (Array.isArray($$a)) {
+                                var $$v = null,
+                                  $$i = _vm._i($$a, $$v)
+                                if ($$el.checked) {
+                                  $$i < 0 &&
+                                    _vm.$set(
+                                      _vm.config,
+                                      "atiesh_mage",
+                                      $$a.concat([$$v])
+                                    )
+                                } else {
+                                  $$i > -1 &&
+                                    _vm.$set(
+                                      _vm.config,
+                                      "atiesh_mage",
+                                      $$a
+                                        .slice(0, $$i)
+                                        .concat($$a.slice($$i + 1))
+                                    )
+                                }
                               } else {
-                                $$i > -1 &&
-                                  _vm.$set(
-                                    _vm.config,
-                                    "atiesh_mage_buff",
-                                    $$a.slice(0, $$i).concat($$a.slice($$i + 1))
-                                  )
+                                _vm.$set(_vm.config, "atiesh_mage", $$c)
                               }
-                            } else {
-                              _vm.$set(_vm.config, "atiesh_mage_buff", $$c)
                             }
                           }
-                        }
-                      }),
-                      _vm._v(" "),
-                      _c("span", [
-                        _vm._v("Power of the Guardian - Mage Atiesh (2% crit)")
-                      ])
-                    ])
+                        }),
+                        _vm._v(" "),
+                        _c("span", [_vm._v("Mage Atiesh Aura")]),
+                        _vm._v(" "),
+                        _c("help", [
+                          _vm._v("Another mage in your group has Atiesh")
+                        ])
+                      ],
+                      1
+                    )
                   ]),
                   _vm._v(" "),
                   _c("div", { staticClass: "form-item" }, [
@@ -63414,19 +63455,19 @@ var render = function() {
                           {
                             name: "model",
                             rawName: "v-model",
-                            value: _vm.config.atiesh_warlock_buff,
-                            expression: "config.atiesh_warlock_buff"
+                            value: _vm.config.atiesh_warlock,
+                            expression: "config.atiesh_warlock"
                           }
                         ],
                         attrs: { type: "checkbox" },
                         domProps: {
-                          checked: Array.isArray(_vm.config.atiesh_warlock_buff)
-                            ? _vm._i(_vm.config.atiesh_warlock_buff, null) > -1
-                            : _vm.config.atiesh_warlock_buff
+                          checked: Array.isArray(_vm.config.atiesh_warlock)
+                            ? _vm._i(_vm.config.atiesh_warlock, null) > -1
+                            : _vm.config.atiesh_warlock
                         },
                         on: {
                           change: function($event) {
-                            var $$a = _vm.config.atiesh_warlock_buff,
+                            var $$a = _vm.config.atiesh_warlock,
                               $$el = $event.target,
                               $$c = $$el.checked ? true : false
                             if (Array.isArray($$a)) {
@@ -63436,27 +63477,25 @@ var render = function() {
                                 $$i < 0 &&
                                   _vm.$set(
                                     _vm.config,
-                                    "atiesh_warlock_buff",
+                                    "atiesh_warlock",
                                     $$a.concat([$$v])
                                   )
                               } else {
                                 $$i > -1 &&
                                   _vm.$set(
                                     _vm.config,
-                                    "atiesh_warlock_buff",
+                                    "atiesh_warlock",
                                     $$a.slice(0, $$i).concat($$a.slice($$i + 1))
                                   )
                               }
                             } else {
-                              _vm.$set(_vm.config, "atiesh_warlock_buff", $$c)
+                              _vm.$set(_vm.config, "atiesh_warlock", $$c)
                             }
                           }
                         }
                       }),
                       _vm._v(" "),
-                      _c("span", [
-                        _vm._v("Power of the Guardian - Warlock Atiesh (33 sp)")
-                      ])
+                      _c("span", [_vm._v("Warlock Atiesh Aura")])
                     ])
                   ])
                 ]),
@@ -63792,19 +63831,19 @@ var render = function() {
                                 {
                                   name: "model",
                                   rawName: "v-model",
-                                  value: _vm.config.drums_perma,
-                                  expression: "config.drums_perma"
+                                  value: _vm.config.drums_friend,
+                                  expression: "config.drums_friend"
                                 }
                               ],
                               attrs: { type: "checkbox" },
                               domProps: {
-                                checked: Array.isArray(_vm.config.drums_perma)
-                                  ? _vm._i(_vm.config.drums_perma, null) > -1
-                                  : _vm.config.drums_perma
+                                checked: Array.isArray(_vm.config.drums_friend)
+                                  ? _vm._i(_vm.config.drums_friend, null) > -1
+                                  : _vm.config.drums_friend
                               },
                               on: {
                                 change: function($event) {
-                                  var $$a = _vm.config.drums_perma,
+                                  var $$a = _vm.config.drums_friend,
                                     $$el = $event.target,
                                     $$c = $$el.checked ? true : false
                                   if (Array.isArray($$a)) {
@@ -63814,32 +63853,30 @@ var render = function() {
                                       $$i < 0 &&
                                         _vm.$set(
                                           _vm.config,
-                                          "drums_perma",
+                                          "drums_friend",
                                           $$a.concat([$$v])
                                         )
                                     } else {
                                       $$i > -1 &&
                                         _vm.$set(
                                           _vm.config,
-                                          "drums_perma",
+                                          "drums_friend",
                                           $$a
                                             .slice(0, $$i)
                                             .concat($$a.slice($$i + 1))
                                         )
                                     }
                                   } else {
-                                    _vm.$set(_vm.config, "drums_perma", $$c)
+                                    _vm.$set(_vm.config, "drums_friend", $$c)
                                   }
                                 }
                               }
                             }),
                             _vm._v(" "),
-                            _c("span", [_vm._v("Permanent drums")]),
+                            _c("span", [_vm._v("Drumming friend")]),
                             _vm._v(" "),
                             _c("help", [
-                              _vm._v(
-                                "This simulates having 4+ players in your party using drums"
-                              )
+                              _vm._v("Someone else in your party uses drums")
                             ])
                           ],
                           1

@@ -36,10 +36,14 @@ struct Config
     bool rend_buff = false;
     bool dm_buff = true;
     bool dmf_buff = true;
-    bool atiesh_mage_buff = false;
-    bool atiesh_warlock_buff = false;
     bool very_berry = false;
     bool drums_perma = false;
+    bool drums_friend = false;
+    bool atiesh_mage = false;
+    bool atiesh_warlock = false;
+    bool eye_of_the_night = false;
+    bool chain_of_the_twilight_owl = false;
+    bool jade_pendant_of_blasting = false;
 
     Food food;
     Flask flask;
@@ -61,6 +65,7 @@ struct Config
     bool udc_set = false;
     bool eternal_sage = false;
     bool wrath_of_cenarius = false;
+    bool mana_etched_4set = false;
 
     Trinket trinket1 = TRINKET_NONE;
     Trinket trinket2 = TRINKET_NONE;
