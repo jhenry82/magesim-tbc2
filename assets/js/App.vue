@@ -426,12 +426,6 @@
                                 <input type="text" v-model.number="config.rng_seed">
                             </div>
                             <div class="form-item">
-                                <label><input type="checkbox" v-model="config.gcd_unlocked">
-                                    <span>Unlock GCD</span>
-                                    <help>Enables the GCD to go below 1.0s with haste</help>
-                                </label>
-                            </div>
-                            <div class="form-item">
                                 <label><input type="checkbox" v-model="config.tooltips" @input="refreshTooltips(true)"> <span>Use item tooltips (requires reload)</span></label>
                             </div>
                         </fieldset>
