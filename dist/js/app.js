@@ -142,8 +142,8 @@ __webpack_require__.r(__webpack_exports__);
     OIL_BRILLIANT_WIZARD: 20749,
     OIL_BRILLIANT_MANA: 20748,
     OIL_SUPERIOR_WIZARD: 22522,
-    OIL_SUPERIOR_MANA: 22521,
-    OIL_BLESSED_WIZARD: 23123
+    OIL_BLESSED_WIZARD: 23123,
+    OIL_SUPERIOR_MANA: 22521
   },
   potions: {
     POTION_NONE: 0,
@@ -2815,8 +2815,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (int_multi > 0) stats.spell_power += Math.round(stats.intellect * int_multi);
       if (this.config.improved_divine_spirit) stats.spell_power += stats.spirit * 0.1;
       if (this.config.weapon_oil == this.weapon_oils.OIL_BRILLIANT_WIZARD) stats.spell_power += 36;
-      if (this.config.weapon_oil == this.weapon_oils.OIL_BLESSED_WIZARD) stats.spell_power += 60;
       if (this.config.weapon_oil == this.weapon_oils.OIL_SUPERIOR_WIZARD) stats.spell_power += 42;
+      if (this.config.weapon_oil == this.weapon_oils.OIL_BLESSED_WIZARD) stats.spell_power += 60;
       if (this.config.food == this.foods.FOOD_SPELL_POWER) stats.spell_power += 23;
       if (this.config.flask == this.flasks.FLASK_SUPREME_POWER) stats.spell_power += 70;
       if (this.config.flask == this.flasks.FLASK_BLINDING_LIGHT) stats.spell_power_arcane += 80;
@@ -63749,7 +63749,7 @@ var render = function() {
                               value: _vm.weapon_oils.OIL_BLESSED_WIZARD
                             }
                           },
-                          [_vm._v("Blessed Wizard Oil (60 sp)")]
+                          [_vm._v("Blessed Wizard Oil (60 sp to undead)")]
                         ),
                         _vm._v(" "),
                         _c(
