@@ -82,6 +82,7 @@ struct Config
     double scorch_spam_at = 10;
     double scorch_r1_spam_at = 2;
     RegenRotation regen_rotation = ROTATION_FB;
+    double ab_haste_stop = 0;
 
     double mana_tide_at = 10;
     double bloodlust_at = 20;

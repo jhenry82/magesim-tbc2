@@ -359,49 +359,63 @@
                                 <label>Talents (<a :href="config.talents" target="_blank">link</a>)</label>
                                 <input type="text" :value="config.talents" @input="onTalentsInput">
                             </div>
-                            <div class="form-item" v-if="config.spec == specs.SPEC_FIRE">
-                                <label>
-                                    <span>Scorch spam rotation at mana %</span>
-                                    <help>At low mana, swap to scorch to avoid idling. If a cooldown restores enough mana, you will automatically resume fireballs.</help>
-                                </label>
-                                <input type="text" v-model.number="config.scorch_spam_at">
-                            </div>
-                            <div class="form-item" v-if="config.spec == specs.SPEC_FIRE">
-                                <label>
-                                    <span>Scorch (rank 1) spam rotation at mana %</span>
-                                    <help>At extremely low mana, swap to a lower rank of scorch (downranking penalty applies to this damage)</help>
-                                </label>
-                                <input type="text" v-model.number="config.scorch_r1_spam_at">
-                            </div>
-                            <div class="form-item" v-if="config.spec == specs.SPEC_ARCANE">
-                                <label>Filler spells</label>
-                                <select v-model="config.regen_rotation">
-                                    <option :value="regen_rotations.ROTATION_FB">3xFrB</option>
-                                    <option :value="regen_rotations.ROTATION_AMFB">1xAM, 1xFrB</option>
-                                    <option :value="regen_rotations.ROTATION_SC">5xScorch</option>
-                                    <option :value="regen_rotations.ROTATION_SCFB">1xScorch, 2xFiB</option>
-                                </select>
-                            </div>
-                            <div class="form-item" v-if="config.spec == specs.SPEC_ARCANE">
-                                <label>Arcane Blasts between fillers</label>
-                                <select v-model="config.regen_ab_count">
-                                    <option :value="1">1x AB</option>
-                                    <option :value="2">2x AB</option>
-                                    <option :value="3">3x AB</option>
-                                    <option :value="4">4x AB</option>
-                                </select>
-                            </div>
-                            <div class="form-item" v-if="config.spec == specs.SPEC_ARCANE">
-                                <label>Regen rotation at mana %</label>
-                                <input type="text" v-model.number="config.regen_mana_at">
-                            </div>
-                            <div class="form-item" v-if="config.spec == specs.SPEC_ARCANE">
-                                <label>
-                                    <span>Stop regen rotation at mana %</span>
-                                    <help>Regen will always stop if it's possible to spam AB the rest of the fight</help>
-                                </label>
-                                <input type="text" v-model.number="config.regen_stop_at">
-                            </div>
+                            <template v-if="config.spec == specs.SPEC_FIRE">
+                                <div class="form-item">
+                                    <label>
+                                        <span>Scorch spam rotation at mana %</span>
+                                        <help>At low mana, swap to scorch to avoid idling. If a cooldown restores enough mana, you will automatically resume fireballs.</help>
+                                    </label>
+                                    <input type="text" v-model.number="config.scorch_spam_at">
+                                </div>
+                                <div class="form-item" v-if="config.spec == specs.SPEC_FIRE">
+                                    <label>
+                                        <span>Scorch (rank 1) spam rotation at mana %</span>
+                                        <help>At extremely low mana, swap to a lower rank of scorch (downranking penalty applies to this damage)</help>
+                                    </label>
+                                    <input type="text" v-model.number="config.scorch_r1_spam_at">
+                                </div>
+                            </template>
+                            <template v-if="config.spec == specs.SPEC_ARCANE">
+                                <div class="form-item">
+                                    <label>Filler spells</label>
+                                    <select v-model="config.regen_rotation">
+                                        <option :value="regen_rotations.ROTATION_FB">3xFrB</option>
+                                        <option :value="regen_rotations.ROTATION_AMFB">1xAM, 1xFrB</option>
+                                        <option :value="regen_rotations.ROTATION_SC">5xScorch</option>
+                                        <option :value="regen_rotations.ROTATION_SCFB">1xScorch, 2xFiB</option>
+                                    </select>
+                                </div>
+                                <div class="form-item">
+                                    <label>Arcane Blasts between fillers</label>
+                                    <select v-model="config.regen_ab_count">
+                                        <option :value="1">1x AB</option>
+                                        <option :value="2">2x AB</option>
+                                        <option :value="3">3x AB</option>
+                                        <option :value="4">4x AB</option>
+                                    </select>
+                                </div>
+                                <div class="form-item">
+                                    <label>Regen rotation at mana %</label>
+                                    <input type="text" v-model.number="config.regen_mana_at">
+                                </div>
+                                <div class="form-item">
+                                    <label>
+                                        <span>Stop regen rotation at mana %</span>
+                                        <help>Regen will always stop if it's possible to spam AB the rest of the fight</help>
+                                    </label>
+                                    <input type="text" v-model.number="config.regen_stop_at">
+                                </div>
+                                <div class="form-item">
+                                    <label>
+                                        <span>Stop Arcane Blast at haste %</span>
+                                        <help>
+                                            This will cast frostbolt/fireball when above a certain haste %.<br>
+                                            At 50% haste you will reach GCD cap of 1.0 seconds.
+                                        </help>
+                                    </label>
+                                    <input type="text" v-model.number="config.ab_haste_stop">
+                                </div>
+                            </template>
                             <div class="form-item">
                                 <label>Fight duration (sec)</label>
                                 <input type="text" v-model.number="config.duration">
@@ -970,6 +984,8 @@
                     regen_rotation: 0,
                     scorch_spam_at: 5,
                     scorch_r1_spam_at: 2,
+                    ab_haste_stop: 0,
+
                     mana_tide_at: 20,
                     bloodlust_at: 1,
                     power_infusion_at: 1,
