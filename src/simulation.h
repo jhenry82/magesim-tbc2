@@ -873,19 +873,25 @@ public:
     {
         shared_ptr<spell::Spell> next = NULL;
 
+        // Arcane spec == Arcane Missiles spam
         if (player->spec == SPEC_ARCANE) {
 
             if (config->maintain_fire_vulnerability && player->talents.imp_scorch && shouldScorch())
                 return make_shared<spell::Scorch>();
 
-            if (config->ab_haste_stop && 1.0 / (config->ab_haste_stop/100.0 + 1) >= castHaste()) {
-                if (player->talents.imp_frostbolt < player->talents.imp_fireball)
-                    return make_shared<spell::Fireball>();
-                return make_shared<spell::Frostbolt>();
+            if (state->t >= config->presence_of_mind_at &&
+                !state->hasCooldown(cooldown::PRESENCE_OF_MIND) &&
+                player->talents.presence_of_mind)
+            {
+                if(player->talents.pyroblast)
+                    return make_shared<spell::Pyroblast>();
+                else
+                    return make_shared<spell::Frostbolt>();
             }
+            
+        }
 
-            if (canBlast())
-                return defaultSpell();
+        else if (player->spec == SPEC_FIRE) {
 
             if (state->t >= config->presence_of_mind_at &&
                 !state->hasCooldown(cooldown::PRESENCE_OF_MIND) &&
@@ -894,62 +900,6 @@ public:
             {
                 return make_shared<spell::Pyroblast>();
             }
-
-            if (!state->regen_active && state->buffStacks(buff::ARCANE_BLAST) >= min(3, config->regen_ab_count) && !state->hasBuff(buff::INNERVATE)) {
-                double regen_at = config->regen_mana_at;
-                if (state->hasBuff(buff::BLOODLUST))
-                    regen_at = min(regen_at, 10.0);
-
-                if (regen_at >= manaPercent()) {
-                    state->regen_active = true;
-                    state->regen_cycle = 0;
-                }
-            }
-
-            if (state->regen_active) {
-                bool is_done = false;
-
-                if (config->regen_rotation == ROTATION_FB) {
-                    if (state->regen_cycle < 3)
-                        next = make_shared<spell::Frostbolt>();
-                    else if (state->regen_cycle == config->regen_ab_count + 2)
-                        is_done = true;
-                }
-                else if (config->regen_rotation == ROTATION_AMFB) {
-                    if (state->regen_cycle == 0)
-                        next = make_shared<spell::ArcaneMissiles>();
-                    else if (state->regen_cycle == 1)
-                        next = make_shared<spell::Frostbolt>();
-                    else if (state->regen_cycle == config->regen_ab_count + 1)
-                        is_done = true;
-                }
-                else if (config->regen_rotation == ROTATION_SC) {
-                    if (state->regen_cycle < 5)
-                        next = make_shared<spell::Scorch>();
-                    else if (state->regen_cycle == config->regen_ab_count + 4)
-                        is_done = true;
-                }
-                else if (config->regen_rotation == ROTATION_SCFB) {
-                    if (state->regen_cycle == 0)
-                        next = make_shared<spell::Scorch>();
-                    else if (state->regen_cycle < 3)
-                        next = make_shared<spell::Fireball>();
-                    else if (state->regen_cycle == config->regen_ab_count + 2)
-                        is_done = true;
-                }
-
-                if (is_done) {
-                    state->regen_cycle = 0;
-                    if (config->regen_stop_at <= manaPercent())
-                        state->regen_active = false;
-                }
-                else {
-                    state->regen_cycle++;
-                }
-            }
-        }
-
-        else if (player->spec == SPEC_FIRE) {
 
             if (state->t >= config->presence_of_mind_at &&
                 !state->hasCooldown(cooldown::PRESENCE_OF_MIND) &&
@@ -986,7 +936,7 @@ public:
     shared_ptr<spell::Spell> defaultSpell()
     {
         if (player->spec == SPEC_ARCANE)
-            return make_shared<spell::ArcaneBlast>();
+            return make_shared<spell::ArcaneMissiles>();
         if (player->spec == SPEC_FIRE)
             return make_shared<spell::Fireball>();
         if (player->spec == SPEC_FROST)

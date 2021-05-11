@@ -2213,46 +2213,6 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
 //
 //
 //
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
-//
 
 
 
@@ -2864,7 +2824,11 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (this.config.race == this.races.RACE_DRAENEI || this.config.inspiring_presence) stats.hit += 1; // This is supposedly bugged for frost spells to give 2% hit each point
       // They say it was actually that way in TBC so we'll keep it like this for now
 
-      if (x = this.hasTalent("elemental_precision")) {
+      if (this.config.spec == this.specs.SPEC_ARCANE) {
+        if (x = this.hasTalent("arcane_focus")) {
+          stats.hit += x * 2;
+        }
+      } else if (x = this.hasTalent("elemental_precision")) {
         if (this.config.spec == this.specs.SPEC_FROST) x *= 2;
         stats.hit += x;
       }
@@ -3248,7 +3212,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
         combustion: [1, 18],
         icy_veins: [2, 8],
         cold_snap: [2, 14],
-        elemental_precision: [2, 2]
+        elemental_precision: [2, 2],
+        arcane_focus: [0, 1]
       };
       if (!indexes.hasOwnProperty(talent)) return false;
       var m = this.config.talents.match(/tbc\.wowhead\.com.*mage\/([0-9\-]+)$/);
@@ -3335,7 +3300,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       var spec = null;
 
       if (e.target.value == this.specs.SPEC_ARCANE) {
-        talents = "https://tbc.wowhead.com/talent-calc/mage/2500250300030150330125--053500031003001";
+        talents = "https://tbc.wowhead.com/talent-calc/mage/2550450310030150333125";
         spec = "arcane";
       } else if (e.target.value == this.specs.SPEC_FROST) {
         talents = "https://tbc.wowhead.com/talent-calc/mage/230015231003014032012--053500031001";
@@ -61400,6 +61365,12 @@ var render = function() {
                             "option",
                             { domProps: { value: _vm.specs.SPEC_FROST } },
                             [_vm._v("Frost")]
+                          ),
+                          _vm._v(" "),
+                          _c(
+                            "option",
+                            { domProps: { value: _vm.specs.SPEC_ARCANE } },
+                            [_vm._v("Arcane")]
                           )
                         ]
                       )
@@ -61529,277 +61500,6 @@ var render = function() {
                                 })
                               ])
                             : _vm._e()
-                        ]
-                      : _vm._e(),
-                    _vm._v(" "),
-                    _vm.config.spec == _vm.specs.SPEC_ARCANE
-                      ? [
-                          _c("div", { staticClass: "form-item" }, [
-                            _c("label", [_vm._v("Filler spells")]),
-                            _vm._v(" "),
-                            _c(
-                              "select",
-                              {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.config.regen_rotation,
-                                    expression: "config.regen_rotation"
-                                  }
-                                ],
-                                on: {
-                                  change: function($event) {
-                                    var $$selectedVal = Array.prototype.filter
-                                      .call($event.target.options, function(o) {
-                                        return o.selected
-                                      })
-                                      .map(function(o) {
-                                        var val =
-                                          "_value" in o ? o._value : o.value
-                                        return val
-                                      })
-                                    _vm.$set(
-                                      _vm.config,
-                                      "regen_rotation",
-                                      $event.target.multiple
-                                        ? $$selectedVal
-                                        : $$selectedVal[0]
-                                    )
-                                  }
-                                }
-                              },
-                              [
-                                _c(
-                                  "option",
-                                  {
-                                    domProps: {
-                                      value: _vm.regen_rotations.ROTATION_FB
-                                    }
-                                  },
-                                  [_vm._v("3xFrB")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "option",
-                                  {
-                                    domProps: {
-                                      value: _vm.regen_rotations.ROTATION_AMFB
-                                    }
-                                  },
-                                  [_vm._v("1xAM, 1xFrB")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "option",
-                                  {
-                                    domProps: {
-                                      value: _vm.regen_rotations.ROTATION_SC
-                                    }
-                                  },
-                                  [_vm._v("5xScorch")]
-                                ),
-                                _vm._v(" "),
-                                _c(
-                                  "option",
-                                  {
-                                    domProps: {
-                                      value: _vm.regen_rotations.ROTATION_SCFB
-                                    }
-                                  },
-                                  [_vm._v("1xScorch, 2xFiB")]
-                                )
-                              ]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-item" }, [
-                            _c("label", [
-                              _vm._v("Arcane Blasts between fillers")
-                            ]),
-                            _vm._v(" "),
-                            _c(
-                              "select",
-                              {
-                                directives: [
-                                  {
-                                    name: "model",
-                                    rawName: "v-model",
-                                    value: _vm.config.regen_ab_count,
-                                    expression: "config.regen_ab_count"
-                                  }
-                                ],
-                                on: {
-                                  change: function($event) {
-                                    var $$selectedVal = Array.prototype.filter
-                                      .call($event.target.options, function(o) {
-                                        return o.selected
-                                      })
-                                      .map(function(o) {
-                                        var val =
-                                          "_value" in o ? o._value : o.value
-                                        return val
-                                      })
-                                    _vm.$set(
-                                      _vm.config,
-                                      "regen_ab_count",
-                                      $event.target.multiple
-                                        ? $$selectedVal
-                                        : $$selectedVal[0]
-                                    )
-                                  }
-                                }
-                              },
-                              [
-                                _c("option", { domProps: { value: 1 } }, [
-                                  _vm._v("1x AB")
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { domProps: { value: 2 } }, [
-                                  _vm._v("2x AB")
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { domProps: { value: 3 } }, [
-                                  _vm._v("3x AB")
-                                ]),
-                                _vm._v(" "),
-                                _c("option", { domProps: { value: 4 } }, [
-                                  _vm._v("4x AB")
-                                ])
-                              ]
-                            )
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-item" }, [
-                            _c("label", [_vm._v("Regen rotation at mana %")]),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model.number",
-                                  value: _vm.config.regen_mana_at,
-                                  expression: "config.regen_mana_at",
-                                  modifiers: { number: true }
-                                }
-                              ],
-                              attrs: { type: "text" },
-                              domProps: { value: _vm.config.regen_mana_at },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.config,
-                                    "regen_mana_at",
-                                    _vm._n($event.target.value)
-                                  )
-                                },
-                                blur: function($event) {
-                                  return _vm.$forceUpdate()
-                                }
-                              }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-item" }, [
-                            _c(
-                              "label",
-                              [
-                                _c("span", [
-                                  _vm._v("Stop regen rotation at mana %")
-                                ]),
-                                _vm._v(" "),
-                                _c("help", [
-                                  _vm._v(
-                                    "Regen will always stop if it's possible to spam AB the rest of the fight"
-                                  )
-                                ])
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model.number",
-                                  value: _vm.config.regen_stop_at,
-                                  expression: "config.regen_stop_at",
-                                  modifiers: { number: true }
-                                }
-                              ],
-                              attrs: { type: "text" },
-                              domProps: { value: _vm.config.regen_stop_at },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.config,
-                                    "regen_stop_at",
-                                    _vm._n($event.target.value)
-                                  )
-                                },
-                                blur: function($event) {
-                                  return _vm.$forceUpdate()
-                                }
-                              }
-                            })
-                          ]),
-                          _vm._v(" "),
-                          _c("div", { staticClass: "form-item" }, [
-                            _c(
-                              "label",
-                              [
-                                _c("span", [
-                                  _vm._v("Stop Arcane Blast at haste %")
-                                ]),
-                                _vm._v(" "),
-                                _c("help", [
-                                  _vm._v(
-                                    "\n                                        This will cast frostbolt/fireball when above a certain haste %."
-                                  ),
-                                  _c("br"),
-                                  _vm._v(
-                                    "\n                                        At 50% haste you will reach GCD cap of 1.0 seconds.\n                                    "
-                                  )
-                                ])
-                              ],
-                              1
-                            ),
-                            _vm._v(" "),
-                            _c("input", {
-                              directives: [
-                                {
-                                  name: "model",
-                                  rawName: "v-model.number",
-                                  value: _vm.config.ab_haste_stop,
-                                  expression: "config.ab_haste_stop",
-                                  modifiers: { number: true }
-                                }
-                              ],
-                              attrs: { type: "text" },
-                              domProps: { value: _vm.config.ab_haste_stop },
-                              on: {
-                                input: function($event) {
-                                  if ($event.target.composing) {
-                                    return
-                                  }
-                                  _vm.$set(
-                                    _vm.config,
-                                    "ab_haste_stop",
-                                    _vm._n($event.target.value)
-                                  )
-                                },
-                                blur: function($event) {
-                                  return _vm.$forceUpdate()
-                                }
-                              }
-                            })
-                          ])
                         ]
                       : _vm._e(),
                     _vm._v(" "),

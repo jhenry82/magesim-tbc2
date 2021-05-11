@@ -353,6 +353,7 @@
                                 <select v-model="config.spec" @input="onSpecInput">
                                     <option :value="specs.SPEC_FIRE">Fire</option>
                                     <option :value="specs.SPEC_FROST">Frost</option>
+                                    <option :value="specs.SPEC_ARCANE">Arcane</option>
                                 </select>
                             </div>
                             <div class="form-item">
@@ -373,47 +374,6 @@
                                         <help>At extremely low mana, swap to a lower rank of scorch (downranking penalty applies to this damage)</help>
                                     </label>
                                     <input type="text" v-model.number="config.scorch_r1_spam_at">
-                                </div>
-                            </template>
-                            <template v-if="config.spec == specs.SPEC_ARCANE">
-                                <div class="form-item">
-                                    <label>Filler spells</label>
-                                    <select v-model="config.regen_rotation">
-                                        <option :value="regen_rotations.ROTATION_FB">3xFrB</option>
-                                        <option :value="regen_rotations.ROTATION_AMFB">1xAM, 1xFrB</option>
-                                        <option :value="regen_rotations.ROTATION_SC">5xScorch</option>
-                                        <option :value="regen_rotations.ROTATION_SCFB">1xScorch, 2xFiB</option>
-                                    </select>
-                                </div>
-                                <div class="form-item">
-                                    <label>Arcane Blasts between fillers</label>
-                                    <select v-model="config.regen_ab_count">
-                                        <option :value="1">1x AB</option>
-                                        <option :value="2">2x AB</option>
-                                        <option :value="3">3x AB</option>
-                                        <option :value="4">4x AB</option>
-                                    </select>
-                                </div>
-                                <div class="form-item">
-                                    <label>Regen rotation at mana %</label>
-                                    <input type="text" v-model.number="config.regen_mana_at">
-                                </div>
-                                <div class="form-item">
-                                    <label>
-                                        <span>Stop regen rotation at mana %</span>
-                                        <help>Regen will always stop if it's possible to spam AB the rest of the fight</help>
-                                    </label>
-                                    <input type="text" v-model.number="config.regen_stop_at">
-                                </div>
-                                <div class="form-item">
-                                    <label>
-                                        <span>Stop Arcane Blast at haste %</span>
-                                        <help>
-                                            This will cast frostbolt/fireball when above a certain haste %.<br>
-                                            At 50% haste you will reach GCD cap of 1.0 seconds.
-                                        </help>
-                                    </label>
-                                    <input type="text" v-model.number="config.ab_haste_stop">
                                 </div>
                             </template>
                             <div class="form-item">
@@ -1491,7 +1451,12 @@
                     stats.hit+= 1;
                 // This is supposedly bugged for frost spells to give 2% hit each point
                 // They say it was actually that way in TBC so we'll keep it like this for now
-                if (x = this.hasTalent("elemental_precision")) {
+                if(this.config.spec == this.specs.SPEC_ARCANE) {
+                    if (x = this.hasTalent("arcane_focus")) {
+                        stats.hit+= x*2;
+                    }
+                }
+                else if (x = this.hasTalent("elemental_precision")) {
                     if (this.config.spec == this.specs.SPEC_FROST)
                         x*= 2;
                     stats.hit+= x;
@@ -1944,6 +1909,7 @@
                     icy_veins: [2, 8],
                     cold_snap: [2, 14],
                     elemental_precision: [2, 2],
+                    arcane_focus: [0, 1],
                 };
 
                 if (!indexes.hasOwnProperty(talent))
@@ -2020,7 +1986,7 @@
                 var spec = null;
 
                 if (e.target.value == this.specs.SPEC_ARCANE) {
-                    talents = "https://tbc.wowhead.com/talent-calc/mage/2500250300030150330125--053500031003001";
+                    talents = "https://tbc.wowhead.com/talent-calc/mage/2550450310030150333125";
                     spec = "arcane";
                 }
                 else if (e.target.value == this.specs.SPEC_FROST) {
