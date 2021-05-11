@@ -101,6 +101,12 @@ public:
             stats.intellect+= 18;
             stats.spirit+= 18;
         }
+        if (config->zanza_buff)
+            stats.spirit+= 50;
+        if (config->songflower_buff) {
+            stats.spirit+= 15;
+            stats.intellect+= 15;
+        }
         if (config->flask == FLASK_DISTILLED_WISDOM)
             stats.intellect+= 65;
         if (config->food == FOOD_SPELL_POWER || config->food == FOOD_SPELL_CRIT)
@@ -117,6 +123,10 @@ public:
             stats.intellect*= 1.05;
         if (race == RACE_HUMAN)
             stats.spirit*= 1.1;
+        if (config->zg_buff) {
+            stats.intellect*= 1.15;
+            stats.spirit*= 1.15;
+        }
         if (config->blessing_of_kings) {
             stats.intellect*= 1.1;
             stats.spirit*= 1.1;
@@ -133,6 +143,8 @@ public:
             stats.mp5+= 14;
         if (config->weapon_oil == OIL_BRILLIANT_MANA)
             stats.mp5+= 12;
+        if (config->rend_buff)
+            stats.mp5+= 10;
 
         // Spell power
         double int_multi = 0;
@@ -200,6 +212,12 @@ public:
             stats.crit+= critRatingToChance(critrating);
         if (talents.arcane_instability)
             stats.crit+= 1.0 * talents.arcane_instability;
+        if (config->ony_buff)
+            stats.crit+= 10.0;
+        if (config->songflower_buff)
+            stats.crit+= 5.0;
+        if (config->dm_buff)
+            stats.crit+= 3.0;
 
         // Spell hit
         if (config->totem_of_wrath)
