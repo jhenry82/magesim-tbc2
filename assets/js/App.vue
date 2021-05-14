@@ -107,6 +107,14 @@
                         <div>Damage: {{ result.dmg }}</div>
                         <div class="btn mt-1" v-if="result.log" @click="logToggle">Combat log</div>
                     </template>
+                    <template v-if="!isMetaGemActive()">
+                        <div class="meta-warning mt-2">
+                            <span>
+                                <span class="material-icons">&#xe002;</span>
+                                <tooltip position="right">Meta gem requirements have not been met.</tooltip>
+                            </span>
+                        </div>
+                    </template>
                 </div>
             </div>
             <div class="main">
@@ -233,6 +241,7 @@
                                         class="item"
                                         :class="[isEnchanted(active_slot, item.id) ? 'active' : '']"
                                         v-for="item in activeEnchants"
+                                        :key="item.id"
                                         @click="enchant(active_slot, item)"
                                     >
                                         <td>
@@ -261,7 +270,8 @@
                                             <tr>
                                                 <th>Gem</th>
                                                 <th>Stats</th>
-                                                <th>Unique</th>
+                                                <th v-if="socket == 'm'">Requires</th>
+                                                <th v-else>Unique</th>
                                             </tr>
                                         </thead>
                                         <tbody>
@@ -269,6 +279,7 @@
                                                 :class="[isSocketed(active_slot, gem.id, index) ? 'active' : '']"
                                                 v-for="gem in activeGems(index)"
                                                 @click="setSocket(active_slot, gem, index)"
+                                                :key="gem.id"
                                             >
                                                 <td>
                                                     <a :href="itemUrl(gem)" class="gem-color" :class="['color-'+gem.color]" target="_blank" @click.stop>
@@ -276,7 +287,12 @@
                                                     </a>
                                                 </td>
                                                 <td>{{ formatStats(gem) }}</td>
-                                                <td><template v-if="gem.unique">Yes</template></td>
+                                                <td v-if="socket == 'm'">
+                                                    <template v-if="gem.req">
+                                                        <div class="socket-text-color" :class="['color-'+c]" v-for="(n, c) in gem.req">{{ n }}</div>
+                                                    </template>
+                                                </td>
+                                                <td v-else><template v-if="gem.unique">Yes</template></td>
                                             </tr>
                                         </tbody>
                                     </table>
@@ -1551,7 +1567,7 @@
                             for (var i=0; i<item.sockets.length; i++) {
                                 gem_id = this.gems[slot][i];
                                 gem = gem_id ? _.find(this.items.gems, {id: gem_id}) : null;
-                                if (gem)
+                                if (gem && (gem.color != "m" || this.isMetaGemActive()))
                                     addStats(gem);
                                 if (has_bonus && (!gem || !this.matchSocketColor(item.sockets[i], gem.color)))
                                     get_bonus = false;
@@ -1629,7 +1645,7 @@
                     this.config.trinket1 = this.equipped.trinket1;
                 if (this.isSpecialItem(this.equipped.trinket2))
                     this.config.trinket2 = this.equipped.trinket2;
-                if (this.metaGem() && this.isSpecialItem(this.metaGem().id))
+                if (this.metaGem() && this.isSpecialItem(this.metaGem().id) && this.isMetaGemActive())
                     this.config.meta_gem = this.metaGem().id;
             },
 
@@ -1860,6 +1876,49 @@
                     }
                 }
                 return false;
+            },
+
+            isMetaGemActive() {
+                if (this.equipped.head && this.metaGem()) {
+                    var meta = this.metaGem();
+                    if (!meta.req)
+                        return true;
+
+                    var colors = {r: 0, b: 0, y: 0};
+                    for (var slot in this.gems) {
+                        if (this.equipped[slot]) {
+                            for (var i in this.gems[slot]) {
+                                if (this.gems[slot][i]) {
+                                    var gem = this.getGem(this.gems[slot][i]);
+                                    if (gem) {
+                                        if (gem.color == "o") {
+                                            colors.r++;
+                                            colors.y++;
+                                        }
+                                        else if (gem.color == "g") {
+                                            colors.y++;
+                                            colors.b++;
+                                        }
+                                        else if (gem.color == "p") {
+                                            colors.r++;
+                                            colors.b++;
+                                        }
+                                        else if (gem.color != "m") {
+                                            colors[gem.color]++;
+                                        }
+                                    }
+                                }
+                            }
+                        }
+                    }
+
+                    for (var color in meta.req) {
+                        if (meta.req[color] > colors[color])
+                            return false;
+                    }
+                }
+
+                return true;
             },
 
             metaGem() {

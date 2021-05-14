@@ -823,37 +823,63 @@ var gems = [{
   title: "Chaotic Skyfire Diamond",
   color: "m",
   crit: 12,
-  desc: "+3% crit dmg"
+  desc: "+3% crit dmg",
+  req: {
+    b: 2
+  },
+  phase: 4
 }, {
   id: ids.EMBER_SKYFIRE,
   title: "Ember Skyfire Diamond",
   color: "m",
   sp: 14,
-  desc: "+2% int"
+  desc: "+2% int",
+  req: {
+    r: 3
+  },
+  phase: 5
 }, {
   id: ids.INSIGHTFUL_EARTHSTORM,
   title: "Insightful Earthstorm Diamond",
   color: "m",
   "int": 12,
-  desc: "Chance to restore mana"
+  desc: "Chance to restore mana",
+  req: {
+    b: 2,
+    y: 2,
+    r: 2
+  }
 }, {
   id: 25890,
   title: "Destructive Skyfire Diamond",
   color: "m",
   sp: 14,
-  desc: "1% Spell reflect"
+  desc: "1% Spell reflect",
+  req: {
+    b: 2,
+    y: 2,
+    r: 2
+  }
 }, {
   id: 32641,
   title: "Imbued Unstable Diamond",
   color: "m",
   sp: 14,
-  desc: "5% stun resist"
+  desc: "5% stun resist",
+  phase: 2,
+  req: {
+    y: 3
+  }
 }, {
   id: 28557,
   title: "Swift Skyfire Diamond",
   color: "m",
   sp: 12,
-  desc: "Minor run speed"
+  desc: "Minor run speed",
+  req: {
+    y: 2,
+    r: 1
+  }
 }, {
   id: 33133,
   title: "Don Julio's Heart",
@@ -1406,6 +1432,22 @@ function _objectSpread(target) { for (var i = 1; i < arguments.length; i++) { va
 
 function _defineProperty(obj, key, value) { if (key in obj) { Object.defineProperty(obj, key, { value: value, enumerable: true, configurable: true, writable: true }); } else { obj[key] = value; } return obj; }
 
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
+//
 //
 //
 //
@@ -2925,7 +2967,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
               gem = gem_id ? _.find(this.items.gems, {
                 id: gem_id
               }) : null;
-              if (gem) addStats(gem);
+              if (gem && (gem.color != "m" || this.isMetaGemActive())) addStats(gem);
               if (has_bonus && (!gem || !this.matchSocketColor(item.sockets[i], gem.color))) get_bonus = false;
             }
 
@@ -2987,7 +3029,7 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       this.config.meta_gem = 0;
       if (this.isSpecialItem(this.equipped.trinket1)) this.config.trinket1 = this.equipped.trinket1;
       if (this.isSpecialItem(this.equipped.trinket2)) this.config.trinket2 = this.equipped.trinket2;
-      if (this.metaGem() && this.isSpecialItem(this.metaGem().id)) this.config.meta_gem = this.metaGem().id;
+      if (this.metaGem() && this.isSpecialItem(this.metaGem().id) && this.isMetaGemActive()) this.config.meta_gem = this.metaGem().id;
     },
     itemUrl: function itemUrl(id) {
       if (_typeof(id) == "object") id = id.id;
@@ -3167,6 +3209,48 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       }
 
       return false;
+    },
+    isMetaGemActive: function isMetaGemActive() {
+      if (this.equipped.head && this.metaGem()) {
+        var meta = this.metaGem();
+        if (!meta.req) return true;
+        var colors = {
+          r: 0,
+          b: 0,
+          y: 0
+        };
+
+        for (var slot in this.gems) {
+          if (this.equipped[slot]) {
+            for (var i in this.gems[slot]) {
+              if (this.gems[slot][i]) {
+                var gem = this.getGem(this.gems[slot][i]);
+
+                if (gem) {
+                  if (gem.color == "o") {
+                    colors.r++;
+                    colors.y++;
+                  } else if (gem.color == "g") {
+                    colors.y++;
+                    colors.b++;
+                  } else if (gem.color == "p") {
+                    colors.r++;
+                    colors.b++;
+                  } else if (gem.color != "m") {
+                    colors[gem.color]++;
+                  }
+                }
+              }
+            }
+          }
+        }
+
+        for (var color in meta.req) {
+          if (meta.req[color] > colors[color]) return false;
+        }
+      }
+
+      return true;
     },
     metaGem: function metaGem() {
       for (var key in this.gems.head) {
@@ -60474,7 +60558,27 @@ var render = function() {
                             [_vm._v("Combat log")]
                           )
                         : _vm._e()
+                    ],
+                _vm._v(" "),
+                !_vm.isMetaGemActive()
+                  ? [
+                      _c("div", { staticClass: "meta-warning mt-2" }, [
+                        _c(
+                          "span",
+                          [
+                            _c("span", { staticClass: "material-icons" }, [
+                              _vm._v("")
+                            ]),
+                            _vm._v(" "),
+                            _c("tooltip", { attrs: { position: "right" } }, [
+                              _vm._v("Meta gem requirements have not been met.")
+                            ])
+                          ],
+                          1
+                        )
+                      ])
                     ]
+                  : _vm._e()
               ],
               2
             )
@@ -60906,6 +61010,7 @@ var render = function() {
                         return _c(
                           "tr",
                           {
+                            key: item.id,
                             staticClass: "item",
                             class: [
                               _vm.isEnchanted(_vm.active_slot, item.id)
@@ -60991,7 +61096,17 @@ var render = function() {
                         ]),
                         _vm._v(" "),
                         _c("table", [
-                          _vm._m(2, true),
+                          _c("thead", [
+                            _c("tr", [
+                              _c("th", [_vm._v("Gem")]),
+                              _vm._v(" "),
+                              _c("th", [_vm._v("Stats")]),
+                              _vm._v(" "),
+                              socket == "m"
+                                ? _c("th", [_vm._v("Requires")])
+                                : _c("th", [_vm._v("Unique")])
+                            ])
+                          ]),
                           _vm._v(" "),
                           _c(
                             "tbody",
@@ -60999,6 +61114,7 @@ var render = function() {
                               return _c(
                                 "tr",
                                 {
+                                  key: gem.id,
                                   class: [
                                     _vm.isSocketed(
                                       _vm.active_slot,
@@ -61049,11 +61165,35 @@ var render = function() {
                                     _vm._v(_vm._s(_vm.formatStats(gem)))
                                   ]),
                                   _vm._v(" "),
-                                  _c(
-                                    "td",
-                                    [gem.unique ? [_vm._v("Yes")] : _vm._e()],
-                                    2
-                                  )
+                                  socket == "m"
+                                    ? _c(
+                                        "td",
+                                        [
+                                          gem.req
+                                            ? _vm._l(gem.req, function(n, c) {
+                                                return _c(
+                                                  "div",
+                                                  {
+                                                    staticClass:
+                                                      "socket-text-color",
+                                                    class: ["color-" + c]
+                                                  },
+                                                  [_vm._v(_vm._s(n))]
+                                                )
+                                              })
+                                            : _vm._e()
+                                        ],
+                                        2
+                                      )
+                                    : _c(
+                                        "td",
+                                        [
+                                          gem.unique
+                                            ? [_vm._v("Yes")]
+                                            : _vm._e()
+                                        ],
+                                        2
+                                      )
                                 ]
                               )
                             }),
@@ -61169,7 +61309,7 @@ var render = function() {
                 ]),
                 _vm._v(" "),
                 _c("table", [
-                  _vm._m(3),
+                  _vm._m(2),
                   _vm._v(" "),
                   _c(
                     "tbody",
@@ -64910,7 +65050,7 @@ var render = function() {
               _c("div", { staticClass: "title" }, [_vm._v("Equipped items")]),
               _vm._v(" "),
               _c("table", [
-                _vm._m(4),
+                _vm._m(3),
                 _vm._v(" "),
                 _c(
                   "tbody",
@@ -65116,20 +65256,6 @@ var staticRenderFns = [
         _c("th", [_vm._v("Spirit")]),
         _vm._v(" "),
         _c("th", [_vm._v("Mp5")])
-      ])
-    ])
-  },
-  function() {
-    var _vm = this
-    var _h = _vm.$createElement
-    var _c = _vm._self._c || _h
-    return _c("thead", [
-      _c("tr", [
-        _c("th", [_vm._v("Gem")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Stats")]),
-        _vm._v(" "),
-        _c("th", [_vm._v("Unique")])
       ])
     ])
   },
