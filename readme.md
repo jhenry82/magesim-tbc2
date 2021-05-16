@@ -20,7 +20,7 @@ Frontend written in Vue.js and SCSS and compiled with Laravel mix.
 ## Limitations
 This sim is just a minor tweak of the level 70 TBC sim. It has the same basic features and limitations as the original version
 * Water Elemental is not currently supported. Other frost talents such as Icy Veins and Cold Snap ARE supported
-* Arcane Blast is not available at level 60, therefore there is no support for Arcane rotations. Sorry, Arcane Missiles aficionados. The Arcane Power talent is supported
+* Arcane Blast is not available at level 60, so the Arcane spec is just arcane missiles spam
 * No attempt has been made to include every single Classic item, enchant, or buff. It's meant to be a representative sample of late phase 6 raiding
 
 ## Building the project
