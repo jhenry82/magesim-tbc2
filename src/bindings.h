@@ -38,6 +38,7 @@ EMSCRIPTEN_BINDINGS(my_module) {
         .value("ROTATION_AMFB", ROTATION_AMFB)
         .value("ROTATION_SC", ROTATION_SC)
         .value("ROTATION_SCFB", ROTATION_SCFB)
+        .value("ROTATION_AMSC", ROTATION_AMSC)
         ;
 
     emscripten::enum_<Spec>("Spec")
@@ -77,6 +78,7 @@ EMSCRIPTEN_BINDINGS(my_module) {
         .value("TRINKET_NAARU_SLIVER", TRINKET_NAARU_SLIVER)
         .value("TRINKET_DARKMOON_CRUSADE", TRINKET_DARKMOON_CRUSADE)
         .value("TRINKET_ASHTONGUE_TALISMAN", TRINKET_ASHTONGUE_TALISMAN)
+        .value("TRINKET_NEXUS_HORN", TRINKET_NEXUS_HORN)
         ;
 
     emscripten::enum_<MetaGem>("MetaGem")

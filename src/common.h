@@ -4,6 +4,7 @@ enum RegenRotation : int
     ROTATION_AMFB,
     ROTATION_SC,
     ROTATION_SCFB,
+    ROTATION_AMSC,
 };
 
 enum Race : int
@@ -63,6 +64,7 @@ enum Trinket : int
     TRINKET_NAARU_SLIVER = 34429,
     TRINKET_DARKMOON_CRUSADE = 31856,
     TRINKET_ASHTONGUE_TALISMAN = 32488,
+    TRINKET_NEXUS_HORN = 28418,
 };
 
 enum Food : int
