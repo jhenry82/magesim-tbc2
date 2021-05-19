@@ -229,6 +229,7 @@ var enchants = {
     ],
     wrist: [
         { id: 20008, title: "Greater Intellect", int: 7 },
+        { id: 23802, title: "Healing Power", sp: 8 },
     ],
     hands: [
         { id: 25078, title: "Fire Power", sp_fire: 20 },
