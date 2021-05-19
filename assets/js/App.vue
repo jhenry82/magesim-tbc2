@@ -427,6 +427,12 @@
                             <div class="form-item">
                                 <label><input type="checkbox" v-model="config.curse_of_elements"> <span>Curse of Elements</span></label>
                             </div>
+                            <div class="form-item" v-if="config.curse_of_elements">
+                                <label><input type="checkbox" v-model="config.malediction">
+                                    <span>Malediction</span>
+                                    <help>3% extra damage from curse of elements</help>
+                                </label>
+                            </div>
                             <div class="form-item">
                                 <label><input type="checkbox" v-model="config.judgement_of_the_crusader"> <span>Imp. Judgement of the Crusader</span></label>
                             </div>
@@ -836,6 +842,117 @@
         },
 
         data() {
+            var default_config = {
+                iterations: 30000,
+                race: 5,
+                spec: 0,
+
+                duration: 180,
+                duration_variance: 0,
+                rng_seed: 0,
+                gcd_unlocked: false,
+
+                misery: true,
+                curse_of_elements: true,
+                judgement_of_the_crusader: false,
+                judgement_of_wisdom: true,
+                vampiric_touch: true,
+                vampiric_touch_regen: 20,
+
+                totem_of_wrath: false,
+                wrath_of_air: false,
+                mana_spring: true,
+                arcane_intellect: true,
+                divine_spirit: true,
+                improved_divine_spirit: false,
+                blessing_of_kings: true,
+                blessing_of_wisdom: true,
+                mark_of_the_wild: true,
+                moonkin_aura: false,
+                mage_armor: true,
+                molten_armor: false,
+                inspiring_presence: false,
+                fire_vulnerability: false,
+                maintain_fire_vulnerability: false,
+                winters_chill: false,
+
+                food: 0,
+                flask: 0,
+                battle_elixir: 0,
+                guardian_elixir: 0,
+                weapon_oil: 0,
+                drums: 0,
+                drums_friend: false,
+                potion: 22832,
+                conjured: 22044,
+                atiesh_mage: false,
+                atiesh_warlock: false,
+                eye_of_the_night: false,
+                chain_of_the_twilight_owl: false,
+                jade_pendant_of_blasting: false,
+
+                tirisfal_2set: true,
+                tirisfal_4set: true,
+                tempest_2set: false,
+                tempest_4set: false,
+                spellfire_set: false,
+                spellstrike_set: false,
+                eternal_sage: false,
+                wrath_of_cenarius: false,
+                mana_etched_4set: false,
+                meta_gem: 0,
+                trinket1: 0,
+                trinket2: 0,
+
+                innervate: 0,
+                mana_tide: true,
+                bloodlust: true,
+                power_infusion: false,
+
+                regen_mana_at: 20,
+                regen_stop_at: 30,
+                regen_ab_count: 3,
+                regen_rotation: 0,
+                ab_haste_stop: 0,
+
+                mana_tide_at: 20,
+                bloodlust_at: 1,
+                power_infusion_at: 1,
+                icy_veins_at: 1,
+                cold_snap_at: 41,
+                combustion_at: 1,
+                trinket1_at: 1,
+                trinket1_reuse_at: 0,
+                trinket2_at: 21,
+                trinket2_reuse_at: 0,
+                berserking_at: 41,
+                arcane_power_at: 1,
+                presence_of_mind_at: 0,
+                drums_at: 1,
+                evocation_at: 0,
+                potion_at: 1,
+                potion_reuse_at: 0,
+                conjured_at: 1,
+                conjured_reuse_at: 0,
+
+                talents: "https://tbc.wowhead.com/talent-calc/mage/2500250300030150330125--053500031003001",
+
+                stats: {
+                    intellect: 465,
+                    spirit: 285,
+                    mp5: 0,
+                    crit: 20,
+                    hit: 0,
+                    haste: 0,
+                    spell_power: 1000,
+                    spell_power_arcane: 50,
+                    spell_power_frost: 0,
+                    spell_power_fire: 0,
+                },
+
+                tooltips: false,
+            };
+
             var data = {
                 ...constants,
                 fools_open: 0,
@@ -876,129 +993,8 @@
                     "5": true,
                     "6": true,
                 },
-                config: {
-                    iterations: 30000,
-                    race: 5,
-                    spec: 1,
-
-                    duration: 90,
-                    duration_variance: 0,
-                    rng_seed: 0,
-                    gcd_unlocked: false,
-
-                    misery: true,
-                    curse_of_elements: true,
-                    judgement_of_the_crusader: false,
-                    judgement_of_wisdom: true,
-                    vampiric_touch: true,
-                    vampiric_touch_regen: 20,
-
-                    totem_of_wrath: true,
-                    wrath_of_air: false,
-                    mana_spring: true,
-                    arcane_intellect: true,
-                    divine_spirit: true,
-                    improved_divine_spirit: false,
-                    blessing_of_kings: true,
-                    blessing_of_wisdom: true,
-                    mark_of_the_wild: true,
-                    moonkin_aura: false,
-                    mage_armor: true,
-                    molten_armor: false,
-                    inspiring_presence: false,
-                    fire_vulnerability: false,
-                    maintain_fire_vulnerability: false,
-                    winters_chill: false,
-                    ony_buff: true,
-                    zg_buff: true,
-                    zanza_buff: true,
-                    dm_buff: true,
-                    songflower_buff: true,
-                    dmf_buff: true,
-                    rend_buff: false,
-
-                    food: 0,
-                    flask: 0,
-                    battle_elixir: 0,
-                    guardian_elixir: 0,
-                    weapon_oil: 0,
-                    drums: 0,
-                    potion: 13444,
-                    conjured: 8008,
-                    demonic_rune: false,
-                    very_berry: false,
-                    drums_perma: false,
-                    drums_friend: false,
-                    atiesh_mage: false,
-                    atiesh_warlock: false,
-                    eye_of_the_night: false,
-                    chain_of_the_twilight_owl: false,
-                    jade_pendant_of_blasting: false,
-
-                    tirisfal_2set: false,
-                    tirisfal_4set: false,
-                    tempest_2set: false,
-                    tempest_4set: false,
-                    spellfire_set: false,
-                    spellstrike_set: false,
-                    udc_set: false,
-                    eternal_sage: false,
-                    wrath_of_cenarius: false,
-                    mana_etched_4set: false,
-                    meta_gem: 0,
-                    trinket1: 0,
-                    trinket2: 0,
-
-                    innervate: 0,
-                    mana_tide: true,
-                    bloodlust: false,
-                    power_infusion: false,
-
-                    regen_mana_at: 20,
-                    regen_stop_at: 30,
-                    regen_ab_count: 3,
-                    regen_rotation: 0,
-                    scorch_spam_at: 5,
-                    scorch_r1_spam_at: 2,
-                    ab_haste_stop: 0,
-
-                    mana_tide_at: 20,
-                    bloodlust_at: 1,
-                    power_infusion_at: 1,
-                    icy_veins_at: 10,
-                    cold_snap_at: 30,
-                    combustion_at: 10,
-                    trinket1_at: 10,
-                    trinket1_reuse_at: 0,
-                    trinket2_at: 30,
-                    trinket2_reuse_at: 0,
-                    berserking_at: 41,
-                    arcane_power_at: 1,
-                    presence_of_mind_at: 0,
-                    drums_at: 1,
-                    evocation_at: 0,
-                    potion_at: 1,
-                    potion_reuse_at: 0,
-                    conjured_at: 1,
-                    conjured_reuse_at: 0,
-
-                    talents: "https://tbc.wowhead.com/talent-calc/mage/-505200012302331050125-023500001",
-
-                    stats: {
-                        intellect: 465,
-                        spirit: 285,
-                        mp5: 0,
-                        crit: 20,
-                        hit: 0,
-                        haste: 0,
-                        spell_power: 1000,
-                        spell_power_arcane: 50,
-                        spell_power_frost: 0,
-                        spell_power_fire: 0,
-                    },
-
-                    tooltips: false,
-                },
+                default_config: default_config,
+                config: _.cloneDeep(default_config),
             };
 
             var slots = [
@@ -1236,6 +1232,7 @@
             },
 
             prepare() {
+                this.fillEmptyFields();
                 this.saveGear();
                 this.saveConfig();
                 this.itemStats();
@@ -1318,6 +1315,13 @@
                     return gems;
 
                 return gems.filter(g => _.get(g, "phase", 1) <= this.phase_filter);
+            },
+
+            fillEmptyFields() {
+                for (var key in this.config) {
+                    if (this.config[key] === "" || this.config[key] === null)
+                        this.config[key] = this.default_config.hasOwnProperty(key) ? this.default_config[key] : 0;
+                }
             },
 
             finalStats() {
