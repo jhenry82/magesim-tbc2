@@ -1477,6 +1477,7 @@
                     stats.crit+= 5;
                 if (this.config.dm_buff)
                     stats.crit+= 3;
+                stats.crit+= stats.intellect/59.5;
 
                 // Spell hit
                 if (this.config.totem_of_wrath)
@@ -1622,11 +1623,10 @@
                 stats.crit+= this.critRatingToChance(item_stats.crit);
                 stats.hit+= this.hitRatingToChance(item_stats.hit);
                 stats.haste+= this.hasteRatingToHaste(item_stats.haste);
-                stats.crit+= stats.intellect/59.5;
 
-                stats.crit = _.round(stats.crit, 2);
-                stats.hit = _.round(stats.hit, 2);
-                stats.haste = _.round(stats.haste, 2);
+                stats.crit = stats.crit;
+                stats.hit = stats.hit;
+                stats.haste = stats.haste;
 
                 this.config.stats = stats;
             },

@@ -2879,7 +2879,8 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       if (x = this.hasTalent("arcane_instability")) stats.crit += x;
       if (this.config.ony_buff) stats.crit += 10;
       if (this.config.songflower_buff) stats.crit += 5;
-      if (this.config.dm_buff) stats.crit += 3; // Spell hit
+      if (this.config.dm_buff) stats.crit += 3;
+      stats.crit += stats.intellect / 59.5; // Spell hit
 
       if (this.config.totem_of_wrath) stats.hit += 3;
       if (this.config.race == this.races.RACE_DRAENEI || this.config.inspiring_presence) stats.hit += 1; // This is supposedly bugged for frost spells to give 2% hit each point
@@ -3021,10 +3022,9 @@ function _defineProperty(obj, key, value) { if (key in obj) { Object.definePrope
       stats.crit += this.critRatingToChance(item_stats.crit);
       stats.hit += this.hitRatingToChance(item_stats.hit);
       stats.haste += this.hasteRatingToHaste(item_stats.haste);
-      stats.crit += stats.intellect / 59.5;
-      stats.crit = _.round(stats.crit, 2);
-      stats.hit = _.round(stats.hit, 2);
-      stats.haste = _.round(stats.haste, 2);
+      stats.crit = stats.crit;
+      stats.hit = stats.hit;
+      stats.haste = stats.haste;
       this.config.stats = stats;
     },
     itemConfig: function itemConfig() {

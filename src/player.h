@@ -218,6 +218,7 @@ public:
             stats.crit+= 5.0;
         if (config->dm_buff)
             stats.crit+= 3.0;
+        stats.crit+= stats.intellect/59.5;
 
         // Spell hit
         if (config->totem_of_wrath)
