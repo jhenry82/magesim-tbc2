@@ -52,6 +52,7 @@ namespace buff
         FEL_MANA = 38929,
         FEL_ACHE = 38927,
         BURST_OF_KNOWLEDGE = 15646,
+        CLEARCAST_AM_BUG = 42069,
     };
 
 
@@ -718,6 +719,19 @@ namespace buff
             id = BURST_OF_KNOWLEDGE;
             name = "Burst of Knowledge";
             duration = 10;
+        }
+
+    };
+
+   class Clearcast_AM_Bug : public Buff
+    {
+
+    public:
+        Clearcast_AM_Bug()
+        {
+            id = CLEARCAST_AM_BUG;
+            name = "Clearcast AM Bug";
+            duration = 5;
         }
 
     };

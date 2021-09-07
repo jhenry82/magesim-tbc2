@@ -487,6 +487,9 @@ public:
             onBuffExpire(make_shared<buff::Clearcast>());
         clearcast();
 
+        /*if(state->hasBuff(buff::CLEARCAST_AM_BUG))
+            onBuffExpire(make_shared<buff::Clearcast_AM_Bug>());*/
+
         if (state->hasBuff(buff::PRESENCE_OF_MIND))
             onBuffExpire(make_shared<buff::PresenceOfMind>());
 
@@ -659,6 +662,9 @@ public:
         if (spell->id == spell::ARCANE_BLAST)
             onBuffGain(make_shared<buff::ArcaneBlast>());
 
+        if(state->hasBuff(buff::CLEARCAST_AM_BUG))
+            onBuffExpire(make_shared<buff::Clearcast_AM_Bug>());
+
         if (shouldUseManaGem())
             useManaGem();
         if (shouldUseManaPotion())
@@ -777,6 +783,8 @@ public:
             removeBuffExpiration(make_shared<buff::Enlightenment>());
             state->removeBuff(buff::ENLIGHTENMENT);
         }
+        if (buff->id == buff::CLEARCAST)
+            onBuffGain(make_shared<buff::Clearcast_AM_Bug>());
     }
 
     void onDebuffGain(shared_ptr<debuff::Debuff> debuff)
@@ -1533,7 +1541,7 @@ public:
         if (spell->id == spell::FROSTBOLT && player->talents.empowered_frostbolt)
             crit+= player->talents.empowered_frostbolt*1.0;
 
-        if (state->hasBuff(buff::CLEARCAST) && player->talents.arcane_potency && !spell->proc)
+        if ((state->hasBuff(buff::CLEARCAST) || (spell->id == spell::ARCANE_MISSILES && state->hasBuff(buff::CLEARCAST_AM_BUG))) && player->talents.arcane_potency && !spell->proc)
             crit+= player->talents.arcane_potency*10.0;
         if (state->hasBuff(buff::COMBUSTION) && spell->school == SCHOOL_FIRE)
             crit+= state->buffStacks(buff::COMBUSTION)*10.0;
