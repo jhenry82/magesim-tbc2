@@ -487,9 +487,6 @@ public:
             onBuffExpire(make_shared<buff::Clearcast>());
         clearcast();
 
-        /*if(state->hasBuff(buff::CLEARCAST_AM_BUG))
-            onBuffExpire(make_shared<buff::Clearcast_AM_Bug>());*/
-
         if (state->hasBuff(buff::PRESENCE_OF_MIND))
             onBuffExpire(make_shared<buff::PresenceOfMind>());
 
@@ -1007,6 +1004,9 @@ public:
                 return make_shared<spell::Frostbolt>();
             }
 
+            if (state->hasBuff(buff::CLEARCAST) && !(buffDuration(buff::ARCANE_BLAST) <= castTime(make_shared<spell::ArcaneMissiles>())))
+                return make_shared<spell::ArcaneMissiles>();
+
             if (canBlast())
                 return defaultSpell();
 
@@ -1045,7 +1045,7 @@ public:
                 else if (config->regen_rotation == ROTATION_AMFB) {
                     if (state->regen_cycle == 2 && !willDropArcaneBlast())
                         state->regen_cycle--;
-                    if (state->regen_cycle == 0)
+                    else if (state->regen_cycle == 0)
                         next = make_shared<spell::ArcaneMissiles>();
                     else if (state->regen_cycle == 1)
                         next = make_shared<spell::Frostbolt>();
